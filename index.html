@@ -18,6 +18,10 @@
             --secondary-text: #777777;
             --primary-blue: #1890ff; 
             --border-color: #e8e8e8;
+            --color-excellent: #389e0d;
+            --color-good: #1890ff;
+            --color-pass: #faad14;
+            --color-fail: #d4380d;
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
@@ -29,7 +33,7 @@
             color: var(--primary-text);
             display: flex;
             height: 100vh;
-            overflow: hidden; /* 核心：禁止整個頁面滾動 */
+            overflow: hidden;
         }
 
         .sidebar {
@@ -62,59 +66,34 @@
         .content-area {
             padding: 24px;
             flex-grow: 1;
-            overflow: hidden; /* 確保內容區自身不滾動 */
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
         
-        /* *** 核心佈局修改：真正的儀表板網格 *** */
-        .dashboard-container {
+        .dashboard-grid {
             flex-grow: 1;
             display: grid;
-            grid-template-columns: 2fr 1fr; /* 左2右1的欄位比例 */
-            grid-template-rows: auto 1fr; /* 上方高度自動，下方佔滿剩餘空間 */
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto 1fr;
             gap: 24px;
         }
-        .kpi-container {
-            grid-column: 1 / -1; /* 橫跨所有欄位 */
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
+        .header-filters {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .main-chart-container {
+        .main-panel {
             grid-column: 1 / 2;
             grid-row: 2 / 3;
         }
-        .side-panel-container {
+        .side-panel {
             grid-column: 2 / 3;
             grid-row: 2 / 3;
             display: flex;
             flex-direction: column;
             gap: 24px;
-        }
-        .side-panel-container .card {
-            flex-grow: 1; /* 讓右側的卡片平分垂直空間 */
-            display: flex;
-            flex-direction: column;
-        }
-        .side-panel-container .card .chart-wrapper,
-        .side-panel-container .card .data-table-container {
-            flex-grow: 1;
-            position: relative;
-        }
-        .main-chart-container .card {
-             height: 100%;
-             display: flex;
-             flex-direction: column;
-        }
-        .main-chart-container .card .chart-wrapper {
-            flex-grow: 1;
-            position: relative;
-        }
-        .main-chart-container canvas, .side-panel-container canvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
         }
 
         .sidebar-header, .sidebar-menu li, .sidebar-footer { white-space: nowrap; }
@@ -125,18 +104,8 @@
         .sidebar-menu li:hover, .sidebar-menu li.active { background-color: var(--primary-blue); }
         .sidebar-menu li i { margin-right: 10px; width: 20px; text-align: center; }
         .sidebar-footer { margin-top: auto; padding: 16px 24px; font-size: 12px; color: var(--secondary-text); text-align: center; }
-
-        .header-left { display: flex; align-items: center; gap: 16px; }
-        .menu-toggle { font-size: 20px; cursor: pointer; }
-        .page-title { font-size: 20px; font-weight: 500; }
         
-        .content-header {
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
+        .page-title { font-size: 20px; font-weight: 500; }
         .filters, .action-buttons { display: flex; align-items: center; gap: 8px; }
         select, button {
             padding: 8px 12px;
@@ -154,15 +123,40 @@
             border-radius: 8px;
             padding: 24px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+            display: flex;
+            flex-direction: column;
         }
-        .card-title { margin: 0 0 20px 0; font-size: 18px; font-weight: 500; flex-shrink: 0; }
+        .card-title { margin: 0 0 16px 0; font-size: 18px; font-weight: 500; flex-shrink: 0; }
         
-        .kpi-card { padding: 16px; display: flex; align-items: center; gap: 16px; }
-        .kpi-card .icon { font-size: 32px; flex-shrink: 0; }
-        .kpi-card .text-content { display: flex; flex-direction: column; }
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            grid-column: 1 / -1;
+        }
+        .kpi-card { padding: 16px; flex-direction: row; align-items: center; gap: 16px; }
+        .kpi-card .icon { font-size: 32px; }
         .kpi-card .value { font-size: 24px; font-weight: 700; }
         .kpi-card .label { font-size: 14px; color: var(--secondary-text); }
+        .kpi-card .count { font-size: 12px; color: var(--secondary-text); }
+
+        .radar-grid-container {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+        }
+        .radar-item { position: relative; }
+        .radar-item .chart-title { position: absolute; top: 10px; left: 10px; font-weight: bold; }
         
+        .grading-criteria { font-size: 13px; color: var(--secondary-text); margin-bottom: 16px; }
+        .grading-criteria span { margin-right: 15px; }
+        .grading-criteria i { color: #888; }
+
+        .chart-wrapper { position: relative; flex-grow: 1; }
+        .chart-wrapper canvas { position: absolute; top:0; left:0; width: 100%; height: 100%; }
+
         .data-table-container { overflow-y: auto; }
         table.data-table { width: 100%; border-collapse: collapse; }
         .data-table th, .data-table td { padding: 8px 10px; font-size: 14px; text-align: left; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
@@ -172,66 +166,57 @@
     </style>
 </head>
 <body>
-
     <nav class="sidebar">
-         <div class="sidebar-header">
-            <i class="fa-solid fa-shield-halved"></i>
-            <span>數據分析平台</span>
-        </div>
+        <div class="sidebar-header"><i class="fa-solid fa-shield-halved"></i><span>數據分析平台</span></div>
         <ul class="sidebar-menu">
             <li class="active"><i class="fa-solid fa-chart-pie"></i><span>總覽儀表板</span></li>
             <li><i class="fa-solid fa-table-list"></i><span>詳細數據查詢</span></li>
         </ul>
-        <div class="sidebar-footer">
-            消防局 版權所有 © 2025
-        </div>
+        <div class="sidebar-footer">消防局 版權所有 © 2025</div>
     </nav>
-
     <div class="main-container">
         <header class="header">
-            <div class="header-left">
-                <span class="page-title">總覽儀表板</span>
-            </div>
-             <div class="filters">
-                <div class="filter-group">
-                    <label for="period">測驗期別：</label>
-                    <select id="period"><option>114年下半年</option><option>114年上半年</option></select>
-                </div>
-                <div class="action-buttons">
-                    <button class="primary"><i class="fa-solid fa-file-download"></i> 產生報表</button>
-                </div>
-            </div>
+            <h1 class="page-title">總覽儀表板</h1>
         </header>
-
         <main class="content-area">
-            <div class="dashboard-container">
-                <div class="kpi-container">
-                    <div class="card kpi-card">
-                        <div class="icon" style="color: #1890ff;"><i class="fa-solid fa-users"></i></div>
-                        <div class="text-content"><div class="value">1,447</div><div class="label">總測驗人數</div></div>
+            <div class="dashboard-grid">
+                <div class="header-filters">
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label for="period">測驗期別：</label>
+                            <select id="period"><option>114年 上半年</option><option>113年 下半年</option></select>
+                        </div>
                     </div>
-                    <div class="card kpi-card">
-                        <div class="icon" style="color: #389e0d;"><i class="fa-solid fa-award"></i></div>
-                        <div class="text-content"><div class="value">28%</div><div class="label">菁英人員比例</div></div>
-                    </div>
-                    <div class="card kpi-card">
-                        <div class="icon" style="color: #faad14;"><i class="fa-solid fa-dumbbell"></i></div>
-                        <div class="text-content"><div class="value">118 KG</div><div class="label">硬舉平均重量</div></div>
-                    </div>
-                    <div class="card kpi-card">
-                        <div class="icon" style="color: #d4380d;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                        <div class="text-content"><div class="value">8%</div><div class="label">待加強人員比例</div></div>
+                    <div class="action-buttons">
+                        <button class="primary"><i class="fa-solid fa-file-download"></i> 產生報表</button>
                     </div>
                 </div>
-
-                <div class="main-chart-container">
-                    <div class="card">
-                        <h3 class="card-title">各大隊 1500公尺 戰力分析</h3>
-                        <div class="chart-wrapper"><canvas id="battalionRunChart"></canvas></div>
+                <div class="main-panel card">
+                    <h2 class="card-title">各大隊 1500公尺 戰力分析</h2>
+                    <p class="grading-criteria">
+                        <span><i class="fa-solid fa-square" style="color:var(--color-excellent)"></i> 菁英級: <7分</span>
+                        <span><i class="fa-solid fa-square" style="color:var(--color-good)"></i> 良好級: 7-8.5分</span>
+                        <span><i class="fa-solid fa-square" style="color:var(--color-pass)"></i> 合格級: 8.5-10分</span>
+                        <span><i class="fa-solid fa-square" style="color:var(--color-fail)"></i> 待加強: >10分</span>
+                    </p>
+                    <div class="radar-grid-container">
+                        <div class="radar-item"><div class="chart-title">第一大隊</div><canvas id="radarChart1"></canvas></div>
+                        <div class="radar-item"><div class="chart-title">第二大隊</div><canvas id="radarChart2"></canvas></div>
+                        <div class="radar-item"><div class="chart-title">第三大隊</div><canvas id="radarChart3"></canvas></div>
+                        <div class="radar-item"><div class="chart-title">第四大隊</div><canvas id="radarChart4"></canvas></div>
                     </div>
                 </div>
-
-                <div class="side-panel-container">
+                <div class="side-panel">
+                    <div class="kpi-grid">
+                        <div class="card kpi-card">
+                            <div class="icon" style="color:var(--color-excellent)"><i class="fa-solid fa-award"></i></div>
+                            <div><div class="value">28%</div><div class="label">菁英人員</div><div class="count">(405人)</div></div>
+                        </div>
+                        <div class="card kpi-card">
+                            <div class="icon" style="color:var(--color-fail)"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div><div class="value">8%</div><div class="label">待加強人員</div><div class="count">(115人)</div></div>
+                        </div>
+                    </div>
                     <div class="card">
                         <h3 class="card-title">受測人員年齡層分佈</h3>
                         <div class="chart-wrapper"><canvas id="ageDistributionChart"></canvas></div>
@@ -258,40 +243,52 @@
 
     <script>
         // === Chart.js 圖表腳本 ===
-        // 1. 各大隊跑步戰力雷達圖
-        const ctxRun = document.getElementById('battalionRunChart').getContext('2d');
-        const radarData = {
-            labels: ['菁英級', '良好級', '合格級', '待加強'],
-            datasets: [
-                { label: '第一大隊', data: [27, 43, 23, 7], borderColor: 'rgba(24, 144, 255, 0.8)', backgroundColor: 'rgba(24, 144, 255, 0.2)', pointBackgroundColor: 'rgba(24, 144, 255, 0.8)' },
-                { label: '第二大隊', data: [35, 46, 14, 5], borderColor: 'rgba(82, 196, 26, 0.8)', backgroundColor: 'rgba(82, 196, 26, 0.2)', pointBackgroundColor: 'rgba(82, 196, 26, 0.8)' },
-                { label: '第三大隊', data: [32, 41, 20, 7], borderColor: 'rgba(250, 173, 20, 0.8)', backgroundColor: 'rgba(250, 173, 20, 0.2)', pointBackgroundColor: 'rgba(250, 173, 20, 0.8)' },
-                { label: '第四大隊', data: [23, 37, 29, 11], borderColor: 'rgba(245, 34, 45, 0.8)', backgroundColor: 'rgba(245, 34, 45, 0.2)', pointBackgroundColor: 'rgba(245, 34, 45, 0.8)' }
-            ]
-        };
-        const runChart = new Chart(ctxRun, {
-            type: 'radar', data: radarData,
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
-                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
-                        suggestedMin: 0, suggestedMax: 50,
-                        pointLabels: { font: { size: 14 } },
-                        ticks: { backdropColor: 'rgba(255,255,255,0.7)', callback: value => value + '%' }
+        const commonRadarOptions = {
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                    grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                    suggestedMin: 0, suggestedMax: 50,
+                    pointLabels: { font: { size: 13 } },
+                    ticks: { display: false } // 不顯示半徑軸上的刻度
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: context => `${context.label}: ${context.parsed.r.toFixed(1)}%`
                     }
-                },
-                plugins: {
-                    tooltip: { callbacks: { label: context => `${context.dataset.label}: ${context.parsed.r.toFixed(1)}%` } },
-                    legend: { position: 'top', align: 'end' }
                 }
             }
-        });
+        };
 
-        // 2. 年齡分佈圓餅圖
-        const ctxAge = document.getElementById('ageDistributionChart').getContext('2d');
-        const ageChart = new Chart(ctxAge, {
+        function createRadarChart(canvasId, data, color) {
+            new Chart(document.getElementById(canvasId), {
+                type: 'radar',
+                data: {
+                    labels: ['菁英級', '良好級', '合格級', '待加強'],
+                    datasets: [{
+                        data: data,
+                        borderColor: `rgba(${color}, 0.8)`,
+                        backgroundColor: `rgba(${color}, 0.2)`,
+                        borderWidth: 2,
+                        pointBackgroundColor: `rgba(${color}, 0.8)`,
+                        pointRadius: 3
+                    }]
+                },
+                options: commonRadarOptions
+            });
+        }
+
+        createRadarChart('radarChart1', [27, 43, 23, 7], '24, 144, 255');  // Blue
+        createRadarChart('radarChart2', [35, 46, 14, 5], '82, 196, 26');   // Green
+        createRadarChart('radarChart3', [32, 41, 20, 7], '250, 173, 20'); // Orange
+        createRadarChart('radarChart4', [23, 37, 29, 11], '245, 34, 45');   // Red
+
+        // 年齡分佈圖
+        new Chart(document.getElementById('ageDistributionChart'), {
             type: 'doughnut',
             data: {
                 labels: ['20-29歲', '30-39歲', '40-49歲', '50+歲', '女性'],
