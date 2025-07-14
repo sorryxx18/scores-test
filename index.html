@@ -16,14 +16,6 @@
             --card-bg: #ffffff;
             --primary-text: #333333;
             --secondary-text: #777777;
-            --color-b1: 'rgba(24, 144, 255, 0.8)';
-            --color-b1-fill: 'rgba(24, 144, 255, 0.2)';
-            --color-b2: 'rgba(82, 196, 26, 0.8)';
-            --color-b2-fill: 'rgba(82, 196, 26, 0.2)';
-            --color-b3: 'rgba(250, 173, 20, 0.8)';
-            --color-b3-fill: 'rgba(250, 173, 20, 0.2)';
-            --color-b4: 'rgba(245, 34, 45, 0.8)';
-            --color-b4-fill: 'rgba(245, 34, 45, 0.2)';
             --primary-blue: #1890ff; 
             --border-color: #e8e8e8;
         }
@@ -36,28 +28,24 @@
             background-color: var(--primary-bg);
             color: var(--primary-text);
             display: flex;
-            overflow: hidden; /* 防止最外層滾動 */
+            height: 100vh;
+            overflow: hidden; /* 核心：禁止整個頁面滾動 */
         }
 
         .sidebar {
             width: 220px;
             background-color: var(--sidebar-bg);
             color: white;
-            height: 100vh;
-            position: fixed;
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            transition: width 0.3s ease;
-            z-index: 100;
         }
 
-        .main-content {
-            margin-left: 220px;
-            width: calc(100% - 220px);
-            height: 100vh;
+        .main-container {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            transition: margin-left 0.3s ease, width 0.3s ease;
+            height: 100vh;
         }
 
         .header {
@@ -73,53 +61,69 @@
 
         .content-area {
             padding: 24px;
-            overflow-y: auto; /* 僅內容區可滾動，但我們會盡量避免 */
             flex-grow: 1;
+            overflow: hidden; /* 確保內容區自身不滾動 */
+            display: flex;
+            flex-direction: column;
         }
         
-        /* *** 核心佈局修改 *** */
-        .dashboard-main-grid {
+        /* *** 核心佈局修改：真正的儀表板網格 *** */
+        .dashboard-container {
+            flex-grow: 1;
             display: grid;
-            grid-template-columns: 2fr 1fr; /* 左邊佔2/3，右邊佔1/3 */
+            grid-template-columns: 2fr 1fr; /* 左2右1的欄位比例 */
+            grid-template-rows: auto 1fr; /* 上方高度自動，下方佔滿剩餘空間 */
             gap: 24px;
-            align-items: flex-start; /* 讓不同高度的元素頂部對齊 */
         }
-
-        .main-panel {
+        .kpi-container {
+            grid-column: 1 / -1; /* 橫跨所有欄位 */
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .main-chart-container {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+        }
+        .side-panel-container {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
-
-        .side-panel {
+        .side-panel-container .card {
+            flex-grow: 1; /* 讓右側的卡片平分垂直空間 */
             display: flex;
             flex-direction: column;
-            gap: 24px;
         }
-        
-        .sidebar-header, .sidebar-menu li, .sidebar-footer {
-            white-space: nowrap;
+        .side-panel-container .card .chart-wrapper,
+        .side-panel-container .card .data-table-container {
+            flex-grow: 1;
+            position: relative;
         }
-        .sidebar-header i, .sidebar-menu li i {
-            margin-right: 12px;
+        .main-chart-container .card {
+             height: 100%;
+             display: flex;
+             flex-direction: column;
         }
-        .sidebar-header {
-            padding: 16px 24px;
-            font-size: 20px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
+        .main-chart-container .card .chart-wrapper {
+            flex-grow: 1;
+            position: relative;
         }
+        .main-chart-container canvas, .side-panel-container canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+
+        .sidebar-header, .sidebar-menu li, .sidebar-footer { white-space: nowrap; }
+        .sidebar-header { padding: 16px 24px; font-size: 20px; font-weight: 700; display: flex; align-items: center; }
+        .sidebar-header i { margin-right: 12px; color: var(--primary-blue); }
         .sidebar-menu { list-style: none; padding: 0; margin: 0; }
-        .sidebar-menu li {
-            padding: 14px 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-        }
+        .sidebar-menu li { padding: 14px 24px; cursor: pointer; transition: all 0.3s ease; font-size: 16px; display: flex; align-items: center; }
         .sidebar-menu li:hover, .sidebar-menu li.active { background-color: var(--primary-blue); }
+        .sidebar-menu li i { margin-right: 10px; width: 20px; text-align: center; }
         .sidebar-footer { margin-top: auto; padding: 16px 24px; font-size: 12px; color: var(--secondary-text); text-align: center; }
 
         .header-left { display: flex; align-items: center; gap: 16px; }
@@ -127,12 +131,11 @@
         .page-title { font-size: 20px; font-weight: 500; }
         
         .content-header {
+            margin-bottom: 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 16px;
+            flex-shrink: 0;
         }
         .filters, .action-buttons { display: flex; align-items: center; gap: 8px; }
         select, button {
@@ -144,11 +147,7 @@
             font-size: 14px;
             cursor: pointer;
         }
-        button.primary {
-            background-color: var(--primary-blue);
-            color: white;
-            border-color: var(--primary-blue);
-        }
+        button.primary { background-color: var(--primary-blue); color: white; border-color: var(--primary-blue); }
 
         .card {
             background-color: var(--card-bg);
@@ -156,119 +155,91 @@
             padding: 24px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
         }
-        .card-title { margin: 0 0 20px 0; font-size: 18px; font-weight: 500; }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-        .kpi-card { padding: 20px; display: flex; flex-direction: column; }
-        .kpi-card .icon { font-size: 32px; margin-bottom: 12px; }
-        .kpi-card .value { font-size: 28px; font-weight: 700; }
+        .card-title { margin: 0 0 20px 0; font-size: 18px; font-weight: 500; flex-shrink: 0; }
+        
+        .kpi-card { padding: 16px; display: flex; align-items: center; gap: 16px; }
+        .kpi-card .icon { font-size: 32px; flex-shrink: 0; }
+        .kpi-card .text-content { display: flex; flex-direction: column; }
+        .kpi-card .value { font-size: 24px; font-weight: 700; }
         .kpi-card .label { font-size: 14px; color: var(--secondary-text); }
-        .kpi-card .trend { margin-top: 8px; font-size: 14px; }
-        .trend .fa-arrow-up { color: #52c41a; }
-        .trend .fa-arrow-down { color: #f5222d; }
-
-        .data-table-container { overflow-x: auto; }
+        
+        .data-table-container { overflow-y: auto; }
         table.data-table { width: 100%; border-collapse: collapse; }
-        .data-table th, .data-table td {
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            white-space: nowrap;
-        }
+        .data-table th, .data-table td { padding: 8px 10px; font-size: 14px; text-align: left; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
         .data-table thead th { background-color: #fafafa; font-weight: 500; }
         .data-table tbody tr:hover { background-color: #e6f7ff; }
-        
-        /* *** 表格緊湊化 *** */
-        .compact-table th, .compact-table td {
-            padding: 8px 10px;
-            font-size: 14px;
-        }
 
-        @media (max-width: 1400px) {
-            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-            .dashboard-main-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 992px) {
-            /* 側邊欄縮小等樣式 */
-        }
     </style>
 </head>
 <body>
 
     <nav class="sidebar">
-        <!-- Sidebar content -->
+         <div class="sidebar-header">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>數據分析平台</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active"><i class="fa-solid fa-chart-pie"></i><span>總覽儀表板</span></li>
+            <li><i class="fa-solid fa-table-list"></i><span>詳細數據查詢</span></li>
+        </ul>
+        <div class="sidebar-footer">
+            消防局 版權所有 © 2025
+        </div>
     </nav>
 
-    <div class="main-content">
+    <div class="main-container">
         <header class="header">
             <div class="header-left">
-                <i class="fa-solid fa-bars menu-toggle"></i>
                 <span class="page-title">總覽儀表板</span>
+            </div>
+             <div class="filters">
+                <div class="filter-group">
+                    <label for="period">測驗期別：</label>
+                    <select id="period"><option>114年下半年</option><option>114年上半年</option></select>
+                </div>
+                <div class="action-buttons">
+                    <button class="primary"><i class="fa-solid fa-file-download"></i> 產生報表</button>
+                </div>
             </div>
         </header>
 
         <main class="content-area">
-            <div class="content-header">
-                <div class="filters">
-                     <div class="filter-group">
-                        <label for="period">測驗期別：</label>
-                        <select id="period"><option>114年下半年</option><option>114年上半年</option></select>
+            <div class="dashboard-container">
+                <div class="kpi-container">
+                    <div class="card kpi-card">
+                        <div class="icon" style="color: #1890ff;"><i class="fa-solid fa-users"></i></div>
+                        <div class="text-content"><div class="value">1,447</div><div class="label">總測驗人數</div></div>
                     </div>
-                     <div class="filter-group">
-                        <label for="battalion">大隊：</label>
-                        <select id="battalion"><option>全體</option><option>第一大隊</option><option>第二大隊</option><option>第三大隊</option><option>第四大隊</option></select>
+                    <div class="card kpi-card">
+                        <div class="icon" style="color: #389e0d;"><i class="fa-solid fa-award"></i></div>
+                        <div class="text-content"><div class="value">28%</div><div class="label">菁英人員比例</div></div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="icon" style="color: #faad14;"><i class="fa-solid fa-dumbbell"></i></div>
+                        <div class="text-content"><div class="value">118 KG</div><div class="label">硬舉平均重量</div></div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="icon" style="color: #d4380d;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="text-content"><div class="value">8%</div><div class="label">待加強人員比例</div></div>
                     </div>
                 </div>
-                <div class="action-buttons">
-                    <button><i class="fa-solid fa-file-arrow-up"></i> 匯入新資料</button>
-                    <button class="primary"><i class="fa-solid fa-file-download"></i> 產生報表</button>
-                </div>
-            </div>
 
-            <div class="kpi-grid">
-                 <div class="card kpi-card">
-                    <div class="icon" style="color: #1890ff;"><i class="fa-solid fa-users"></i></div>
-                    <div class="value">1,447</div><div class="label">總測驗人數</div>
-                    <div class="trend"><i class="fa-solid fa-arrow-up"></i> 5% vs 上期</div>
-                </div>
-                <div class="card kpi-card">
-                    <div class="icon" style="color: #389e0d;"><i class="fa-solid fa-award"></i></div>
-                    <div class="value">28%</div><div class="label">菁英人員比例</div>
-                    <div class="trend"><i class="fa-solid fa-arrow-up"></i> 3% vs 上期</div>
-                </div>
-                <div class="card kpi-card">
-                    <div class="icon" style="color: #faad14;"><i class="fa-solid fa-dumbbell"></i></div>
-                    <div class="value">118 KG</div><div class="label">硬舉平均重量</div>
-                    <div class="trend"><i class="fa-solid fa-arrow-up"></i> 3.5KG vs 上期</div>
-                </div>
-                <div class="card kpi-card">
-                    <div class="icon" style="color: #d4380d;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <div class="value">8%</div><div class="label">待加強人員比例</div>
-                    <div class="trend"><i class="fa-solid fa-arrow-down"></i> 2% vs 上期</div>
-                </div>
-            </div>
-
-            <div class="dashboard-main-grid">
-                <div class="main-panel">
+                <div class="main-chart-container">
                     <div class="card">
-                        <h3 class="card-title">各大隊 1500公尺 戰力分析雷達圖</h3>
-                        <div style="height: 450px;"><canvas id="battalionRunChart"></canvas></div>
+                        <h3 class="card-title">各大隊 1500公尺 戰力分析</h3>
+                        <div class="chart-wrapper"><canvas id="battalionRunChart"></canvas></div>
                     </div>
                 </div>
 
-                <div class="side-panel">
+                <div class="side-panel-container">
                     <div class="card">
                         <h3 class="card-title">受測人員年齡層分佈</h3>
-                        <div style="height: 200px;"><canvas id="ageDistributionChart"></canvas></div>
+                        <div class="chart-wrapper"><canvas id="ageDistributionChart"></canvas></div>
                     </div>
                     <div class="card">
-                        <h3 class="card-title">1500M 成績優異人員</h3>
+                        <h3 class="card-title">1500M 成績優異人員 (Top 5)</h3>
                         <div class="data-table-container">
-                            <table class="data-table compact-table">
+                            <table class="data-table">
                                 <thead><tr><th>排名</th><th>姓名</th><th>大隊</th><th>成績</th></tr></thead>
                                 <tbody>
                                     <tr><td>1</td><td>林昶輔</td><td>第三</td><td>5'17"</td></tr>
@@ -290,7 +261,7 @@
         // 1. 各大隊跑步戰力雷達圖
         const ctxRun = document.getElementById('battalionRunChart').getContext('2d');
         const radarData = {
-            labels: ['菁英級 (<7分)', '良好級 (7-8.5分)', '合格級 (8.5-10分)', '待加強 (>10分)'],
+            labels: ['菁英級', '良好級', '合格級', '待加強'],
             datasets: [
                 { label: '第一大隊', data: [27, 43, 23, 7], borderColor: 'rgba(24, 144, 255, 0.8)', backgroundColor: 'rgba(24, 144, 255, 0.2)', pointBackgroundColor: 'rgba(24, 144, 255, 0.8)' },
                 { label: '第二大隊', data: [35, 46, 14, 5], borderColor: 'rgba(82, 196, 26, 0.8)', backgroundColor: 'rgba(82, 196, 26, 0.2)', pointBackgroundColor: 'rgba(82, 196, 26, 0.8)' },
@@ -302,18 +273,18 @@
             type: 'radar', data: radarData,
             options: {
                 responsive: true, maintainAspectRatio: false,
-                elements: { line: { borderWidth: 3 } },
                 scales: {
                     r: {
-                        angleLines: { display: true },
+                        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
                         suggestedMin: 0, suggestedMax: 50,
-                        pointLabels: { font: { size: 14, weight: 'bold' } },
-                        ticks: { callback: value => value + '%' }
+                        pointLabels: { font: { size: 14 } },
+                        ticks: { backdropColor: 'rgba(255,255,255,0.7)', callback: value => value + '%' }
                     }
                 },
                 plugins: {
                     tooltip: { callbacks: { label: context => `${context.dataset.label}: ${context.parsed.r.toFixed(1)}%` } },
-                    legend: { position: 'bottom' }
+                    legend: { position: 'top', align: 'end' }
                 }
             }
         });
@@ -324,14 +295,9 @@
             type: 'doughnut',
             data: {
                 labels: ['20-29歲', '30-39歲', '40-49歲', '50+歲', '女性'],
-                datasets: [{ label: '人數', data: [201, 450, 589, 157, 50], backgroundColor: ['#1890ff','#52c41a','#faad14','#f5222d','#722ed1'], hoverOffset: 4 }]
+                datasets: [{ label: '人數', data: [201, 450, 589, 157, 50], backgroundColor: ['#1890ff','#52c41a','#faad14','#f5222d','#722ed1'], borderWidth: 0 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-        });
-        
-        // 其他JS功能 (如側邊欄開合)
-        document.querySelector('.menu-toggle').addEventListener('click', () => {
-            document.querySelector('.sidebar').classList.toggle('expanded');
+            options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { display: false } } }
         });
     </script>
 </body>
