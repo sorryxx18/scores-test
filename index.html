@@ -20,10 +20,10 @@
             --card-bg: #ffffff;     /* 卡片背景 */
             --primary-text: #333333;/* 主要文字顏色 */
             --secondary-text: #777777;/* 次要文字顏色 */
-            --color-excellent: '#389e0d'; /* 菁英顏色 (深綠) */
-            --color-good: '#1890ff';      /* 良好顏色 (藍) */
-            --color-pass: '#faad14';      /* 合格顏色 (黃) */
-            --color-fail: '#d4380d';      /* 待加強顏色 (紅) */
+            --color-excellent: #389e0d; /* 菁英顏色 (深綠) */
+            --color-good: #1890ff;      /* 良好顏色 (藍) */
+            --color-pass: #faad14;      /* 合格顏色 (黃) */
+            --color-fail: #d4380d;      /* 待加強顏色 (紅) */
             --primary-blue: #1890ff; 
             --border-color: #e8e8e8;
         }
@@ -398,7 +398,7 @@
             <!-- 圖表區 -->
             <div class="charts-grid">
                 <div class="card">
-                    <h3 class="card-title">1500公尺 成績分佈比例</h3>
+                    <h3 class="card-title">各大隊 1500公尺 成績分佈比例</h3>
                     <canvas id="battalionRunChart"></canvas>
                 </div>
                 <div class="card">
@@ -454,18 +454,25 @@
         
         // === Chart.js 圖表腳本 ===
 
-        // 1. 各大隊跑步成績分佈圖 (100% 堆疊長條圖)
+        // 1. 各大隊跑步成績分佈圖 (水平100% 堆疊長條圖)
         const ctxRun = document.getElementById('battalionRunChart').getContext('2d');
         
-        // 範例數據：代表每個大隊中，各等級的人數
         const runData = {
             labels: ['第一大隊', '第二大隊', '第三大隊', '第四大隊'],
-            // 實際應用時，這些數據需由後端根據真實資料計算得出
-            excellent: [95, 120, 110, 80],   // 菁英級人數
-            good:      [150, 160, 140, 130],  // 良好級人數
-            pass:      [80, 50, 70, 100],   // 合格級人數
-            fail:      [25, 15, 20, 45]     // 待加強人數
+            excellent: [95, 120, 110, 80],   
+            good:      [150, 160, 140, 130],
+            pass:      [80, 50, 70, 100], 
+            fail:      [25, 15, 20, 45]    
         };
+
+        // 將原始數據轉換為百分比數據
+        const totals = runData.labels.map((_, i) => 
+            runData.excellent[i] + runData.good[i] + runData.pass[i] + runData.fail[i]
+        );
+        const excellentPercentage = runData.excellent.map((v, i) => (v / totals[i]) * 100);
+        const goodPercentage = runData.good.map((v, i) => (v / totals[i]) * 100);
+        const passPercentage = runData.pass.map((v, i) => (v / totals[i]) * 100);
+        const failPercentage = runData.fail.map((v, i) => (v / totals[i]) * 100);
         
         const runChart = new Chart(ctxRun, {
             type: 'bar',
@@ -474,69 +481,68 @@
                 datasets: [
                     {
                         label: '菁英 (<7分)',
-                        data: runData.excellent,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-excellent'),
+                        data: excellentPercentage,
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-excellent').trim(),
+                        // 附加原始人數數據，方便 tooltip 顯示
+                        originalData: runData.excellent
                     },
                     {
                         label: '良好 (7分-8分半)',
-                        data: runData.good,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-good'),
+                        data: goodPercentage,
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-good').trim(),
+                        originalData: runData.good
                     },
                     {
                         label: '合格 (8分半-10分)',
-                        data: runData.pass,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-pass'),
+                        data: passPercentage,
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-pass').trim(),
+                        originalData: runData.pass
                     },
                     {
                         label: '待加強 (>10分)',
-                        data: runData.fail,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-fail'),
+                        data: failPercentage,
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-fail').trim(),
+                        originalData: runData.fail
                     }
                 ]
             },
             options: {
+                // *** 核心修改：將圖表轉為水平方向 ***
+                indexAxis: 'y',
+
                 responsive: true,
                 maintainAspectRatio: false,
-                // 關鍵：將X軸和Y軸都設定為堆疊模式
                 scales: {
                     x: {
                         stacked: true,
-                    },
-                    y: {
-                        stacked: true,
-                        // 將Y軸刻度改為百分比
+                        // X軸現在是數值軸，顯示為百分比
                         ticks: {
-                            callback: function(value, index, ticks) {
+                            callback: function(value) {
                                 return value + '%';
                             }
-                        }
+                        },
+                         // 確保最大值為100%
+                        max: 100 
+                    },
+                    y: {
+                        // Y軸現在是類別軸
+                        stacked: true,
                     }
                 },
-                // 關鍵：設定 indexAxis: 'y' 可將圖表轉為水平長條圖，有時更易於閱讀
-                // indexAxis: 'y', 
                 plugins: {
-                    // 關鍵：開啟百分比顯示的 tooltip
                     tooltip: {
                         callbacks: {
                             label: function(context) {
                                 const datasetLabel = context.dataset.label || '';
-                                const value = context.raw;
-                                
-                                // 計算總和
-                                let total = 0;
-                                for (const key in runData) {
-                                    if (Array.isArray(runData[key])) {
-                                        total += runData[key][context.dataIndex];
-                                    }
-                                }
-                                
-                                const percentage = ((value / total) * 100).toFixed(1);
-                                return `${datasetLabel}: ${percentage}% (${value}人)`;
+                                const percentage = context.raw.toFixed(1);
+                                // 從附加的原始數據中獲取人數
+                                const count = context.dataset.originalData[context.dataIndex];
+                                return `${datasetLabel}: ${percentage}% (${count}人)`;
                             }
                         }
                     },
                     legend: {
-                        position: 'bottom' // 將圖例放在底部
+                        position: 'bottom'
                     }
                 }
             }
@@ -550,7 +556,7 @@
                 labels: ['20-29歲', '30-39歲', '40-49歲', '50+歲', '女性'],
                 datasets: [{
                     label: '人數',
-                    data: [201, 450, 589, 157, 50], // 範例數據
+                    data: [201, 450, 589, 157, 50],
                     backgroundColor: [
                         '#1890ff',
                         '#52c41a',
