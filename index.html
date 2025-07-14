@@ -25,514 +25,63 @@
             --color-fail: #d4380d;
             --color-female: #722ed1;
         }
-
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: var(--primary-bg);
-            color: var(--primary-text);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .sidebar {
-            width: 220px;
-            background-color: var(--sidebar-bg);
-            color: white;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            transition: width 0.3s ease;
-            z-index: 100;
-        }
-
-        .main-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            transition: margin-left 0.3s ease;
-        }
-
-        .header {
-            background-color: var(--header-bg);
-            padding: 0 24px;
-            height: 64px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            flex-shrink: 0;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-        }
-
-        .content-area {
-            padding: 24px;
-            flex-grow: 1;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .dashboard-grid {
-            flex-grow: 1;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            grid-template-rows: auto 1fr;
-            gap: 24px;
-        }
-        .header-filters {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            padding: 10px 0;
-        }
-        .main-panel {
-            grid-column: 1 / 2;
-            grid-row: 2 / 3;
-        }
-        .side-panel {
-            grid-column: 2 / 3;
-            grid-row: 2 / 3;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--primary-bg); color: var(--primary-text); display: flex; height: 100vh; overflow: hidden; position: relative; }
+        .sidebar { width: 220px; background-color: var(--sidebar-bg); color: white; flex-shrink: 0; display: flex; flex-direction: column; transition: width 0.3s ease; z-index: 100; }
+        .main-container { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; transition: margin-left 0.3s ease; }
+        .header { background-color: var(--header-bg); padding: 0 24px; height: 64px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); flex-shrink: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+        .content-area { padding: 24px; flex-grow: 1; overflow: auto; display: flex; flex-direction: column; }
+        .dashboard-grid { flex-grow: 1; display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto 1fr; gap: 24px; }
+        .header-filters { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding: 10px 0; }
+        .kpi-grid { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        .main-panel { grid-column: 1 / 2; grid-row: 3 / 4; }
+        .side-panel { grid-column: 2 / 3; grid-row: 3 / 4; display: flex; flex-direction: column; gap: 24px; }
         .sidebar-header, .sidebar-menu li, .sidebar-footer { white-space: nowrap; }
-        .sidebar-header { 
-            padding: 16px 24px; 
-            font-size: 20px; 
-            font-weight: 700; 
-            display: flex; 
-            align-items: center; 
-            transition: padding 0.3s ease;
-        }
-        .sidebar-header i { 
-            margin-right: 12px; 
-            color: var(--primary-blue); 
-            font-size: 24px;
-        }
-        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
-        .sidebar-menu li { 
-            padding: 14px 24px; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            font-size: 16px; 
-            display: flex; 
-            align-items: center; 
-            border-left: 4px solid transparent;
-        }
-        .sidebar-menu li:hover, .sidebar-menu li.active { 
-            background-color: rgba(24, 144, 255, 0.1); 
-            border-left-color: var(--primary-blue);
-        }
-        .sidebar-menu li i { 
-            margin-right: 10px; 
-            width: 20px; 
-            text-align: center; 
-            font-size: 18px;
-        }
-        .sidebar-footer { 
-            margin-top: auto; 
-            padding: 16px 24px; 
-            font-size: 12px; 
-            color: var(--secondary-text); 
-            text-align: center; 
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .page-title { 
-            font-size: 20px; 
-            font-weight: 500; 
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .page-title i {
-            color: var(--primary-blue);
-        }
-        .filters, .action-buttons { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            flex-wrap: wrap;
-        }
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        select, button {
-            padding: 8px 12px;
-            border-radius: 4px;
-            border: 1px solid #d9d9d9;
-            background-color: #fff;
-            font-family: 'Noto Sans TC', sans-serif;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        select:focus, button:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-        }
-        button {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-        button.primary { 
-            background-color: var(--primary-blue); 
-            color: white; 
-            border-color: var(--primary-blue); 
-        }
-        button.secondary {
-            background-color: #f0f0f0;
-            border-color: #d9d9d9;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .card-title { 
-            margin: 0 0 16px 0; 
-            font-size: 18px; 
-            font-weight: 500; 
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .card-title i {
-            color: var(--primary-blue);
-        }
-        
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            grid-column: 1 / -1;
-        }
-        .kpi-card { 
-            padding: 16px; 
-            flex-direction: row; 
-            align-items: center; 
-            gap: 16px; 
-            position: relative;
-            overflow: hidden;
-        }
-        .kpi-card .icon { 
-            font-size: 32px; 
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(24, 144, 255, 0.1);
-        }
-        .kpi-card .value { 
-            font-size: 24px; 
-            font-weight: 700; 
-            line-height: 1.3;
-        }
-        .kpi-card .label { 
-            font-size: 14px; 
-            color: var(--secondary-text); 
-            margin-bottom: 4px;
-        }
-        .kpi-card .count { 
-            font-size: 12px; 
-            color: var(--secondary-text); 
-        }
-        .kpi-card .trend {
-            position: absolute;
-            right: 0;
-            top: 0;
-            padding: 6px 12px;
-            font-size: 12px;
-            border-bottom-left-radius: 8px;
-            color: white;
-        }
-        .trend.up { background: var(--color-excellent); }
-        .trend.down { background: var(--color-fail); }
-
-        .radar-grid-container {
-            flex-grow: 1;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 20px;
-        }
-        .radar-item { 
-            position: relative;
-            background: #f9f9f9;
-            border-radius: 6px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-        .radar-item .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .radar-item .chart-title { 
-            font-weight: bold;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .radar-item .chart-title i {
-            color: var(--primary-blue);
-        }
-        .radar-item .chart-subtitle {
-            font-size: 13px;
-            color: var(--secondary-text);
-        }
-        
-        .grading-criteria { 
-            font-size: 13px; 
-            color: var(--secondary-text); 
-            margin-bottom: 16px; 
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            background: #f9f9f9;
-            padding: 12px;
-            border-radius: 6px;
-            border-left: 3px solid var(--primary-blue);
-        }
-        .grading-criteria span { 
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .grading-criteria i { 
-            color: #888; 
-            font-size: 16px;
-        }
-
-        .chart-wrapper { 
-            position: relative; 
-            flex-grow: 1; 
-        }
-        .chart-wrapper canvas { 
-            position: absolute; 
-            top:0; 
-            left:0; 
-            width: 100%; 
-            height: 100%; 
-        }
-
-        .data-table-container { 
-            overflow-y: auto; 
-            flex-grow: 1;
-        }
-        table.data-table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-size: 14px;
-        }
-        .data-table th, .data-table td { 
-            padding: 10px 12px; 
-            text-align: left; 
-            border-bottom: 1px solid var(--border-color); 
-        }
-        .data-table thead th { 
-            background-color: #fafafa; 
-            font-weight: 500;
-            position: sticky;
-            top: 0;
-        }
-        .data-table tbody tr:hover { 
-            background-color: #e6f7ff; 
-        }
-        .data-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-        .data-table .rank {
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
+        .sidebar-header { padding: 16px 24px; font-size: 20px; font-weight: 700; display: flex; align-items: center; }
+        .sidebar-header i { margin-right: 12px; color: var(--primary-blue); font-size: 24px; }
+        .sidebar-menu { list-style: none; }
+        .sidebar-menu li { padding: 14px 24px; cursor: pointer; transition: all 0.3s ease; font-size: 16px; display: flex; align-items: center; border-left: 4px solid transparent; }
+        .sidebar-menu li:hover, .sidebar-menu li.active { background-color: rgba(24, 144, 255, 0.1); border-left-color: var(--primary-blue); }
+        .sidebar-menu li i { margin-right: 10px; width: 20px; text-align: center; font-size: 18px; }
+        .sidebar-footer { margin-top: auto; padding: 16px 24px; font-size: 12px; color: var(--secondary-text); text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+        .page-title { font-size: 20px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .filters, .action-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        select, button { padding: 8px 12px; border-radius: 4px; border: 1px solid #d9d9d9; background-color: #fff; font-family: 'Noto Sans TC', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+        button.primary { background-color: var(--primary-blue); color: white; border-color: var(--primary-blue); }
+        .card { background-color: var(--card-bg); border-radius: 8px; padding: 24px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09); display: flex; flex-direction: column; height: 100%; }
+        .card-title { margin: 0 0 16px 0; font-size: 18px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .kpi-card { flex-direction: row; align-items: center; gap: 16px; }
+        .kpi-card .icon { font-size: 32px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(24, 144, 255, 0.1); }
+        .kpi-card .value { font-size: 24px; font-weight: 700; }
+        .kpi-card .label { font-size: 14px; color: var(--secondary-text); margin-bottom: 4px; }
+        .kpi-card .count { font-size: 12px; color: var(--secondary-text); }
+        .radar-grid-container { flex-grow: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 20px; }
+        .radar-item { position: relative; background: #f9f9f9; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; }
+        .radar-item .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .radar-item .chart-title { font-weight: bold; font-size: 16px; }
+        .radar-item .chart-subtitle { font-size: 13px; color: var(--secondary-text); }
+        .chart-wrapper { position: relative; flex-grow: 1; min-height: 150px; }
+        .data-table-container { overflow-y: auto; flex-grow: 1; }
+        table.data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .data-table th, .data-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .data-table thead th { background-color: #fafafa; font-weight: 500; position: sticky; top: 0; }
+        .data-table tbody tr:hover { background-color: #e6f7ff; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 500; }
         .badge.excellent { background: rgba(56, 158, 13, 0.1); color: var(--color-excellent); }
         .badge.good { background: rgba(24, 144, 255, 0.1); color: var(--color-good); }
         .badge.pass { background: rgba(250, 173, 20, 0.1); color: var(--color-pass); }
         .badge.fail { background: rgba(212, 56, 13, 0.1); color: var(--color-fail); }
-        
-        /* Performance comparison chart */
-        .comparison-chart {
-            height: 300px;
-            margin-top: 20px;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 1200px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            .main-panel {
-                grid-column: 1 / -1;
-            }
-            .side-panel {
-                grid-column: 1 / -1;
-                grid-row: 3 / 4;
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            .side-panel > div {
-                flex: 1 1 300px;
-            }
-            .radar-grid-container {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
-            }
-            .sidebar-header span, .sidebar-menu span, .sidebar-footer span {
-                display: none;
-            }
-            .sidebar-header {
-                justify-content: center;
-                padding: 16px 10px;
-            }
-            .sidebar-menu li {
-                justify-content: center;
-                padding: 14px 10px;
-            }
-            .sidebar-menu li i {
-                margin-right: 0;
-            }
-            .sidebar-footer {
-                padding: 16px 10px;
-            }
-            .kpi-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Toggle sidebar button */
-        .sidebar-toggle {
-            display: none;
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            z-index: 99;
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .sidebar {
-                position: fixed;
-                left: -220px;
-                height: 100%;
-            }
-            .sidebar.active {
-                left: 0;
-            }
-        }
-        
-        /* Loading spinner */
-        .loading {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-        }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(24, 144, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--primary-blue);
-            animation: spin 1s ease-in-out infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Time indicator */
-        .current-time {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            z-index: 50;
-        }
+        .current-time { position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; z-index: 50; }
     </style>
 </head>
 <body>
-    <button class="sidebar-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
-    
     <nav class="sidebar">
         <div class="sidebar-header"><i class="fa-solid fa-fire-extinguisher"></i><span>消防數據分析平台</span></div>
         <ul class="sidebar-menu">
             <li class="active"><i class="fa-solid fa-chart-pie"></i><span>總覽儀表板</span></li>
             <li><i class="fa-solid fa-table-list"></i><span>詳細數據查詢</span></li>
             <li><i class="fa-solid fa-ranking-star"></i><span>個人成績分析</span></li>
-            <li><i class="fa-solid fa-users"></i><span>團隊比較</span></li>
-            <li><i class="fa-solid fa-gear"></i><span>系統設定</span></li>
         </ul>
         <div class="sidebar-footer">消防局 版權所有 © 2025</div>
     </nav>
@@ -541,8 +90,7 @@
         <header class="header">
             <h1 class="page-title"><i class="fa-solid fa-chart-line"></i>總覽儀表板</h1>
             <div class="user-info">
-                <button class="secondary"><i class="fa-solid fa-bell"></i></button>
-                <button class="secondary"><i class="fa-solid fa-user"></i> 管理員</button>
+                 <button class="secondary"><i class="fa-solid fa-user"></i> 管理員</button>
             </div>
         </header>
         
@@ -550,16 +98,6 @@
             <div class="dashboard-grid">
                 <div class="header-filters">
                     <div class="filters">
-                        <div class="filter-group">
-                            <label for="period"><i class="fa-solid fa-calendar"></i> 測驗期別：</label>
-                            <select id="period">
-                                <option>114年 上半年</option>
-                                <option>113年 下半年</option>
-                                <option>113年 上半年</option>
-                                <option>112年 下半年</option>
-                            </select>
-                        </div>
-                        
                         <div class="filter-group">
                             <label for="unit"><i class="fa-solid fa-people-group"></i> 大隊：</label>
                             <select id="unit">
@@ -570,100 +108,75 @@
                                 <option>第四大隊</option>
                             </select>
                         </div>
-                        
-                        <div class="filter-group">
-                            <label for="test"><i class="fa-solid fa-person-running"></i> 測驗項目：</label>
-                            <select id="test">
-                                <option>1500公尺跑走</option>
-                                <option>負重登梯</option>
-                                <option>單槓引體向上</option>
-                                <option>伏地挺身</option>
-                            </select>
-                        </div>
                     </div>
-                    
                     <div class="action-buttons">
-                        <button class="secondary"><i class="fa-solid fa-rotate"></i> 重新整理</button>
                         <button class="primary"><i class="fa-solid fa-file-download"></i> 產生報表</button>
                     </div>
                 </div>
-                
+
                 <div class="kpi-grid">
                     <div class="card kpi-card">
                         <div class="icon" style="color:var(--color-excellent)"><i class="fa-solid fa-award"></i></div>
                         <div>
                             <div class="label">菁英人員</div>
-                            <div class="value">28%</div>
-                            <div class="count">(405人)</div>
+                            <div class="value" id="kpi-excellent-perc"></div>
+                            <div class="count" id="kpi-excellent-count"></div>
                         </div>
-                        <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 2.4%</div>
                     </div>
-                    
                     <div class="card kpi-card">
                         <div class="icon" style="color:var(--color-good)"><i class="fa-solid fa-thumbs-up"></i></div>
                         <div>
                             <div class="label">良好人員</div>
-                            <div class="value">41%</div>
-                            <div class="count">(595人)</div>
+                            <div class="value" id="kpi-good-perc"></div>
+                            <div class="count" id="kpi-good-count"></div>
                         </div>
-                        <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 1.1%</div>
                     </div>
-                    
                     <div class="card kpi-card">
                         <div class="icon" style="color:var(--color-pass)"><i class="fa-solid fa-check"></i></div>
                         <div>
                             <div class="label">合格人員</div>
-                            <div class="value">21%</div>
-                            <div class="count">(305人)</div>
+                            <div class="value" id="kpi-pass-perc"></div>
+                            <div class="count" id="kpi-pass-count"></div>
                         </div>
-                        <div class="trend down"><i class="fa-solid fa-arrow-down"></i> 0.8%</div>
                     </div>
-                    
                     <div class="card kpi-card">
                         <div class="icon" style="color:var(--color-fail)"><i class="fa-solid fa-person-running"></i></div>
                         <div>
                             <div class="label">待加強人員</div>
-                            <div class="value">10%</div>
-                            <div class="count">(145人)</div>
+                            <div class="value" id="kpi-fail-perc"></div>
+                            <div class="count" id="kpi-fail-count"></div>
                         </div>
-                        <div class="trend down"><i class="fa-solid fa-arrow-down"></i> 2.7%</div>
                     </div>
                 </div>
                 
                 <div class="main-panel card">
-                    <h2 class="card-title"><i class="fa-solid fa-chart-radar"></i>各大隊 1500公尺 戰力分析</h2>
-                    <p class="grading-criteria">
-                        <span><i class="fa-solid fa-square" style="color:var(--color-excellent)"></i> 菁英級: &lt;7分</span>
-                        <span><i class="fa-solid fa-square" style="color:var(--color-good)"></i> 良好級: 7-8.5分</span>
-                        <span><i class="fa-solid fa-square" style="color:var(--color-pass)"></i> 合格級: 8.5-10分</span>
-                        <span><i class="fa-solid fa-square" style="color:var(--color-fail)"></i> 待加強: &gt;10分</span>
-                    </p>
+                    <h2 class="card-title"><i class="fa-solid fa-chart-radar"></i>各大隊戰力分析 (總成績)</h2>
                     <div class="radar-grid-container">
                         <div class="radar-item">
                             <div class="chart-header">
-                                <div class="chart-title"><i class="fa-solid fa-1"></i> 第一大隊</div>
-                                <div class="chart-subtitle">總人數: 352人</div>
+                                <div class="chart-title">第一大隊</div>
+                                <div class="chart-subtitle" id="total-battalion-1"></div>
                             </div>
                             <div class="chart-wrapper"><canvas id="radarChart1"></canvas></div>
                         </div>
                         <div class="radar-item">
                             <div class="chart-header">
-                                <div class="chart-title"><i class="fa-solid fa-2"></i> 第二大隊</div>
-                                <div class="chart-subtitle">總人數: 328人</div>
+                                <div class="chart-title">第二大隊</div>
+                                <div class="chart-subtitle" id="total-battalion-2"></div>
                             </div>
                             <div class="chart-wrapper"><canvas id="radarChart2"></canvas></div>
                         </div>
                         <div class="radar-item">
                             <div class="chart-header">
-                                <div class="chart-title"><i class="fa-solid fa-3"></i> 第三大隊</div>
-                                <div class="chart-subtitle">總人數: 385人</div>
+                                <div class="chart-title">第三大隊</div>
+                                <div class="chart-subtitle" id="total-battalion-3"></div>
                             </div>
                             <div class="chart-wrapper"><canvas id="radarChart3"></canvas></div>
                         </div>
                         <div class="radar-item">
                             <div class="chart-header">
-                                <div class="chart-title"><i class="fa-solid fa-4"></i> 第四大隊</div>
-                                <div class="chart-subtitle">總人數: 365人</div>
+                                <div class="chart-title">第四大隊</div>
+                                <div class="chart-subtitle" id="total-battalion-4"></div>
                             </div>
                             <div class="chart-wrapper"><canvas id="radarChart4"></canvas></div>
                         </div>
@@ -680,64 +193,14 @@
                         <h3 class="card-title"><i class="fa-solid fa-medal"></i> 1500M 成績優異人員 (Top 5)</h3>
                         <div class="data-table-container">
                             <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>排名</th>
-                                        <th>姓名</th>
-                                        <th>大隊</th>
-                                        <th>分隊</th>
-                                        <th>成績</th>
-                                        <th>等級</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="rank">1</td>
-                                        <td>林昶輔</td>
-                                        <td>第三大隊</td>
-                                        <td>安和分隊</td>
-                                        <td>5'17"</td>
-                                        <td><span class="badge excellent">菁英級</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rank">2</td>
-                                        <td>李皆賢</td>
-                                        <td>第三大隊</td>
-                                        <td>永樂分隊</td>
-                                        <td>5'28"</td>
-                                        <td><span class="badge excellent">菁英級</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rank">3</td>
-                                        <td>曾麟宗</td>
-                                        <td>第四大隊</td>
-                                        <td>南港分隊</td>
-                                        <td>5'30"</td>
-                                        <td><span class="badge excellent">菁英級</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rank">4</td>
-                                        <td>蔡孟杰</td>
-                                        <td>第二大隊</td>
-                                        <td>中山分隊</td>
-                                        <td>5'33"</td>
-                                        <td><span class="badge excellent">菁英級</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rank">5</td>
-                                        <td>林敬凱</td>
-                                        <td>第一大隊</td>
-                                        <td>大安分隊</td>
-                                        <td>5'36"</td>
-                                        <td><span class="badge excellent">菁英級</span></td>
-                                    </tr>
-                                </tbody>
+                                <thead><tr><th>排名</th><th>姓名</th><th>大隊</th><th>分隊</th><th>成績</th><th>等級</th></tr></thead>
+                                <tbody id="leaderboard-body"></tbody>
                             </table>
                         </div>
                     </div>
                     
                     <div class="card">
-                        <h3 class="card-title"><i class="fa-solid fa-chart-column"></i> 大隊平均成績比較</h3>
+                        <h3 class="card-title"><i class="fa-solid fa-chart-column"></i> 大隊1500M平均成績比較</h3>
                         <div class="chart-wrapper"><canvas id="comparisonChart"></canvas></div>
                     </div>
                 </div>
@@ -745,159 +208,123 @@
         </main>
     </div>
     
-    <div class="current-time">
-        <i class="fa-solid fa-clock"></i> <span id="time-display"></span>
-    </div>
+    <div class="current-time"><i class="fa-solid fa-clock"></i> <span id="time-display"></span></div>
 
     <script>
-        // === 時間顯示 ===
-        function updateTime() {
-            const now = new Date();
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false 
-            };
-            document.getElementById('time-display').textContent = now.toLocaleString('zh-TW', options);
+    // =================================================================
+    // === 數據中心 (Data Hub) ===
+    // 未來只需要更新此處的 `dashboardData` 物件，整個頁面就會自動變化
+    // =================================================================
+    const dashboardData = {
+        // 1. KPI 關鍵指標數據
+        kpi: {
+            excellent: { percentage: 28, count: 405 },
+            good:      { percentage: 41, count: 595 },
+            pass:      { percentage: 21, count: 305 },
+            fail:      { percentage: 10, count: 145 }
+        },
+        // 2. 各大隊戰力雷達圖數據
+        radar: {
+            battalion1: { total: 352, distribution: [27, 43, 23, 7] }, // [菁英%, 良好%, 合格%, 待加強%]
+            battalion2: { total: 328, distribution: [35, 46, 14, 5] },
+            battalion3: { total: 385, distribution: [32, 41, 20, 7] },
+            battalion4: { total: 365, distribution: [23, 37, 29, 11] }
+        },
+        // 3. 年齡分佈圖數據
+        ageDistribution: {
+            labels: ['20-29歲', '30-39歲', '40-49歲', '50+歲', '女性'],
+            counts: [201, 450, 589, 157, 50]
+        },
+        // 4. 1500M 菁英榜數據
+        leaderboard: [
+            { rank: 1, name: '林昶輔', battalion: '第三大隊', station: '安和分隊', time: "5'17\"", grade: '菁英級', gradeClass: 'excellent' },
+            { rank: 2, name: '李皆賢', battalion: '第三大隊', station: '永樂分隊', time: "5'28\"", grade: '菁英級', gradeClass: 'excellent' },
+            { rank: 3, name: '曾麟宗', battalion: '第四大隊', station: '南港分隊', time: "5'30\"", grade: '菁英級', gradeClass: 'excellent' },
+            { rank: 4, name: '蔡孟杰', battalion: '第二大隊', station: '中山分隊', time: "5'33\"", grade: '菁英級', gradeClass: 'excellent' },
+            { rank: 5, name: '林敬凱', battalion: '第一大隊', station: '大安分隊', time: "5'36\"", grade: '菁英級', gradeClass: 'excellent' }
+        ],
+        // 5. 各大隊 1500M 平均成績比較數據 (單位: 分鐘)
+        comparison: {
+            labels: ['第一大隊', '第二大隊', '第三大隊', '第四大隊'],
+            averages: [7.2, 6.8, 6.5, 7.5]
         }
-        setInterval(updateTime, 1000);
-        updateTime();
+    };
+
+    // =================================================================
+    // === 頁面渲染與圖表生成 (Page Rendering & Chart Generation) ===
+    // 下方的程式碼會自動讀取上面的 `dashboardData` 物件來產生畫面
+    // 一般情況下無需修改
+    // =================================================================
+    document.addEventListener('DOMContentLoaded', function() {
         
-        // === 側邊欄切換 ===
-        document.querySelector('.sidebar-toggle').addEventListener('click', function() {
-            document.querySelector('.sidebar').classList.toggle('active');
-        });
-        
-        // === 菜單項點擊 ===
-        document.querySelectorAll('.sidebar-menu li').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.sidebar-menu li').forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-        
-        // === Chart.js 圖表配置 ===
-        const commonRadarOptions = {
-            responsive: true, 
-            maintainAspectRatio: false,
-            scales: {
-                r: {
-                    angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
-                    grid: { color: 'rgba(0, 0, 0, 0.1)' },
-                    min: 0,
-                    max: 50,
-                    ticks: {
-                        stepSize: 10,
-                        backdropColor: 'transparent',
-                        color: '#999',
-                        font: {
-                            size: 10
-                        }
-                    },
-                    pointLabels: { 
-                        font: { 
-                            size: 12,
-                            weight: 'bold'
-                        },
-                        color: '#666'
-                    }
-                }
-            },
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: context => `${context.label}: ${context.parsed.r.toFixed(1)}%`
-                    }
-                },
-                datalabels: {
-                    color: '#333',
-                    font: {
-                        weight: 'bold',
-                        size: 10
-                    },
-                    formatter: (value) => value + '%'
-                }
-            }
+        // --- 1. 填充 KPI 數據 ---
+        document.getElementById('kpi-excellent-perc').textContent = dashboardData.kpi.excellent.percentage + '%';
+        document.getElementById('kpi-excellent-count').textContent = `(${dashboardData.kpi.excellent.count}人)`;
+        document.getElementById('kpi-good-perc').textContent = dashboardData.kpi.good.percentage + '%';
+        document.getElementById('kpi-good-count').textContent = `(${dashboardData.kpi.good.count}人)`;
+        document.getElementById('kpi-pass-perc').textContent = dashboardData.kpi.pass.percentage + '%';
+        document.getElementById('kpi-pass-count').textContent = `(${dashboardData.kpi.pass.count}人)`;
+        document.getElementById('kpi-fail-perc').textContent = dashboardData.kpi.fail.percentage + '%';
+        document.getElementById('kpi-fail-count').textContent = `(${dashboardData.kpi.fail.count}人)`;
+
+        // --- 2. 產生雷達圖 ---
+        const radarLabels = ['菁英級', '良好級', '合格級', '待加強'];
+        const radarColors = {
+            'radarChart1': '24, 144, 255', // Blue
+            'radarChart2': '82, 196, 26',  // Green
+            'radarChart3': '250, 173, 20', // Orange
+            'radarChart4': '245, 34, 45'  // Red
         };
 
-        function createRadarChart(canvasId, data, color) {
+        function createRadarChart(canvasId, data, color, totalCount) {
+            document.getElementById(`total-${canvasId.replace('Chart', '-battalion-')}`).textContent = `總人數: ${totalCount}人`;
             new Chart(document.getElementById(canvasId), {
                 type: 'radar',
                 data: {
-                    labels: ['菁英級', '良好級', '合格級', '待加強'],
+                    labels: radarLabels,
                     datasets: [{
                         data: data,
                         borderColor: `rgba(${color}, 1)`,
                         backgroundColor: `rgba(${color}, 0.2)`,
                         borderWidth: 2,
-                        pointBackgroundColor: `rgba(${color}, 1)`,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
                     }]
                 },
-                options: commonRadarOptions
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { r: { min: 0, max: 50, ticks: { stepSize: 10, display: false } } },
+                    plugins: { legend: { display: false }, datalabels: { formatter: (v) => v + '%' } }
+                },
+                plugins: [ChartDataLabels]
             });
         }
-
-        // 雷達圖數據
-        createRadarChart('radarChart1', [27, 43, 23, 7], '24, 144, 255');  // Blue
-        createRadarChart('radarChart2', [35, 46, 14, 5], '82, 196, 26');   // Green
-        createRadarChart('radarChart3', [32, 41, 20, 7], '250, 173, 20'); // Orange
-        createRadarChart('radarChart4', [23, 37, 29, 11], '245, 34, 45');   // Red
-
-        // 年齡分佈圖
+        createRadarChart('radarChart1', dashboardData.radar.battalion1.distribution, radarColors.radarChart1, dashboardData.radar.battalion1.total);
+        createRadarChart('radarChart2', dashboardData.radar.battalion2.distribution, radarColors.radarChart2, dashboardData.radar.battalion2.total);
+        createRadarChart('radarChart3', dashboardData.radar.battalion3.distribution, radarColors.radarChart3, dashboardData.radar.battalion3.total);
+        createRadarChart('radarChart4', dashboardData.radar.battalion4.distribution, radarColors.radarChart4, dashboardData.radar.battalion4.total);
+        
+        // --- 3. 產生年齡分佈圖 ---
         new Chart(document.getElementById('ageDistributionChart'), {
             type: 'doughnut',
             data: {
-                labels: ['20-29歲', '30-39歲', '40-49歲', '50+歲', '女性'],
+                labels: dashboardData.ageDistribution.labels,
                 datasets: [{
-                    data: [201, 450, 589, 157, 50], 
+                    data: dashboardData.ageDistribution.counts,
                     backgroundColor: [
-                        'rgba(24, 144, 255, 0.8)',
-                        'rgba(82, 196, 26, 0.8)',
-                        'rgba(250, 173, 20, 0.8)',
-                        'rgba(245, 34, 45, 0.8)',
-                        'rgba(114, 46, 209, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(24, 144, 255, 1)',
-                        'rgba(82, 196, 26, 1)',
-                        'rgba(250, 173, 20, 1)',
-                        'rgba(245, 34, 45, 1)',
-                        'rgba(114, 46, 209, 1)'
+                        'rgba(24, 144, 255, 0.8)', 'rgba(82, 196, 26, 0.8)', 'rgba(250, 173, 20, 0.8)',
+                        'rgba(245, 34, 45, 0.8)', 'rgba(114, 46, 209, 0.8)'
                     ],
                     borderWidth: 1
                 }]
             },
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                cutout: '65%',
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '65%',
                 plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            font: {
-                                size: 12
-                            },
-                            usePointStyle: true,
-                            pointStyle: 'circle'
-                        }
-                    },
+                    legend: { position: 'bottom', labels: { padding: 15, usePointStyle: true } },
                     tooltip: {
                         callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.raw || 0;
-                                const total = context.chart.getDatasetMeta(0).total;
-                                const percentage = Math.round((value / total) * 100);
-                                return `${label}: ${value}人 (${percentage}%)`;
+                            label: function(c) {
+                                const total = c.chart.getDatasetMeta(0).total;
+                                return `${c.label}: ${c.raw}人 (${Math.round((c.raw / total) * 100)}%)`;
                             }
                         }
                     }
@@ -905,75 +332,49 @@
             }
         });
         
-        // 大隊成績比較圖
+        // --- 4. 填充排行榜 ---
+        const leaderboardBody = document.getElementById('leaderboard-body');
+        leaderboardBody.innerHTML = dashboardData.leaderboard.map(p => `
+            <tr>
+                <td class="rank">${p.rank}</td>
+                <td>${p.name}</td>
+                <td>${p.battalion}</td>
+                <td>${p.station}</td>
+                <td>${p.time}</td>
+                <td><span class="badge ${p.gradeClass}">${p.grade}</span></td>
+            </tr>
+        `).join('');
+
+        // --- 5. 產生大隊比較圖 ---
         new Chart(document.getElementById('comparisonChart'), {
             type: 'bar',
             data: {
-                labels: ['第一大隊', '第二大隊', '第三大隊', '第四大隊'],
+                labels: dashboardData.comparison.labels,
                 datasets: [{
-                    label: '平均成績 (分鐘)',
-                    data: [7.2, 6.8, 6.5, 7.5],
-                    backgroundColor: [
-                        'rgba(24, 144, 255, 0.7)',
-                        'rgba(82, 196, 26, 0.7)',
-                        'rgba(250, 173, 20, 0.7)',
-                        'rgba(245, 34, 45, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(24, 144, 255, 1)',
-                        'rgba(82, 196, 26, 1)',
-                        'rgba(250, 173, 20, 1)',
-                        'rgba(245, 34, 45, 1)'
-                    ],
+                    data: dashboardData.comparison.averages,
+                    backgroundColor: ['rgba(24, 144, 255, 0.7)', 'rgba(82, 196, 26, 0.7)', 'rgba(250, 173, 20, 0.7)', 'rgba(245, 34, 45, 0.7)'],
                     borderWidth: 1
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: '分鐘',
-                            font: {
-                                size: 12
-                            }
-                        },
-                        ticks: {
-                            precision: 1
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                },
+                responsive: true, maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, title: { display: true, text: '分鐘' } } },
                 plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `平均成績: ${context.parsed.y} 分鐘`;
-                            }
-                        }
-                    },
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                        formatter: (value) => value + '分',
-                        color: '#333',
-                        font: {
-                            weight: 'bold'
-                        }
-                    }
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: (c) => `平均成績: ${c.parsed.y} 分鐘` } },
+                    datalabels: { anchor: 'end', align: 'top', formatter: (v) => v + '分' }
                 }
-            }
+            },
+            plugins: [ChartDataLabels]
         });
+
+        // --- 其他 UI 功能 ---
+        function updateTime() {
+            document.getElementById('time-display').textContent = new Date().toLocaleString('zh-TW', { hour12: false });
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    });
     </script>
 </body>
 </html>
