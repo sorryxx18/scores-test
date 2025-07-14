@@ -461,13 +461,12 @@
         // 1. 各大隊跑步戰力雷達圖
         const ctxRun = document.getElementById('battalionRunChart').getContext('2d');
         
-        // 範例數據：代表每個大隊中，各等級的人員百分比
         const radarData = {
-            labels: ['菁英級', '良好級', '合格級', '待加強'],
+            labels: ['菁英級 (<7分)', '良好級 (7-8.5分)', '合格級 (8.5-10分)', '待加強 (>10分)'],
             datasets: [
                 {
                     label: '第一大隊',
-                    data: [27, 43, 23, 7], // 總和為100
+                    data: [27, 43, 23, 7], // 範例數據 (百分比)
                     borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b1').trim(),
                     backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b1-fill').trim(),
                     borderWidth: 2,
@@ -475,7 +474,7 @@
                 },
                 {
                     label: '第二大隊',
-                    data: [35, 46, 14, 5], // 總和為100
+                    data: [35, 46, 14, 5], 
                     borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b2').trim(),
                     backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b2-fill').trim(),
                     borderWidth: 2,
@@ -483,7 +482,7 @@
                 },
                 {
                     label: '第三大隊',
-                    data: [32, 41, 20, 7], // 總和為100
+                    data: [32, 41, 20, 7], 
                     borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b3').trim(),
                     backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b3-fill').trim(),
                     borderWidth: 2,
@@ -491,7 +490,7 @@
                 },
                 {
                     label: '第四大隊',
-                    data: [23, 37, 29, 11], // 總和為100
+                    data: [23, 37, 29, 11],
                     borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b4').trim(),
                     backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b4-fill').trim(),
                     borderWidth: 2,
@@ -501,25 +500,23 @@
         };
         
         const runChart = new Chart(ctxRun, {
-            // *** 核心修改：圖表類型改為 'radar' ***
             type: 'radar',
             data: radarData,
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                // 雷達圖專用設定
                 elements: {
                     line: {
                         borderWidth: 3
                     }
                 },
                 scales: {
-                    r: { // r 代表徑向軸 (radius)
+                    r: { 
                         angleLines: {
                             display: true
                         },
                         suggestedMin: 0,
-                        suggestedMax: 40, // 設定一個最大值讓圖形有比較基準
+                        suggestedMax: 50, // 設定一個最大值讓圖形有比較基準，例如50%
                         pointLabels: {
                             font: {
                                 size: 14,
@@ -528,7 +525,7 @@
                         },
                         ticks: {
                             callback: function(value) {
-                                return value + '%'; // 在刻度上加上百分比
+                                return value + '%'; 
                             }
                         }
                     }
