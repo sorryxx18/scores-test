@@ -375,7 +375,7 @@
                 </div>
                 <div class="card kpi-card">
                     <div class="icon" style="color: #52c41a;"><i class="fa-solid fa-person-running"></i></div>
-                    <div class="value">498 秒</div>
+                    <div class="value">8分18秒</div>
                     <div class="label">1500M 平均成績</div>
                     <div class="trend"><i class="fa-solid fa-arrow-down"></i> 12秒 vs 上期</div>
                 </div>
@@ -396,7 +396,7 @@
             <!-- 圖表區 -->
             <div class="charts-grid">
                 <div class="card">
-                    <h3 class="card-title">各大隊 1500公尺跑步 平均成績 (秒)</h3>
+                    <h3 class="card-title">各大隊 1500公尺跑步 平均成績</h3>
                     <canvas id="battalionRunChart"></canvas>
                 </div>
                 <div class="card">
@@ -417,21 +417,21 @@
                                 <th>大隊</th>
                                 <th>單位</th>
                                 <th>年齡層</th>
-                                <th>1500公尺跑步(秒)</th>
+                                <th>1500公尺跑步</th>
                                 <th>硬舉(公斤)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>1</td><td>林昶輔</td><td>第三大隊</td><td>大直分隊</td><td>20-29</td><td style="color:var(--accent-color-red); font-weight:bold;">317</td><td>150</td></tr>
-                            <tr><td>2</td><td>李皆賢</td><td>第三大隊</td><td>中山中隊</td><td>20-29</td><td style="font-weight:bold;">328</td><td>135</td></tr>
-                            <tr><td>3</td><td>曾麟宗</td><td>第四大隊</td><td>建成分隊</td><td>30-39</td><td style="font-weight:bold;">330</td><td>120</td></tr>
-                            <tr><td>4</td><td>蔡孟杰</td><td>第二大隊</td><td>莊敬分隊</td><td>20-29</td><td>333</td><td>130</td></tr>
-                            <tr><td>5</td><td>林敬凱</td><td>第一大隊</td><td>景美分隊</td><td>20-29</td><td>336</td><td>160</td></tr>
-                            <tr><td>6</td><td>王皓正</td><td>第四大隊</td><td>山仔后分隊</td><td>40-49</td><td>338</td><td>110</td></tr>
-                            <tr><td>7</td><td>董俊廷</td><td>第三大隊</td><td>大直分隊</td><td>20-29</td><td>339</td><td>60</td></tr>
-                            <tr><td>8</td><td>林哲緯</td><td>第三大隊</td><td>松江分隊</td><td>20-29</td><td>339</td><td>180</td></tr>
-                            <tr><td>9</td><td>郭庭瑞</td><td>第一大隊</td><td>泉州分隊</td><td>30-39</td><td>340</td><td>150</td></tr>
-                            <tr><td>10</td><td>高健展</td><td>第一大隊</td><td>景美分隊</td><td>30-39</td><td>340</td><td>120</td></tr>
+                            <tr><td>1</td><td>林昶輔</td><td>第三大隊</td><td>大直分隊</td><td>20-29</td><td style="color:var(--accent-color-red); font-weight:bold;">5分17秒</td><td>150</td></tr>
+                            <tr><td>2</td><td>李皆賢</td><td>第三大隊</td><td>中山中隊</td><td>20-29</td><td style="font-weight:bold;">5分28秒</td><td>135</td></tr>
+                            <tr><td>3</td><td>曾麟宗</td><td>第四大隊</td><td>建成分隊</td><td>30-39</td><td style="font-weight:bold;">5分30秒</td><td>120</td></tr>
+                            <tr><td>4</td><td>蔡孟杰</td><td>第二大隊</td><td>莊敬分隊</td><td>20-29</td><td>5分33秒</td><td>130</td></tr>
+                            <tr><td>5</td><td>林敬凱</td><td>第一大隊</td><td>景美分隊</td><td>20-29</td><td>5分36秒</td><td>160</td></tr>
+                            <tr><td>6</td><td>王皓正</td><td>第四大隊</td><td>山仔后分隊</td><td>40-49</td><td>5分38秒</td><td>110</td></tr>
+                            <tr><td>7</td><td>董俊廷</td><td>第三大隊</td><td>大直分隊</td><td>20-29</td><td>5分39秒</td><td>60</td></tr>
+                            <tr><td>8</td><td>林哲緯</td><td>第三大隊</td><td>松江分隊</td><td>20-29</td><td>5分39秒</td><td>180</td></tr>
+                            <tr><td>9</td><td>郭庭瑞</td><td>第一大隊</td><td>泉州分隊</td><td>30-39</td><td>5分40秒</td><td>150</td></tr>
+                            <tr><td>10</td><td>高健展</td><td>第一大隊</td><td>景美分隊</td><td>30-39</td><td>5分40秒</td><td>120</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -449,6 +449,24 @@
             sidebar.classList.toggle('expanded');
             body.classList.toggle('sidebar-expanded');
         });
+        
+        // === (新增) 格式化秒數的輔助函式 ===
+        /**
+         * 將總秒數轉換為 "X分Y秒" 的字串格式
+         * @param {number} totalSeconds - 總秒數
+         * @returns {string} - 格式化後的字串
+         */
+        function formatSeconds(totalSeconds) {
+            if (isNaN(totalSeconds)) {
+                return '';
+            }
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            // 如果秒數小於10，補一個0，例如 8分05秒
+            const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
+            return `${minutes}分${paddedSeconds}秒`;
+        }
+
 
         // === Chart.js 圖表腳本 ===
 
@@ -459,8 +477,8 @@
             data: {
                 labels: ['第一大隊', '第二大隊', '第三大隊', '第四大隊'],
                 datasets: [{
-                    label: '平均秒數 (越低越好)',
-                    data: [505, 489, 495, 512], // 範例數據
+                    label: '平均成績',
+                    data: [505, 489, 495, 512], // 原始數據仍然是秒數
                     backgroundColor: [
                         'rgba(24, 144, 255, 0.6)',
                         'rgba(82, 196, 26, 0.6)',
@@ -482,15 +500,33 @@
                 scales: {
                     y: {
                         beginAtZero: false,
-                        title: {
-                            display: true,
-                            text: '秒數'
+                        // (優化) 使用 callback 來格式化 Y 軸的刻度
+                        ticks: {
+                            callback: function(value, index, ticks) {
+                                return formatSeconds(value); // 將秒數刻度轉為分秒格式
+                            }
                         }
                     }
                 },
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    // (優化) 使用 callbacks 來格式化提示框 (Tooltip) 的內容
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    // 將提示框的數值也轉為分秒格式
+                                    label += formatSeconds(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
                     }
                 }
             }
