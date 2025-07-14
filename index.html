@@ -20,10 +20,12 @@
             --card-bg: #ffffff;     /* 卡片背景 */
             --primary-text: #333333;/* 主要文字顏色 */
             --secondary-text: #777777;/* 次要文字顏色 */
-            --accent-color: #FA8C16; /* 突顯色 (橘色) */
-            --accent-color-red: #D4380D; /* 突顯色 (紅色) */
-            --primary-blue: #1890ff; /* 主要藍色 */
-            --border-color: #e8e8e8;/* 邊框顏色 */
+            --color-excellent: '#389e0d'; /* 菁英顏色 (深綠) */
+            --color-good: '#1890ff';      /* 良好顏色 (藍) */
+            --color-pass: '#faad14';      /* 合格顏色 (黃) */
+            --color-fail: '#d4380d';      /* 待加強顏色 (紅) */
+            --primary-blue: #1890ff; 
+            --border-color: #e8e8e8;
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
@@ -368,35 +370,35 @@
             <!-- KPI 指標卡片 -->
             <div class="kpi-grid">
                 <div class="card kpi-card">
-                    <div class="icon" style="color: #1890ff;"><i class="fa-solid fa-users"></i></div>
+                    <div class="icon" style="color: var(--color-good);"><i class="fa-solid fa-users"></i></div>
                     <div class="value">1,447</div>
                     <div class="label">總測驗人數</div>
                     <div class="trend"><i class="fa-solid fa-arrow-up"></i> 5% vs 上期</div>
                 </div>
                 <div class="card kpi-card">
-                    <div class="icon" style="color: #52c41a;"><i class="fa-solid fa-person-running"></i></div>
-                    <div class="value">8分18秒</div>
-                    <div class="label">1500M 平均成績</div>
-                    <div class="trend"><i class="fa-solid fa-arrow-down"></i> 12秒 vs 上期</div>
+                    <div class="icon" style="color: var(--color-excellent);"><i class="fa-solid fa-award"></i></div>
+                    <div class="value">28%</div>
+                    <div class="label">菁英人員比例</div>
+                    <div class="trend"><i class="fa-solid fa-arrow-up"></i> 3% vs 上期</div>
                 </div>
                 <div class="card kpi-card">
-                    <div class="icon" style="color: #faad14;"><i class="fa-solid fa-dumbbell"></i></div>
+                    <div class="icon" style="color: var(--color-pass);"><i class="fa-solid fa-dumbbell"></i></div>
                     <div class="value">118 KG</div>
                     <div class="label">硬舉平均重量</div>
                     <div class="trend"><i class="fa-solid fa-arrow-up"></i> 3.5KG vs 上期</div>
                 </div>
                 <div class="card kpi-card">
-                    <div class="icon" style="color: #f5222d;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <div class="value">38 人</div>
-                    <div class="label">待加強人員</div>
-                    <div class="trend"><i class="fa-solid fa-arrow-down"></i> 8人 vs 上期</div>
+                    <div class="icon" style="color: var(--color-fail);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="value">8%</div>
+                    <div class="label">待加強人員比例</div>
+                    <div class="trend"><i class="fa-solid fa-arrow-down"></i> 2% vs 上期</div>
                 </div>
             </div>
 
             <!-- 圖表區 -->
             <div class="charts-grid">
                 <div class="card">
-                    <h3 class="card-title">各大隊 1500公尺跑步 平均成績</h3>
+                    <h3 class="card-title">1500公尺 成績分佈比例</h3>
                     <canvas id="battalionRunChart"></canvas>
                 </div>
                 <div class="card">
@@ -422,7 +424,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>1</td><td>林昶輔</td><td>第三大隊</td><td>大直分隊</td><td>20-29</td><td style="color:var(--accent-color-red); font-weight:bold;">5分17秒</td><td>150</td></tr>
+                            <tr><td>1</td><td>林昶輔</td><td>第三大隊</td><td>大直分隊</td><td>20-29</td><td style="color:var(--color-fail); font-weight:bold;">5分17秒</td><td>150</td></tr>
                             <tr><td>2</td><td>李皆賢</td><td>第三大隊</td><td>中山中隊</td><td>20-29</td><td style="font-weight:bold;">5分28秒</td><td>135</td></tr>
                             <tr><td>3</td><td>曾麟宗</td><td>第四大隊</td><td>建成分隊</td><td>30-39</td><td style="font-weight:bold;">5分30秒</td><td>120</td></tr>
                             <tr><td>4</td><td>蔡孟杰</td><td>第二大隊</td><td>莊敬分隊</td><td>20-29</td><td>5分33秒</td><td>130</td></tr>
@@ -450,83 +452,91 @@
             body.classList.toggle('sidebar-expanded');
         });
         
-        // === (新增) 格式化秒數的輔助函式 ===
-        /**
-         * 將總秒數轉換為 "X分Y秒" 的字串格式
-         * @param {number} totalSeconds - 總秒數
-         * @returns {string} - 格式化後的字串
-         */
-        function formatSeconds(totalSeconds) {
-            if (isNaN(totalSeconds)) {
-                return '';
-            }
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            // 如果秒數小於10，補一個0，例如 8分05秒
-            const paddedSeconds = seconds < 10 ? '0' + seconds : seconds;
-            return `${minutes}分${paddedSeconds}秒`;
-        }
-
-
         // === Chart.js 圖表腳本 ===
 
-        // 1. 各大隊跑步成績長條圖
+        // 1. 各大隊跑步成績分佈圖 (100% 堆疊長條圖)
         const ctxRun = document.getElementById('battalionRunChart').getContext('2d');
+        
+        // 範例數據：代表每個大隊中，各等級的人數
+        const runData = {
+            labels: ['第一大隊', '第二大隊', '第三大隊', '第四大隊'],
+            // 實際應用時，這些數據需由後端根據真實資料計算得出
+            excellent: [95, 120, 110, 80],   // 菁英級人數
+            good:      [150, 160, 140, 130],  // 良好級人數
+            pass:      [80, 50, 70, 100],   // 合格級人數
+            fail:      [25, 15, 20, 45]     // 待加強人數
+        };
+        
         const runChart = new Chart(ctxRun, {
             type: 'bar',
             data: {
-                labels: ['第一大隊', '第二大隊', '第三大隊', '第四大隊'],
-                datasets: [{
-                    label: '平均成績',
-                    data: [505, 489, 495, 512], // 原始數據仍然是秒數
-                    backgroundColor: [
-                        'rgba(24, 144, 255, 0.6)',
-                        'rgba(82, 196, 26, 0.6)',
-                        'rgba(250, 140, 22, 0.6)',
-                        'rgba(212, 56, 13, 0.6)'
-                    ],
-                    borderColor: [
-                        '#1890ff',
-                        '#52c41a',
-                        '#fa8c16',
-                        '#d4380d'
-                    ],
-                    borderWidth: 1
-                }]
+                labels: runData.labels,
+                datasets: [
+                    {
+                        label: '菁英 (<7分)',
+                        data: runData.excellent,
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-excellent'),
+                    },
+                    {
+                        label: '良好 (7分-8分半)',
+                        data: runData.good,
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-good'),
+                    },
+                    {
+                        label: '合格 (8分半-10分)',
+                        data: runData.pass,
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-pass'),
+                    },
+                    {
+                        label: '待加強 (>10分)',
+                        data: runData.fail,
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-fail'),
+                    }
+                ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                // 關鍵：將X軸和Y軸都設定為堆疊模式
                 scales: {
+                    x: {
+                        stacked: true,
+                    },
                     y: {
-                        beginAtZero: false,
-                        // (優化) 使用 callback 來格式化 Y 軸的刻度
+                        stacked: true,
+                        // 將Y軸刻度改為百分比
                         ticks: {
                             callback: function(value, index, ticks) {
-                                return formatSeconds(value); // 將秒數刻度轉為分秒格式
+                                return value + '%';
                             }
                         }
                     }
                 },
+                // 關鍵：設定 indexAxis: 'y' 可將圖表轉為水平長條圖，有時更易於閱讀
+                // indexAxis: 'y', 
                 plugins: {
-                    legend: {
-                        display: false
-                    },
-                    // (優化) 使用 callbacks 來格式化提示框 (Tooltip) 的內容
+                    // 關鍵：開啟百分比顯示的 tooltip
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
+                                const datasetLabel = context.dataset.label || '';
+                                const value = context.raw;
+                                
+                                // 計算總和
+                                let total = 0;
+                                for (const key in runData) {
+                                    if (Array.isArray(runData[key])) {
+                                        total += runData[key][context.dataIndex];
+                                    }
                                 }
-                                if (context.parsed.y !== null) {
-                                    // 將提示框的數值也轉為分秒格式
-                                    label += formatSeconds(context.parsed.y);
-                                }
-                                return label;
+                                
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${datasetLabel}: ${percentage}% (${value}人)`;
                             }
                         }
+                    },
+                    legend: {
+                        position: 'bottom' // 將圖例放在底部
                     }
                 }
             }
