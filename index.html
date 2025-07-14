@@ -14,16 +14,20 @@
     <style>
         /* --- 全局樣式設定 --- */
         :root {
-            --primary-bg: #f0f2f5; /* 主背景色 */
-            --sidebar-bg: #001529;  /* 側邊欄背景 */
-            --header-bg: #ffffff;   /* 頂部導覽列背景 */
-            --card-bg: #ffffff;     /* 卡片背景 */
-            --primary-text: #333333;/* 主要文字顏色 */
-            --secondary-text: #777777;/* 次要文字顏色 */
-            --color-excellent: #389e0d; /* 菁英顏色 (深綠) */
-            --color-good: #1890ff;      /* 良好顏色 (藍) */
-            --color-pass: #faad14;      /* 合格顏色 (黃) */
-            --color-fail: #d4380d;      /* 待加強顏色 (紅) */
+            --primary-bg: #f0f2f5; 
+            --sidebar-bg: #001529;
+            --header-bg: #ffffff;
+            --card-bg: #ffffff;
+            --primary-text: #333333;
+            --secondary-text: #777777;
+            --color-b1: 'rgba(24, 144, 255, 0.8)'; /* 第一大隊 藍色 */
+            --color-b1-fill: 'rgba(24, 144, 255, 0.2)';
+            --color-b2: 'rgba(82, 196, 26, 0.8)'; /* 第二大隊 綠色 */
+            --color-b2-fill: 'rgba(82, 196, 26, 0.2)';
+            --color-b3: 'rgba(250, 173, 20, 0.8)'; /* 第三大隊 橘色 */
+            --color-b3-fill: 'rgba(250, 173, 20, 0.2)';
+            --color-b4: 'rgba(245, 34, 45, 0.8)';  /* 第四大隊 紅色 */
+            --color-b4-fill: 'rgba(245, 34, 45, 0.2)';
             --primary-blue: #1890ff; 
             --border-color: #e8e8e8;
         }
@@ -370,25 +374,25 @@
             <!-- KPI 指標卡片 -->
             <div class="kpi-grid">
                 <div class="card kpi-card">
-                    <div class="icon" style="color: var(--color-good);"><i class="fa-solid fa-users"></i></div>
+                    <div class="icon" style="color: #1890ff;"><i class="fa-solid fa-users"></i></div>
                     <div class="value">1,447</div>
                     <div class="label">總測驗人數</div>
                     <div class="trend"><i class="fa-solid fa-arrow-up"></i> 5% vs 上期</div>
                 </div>
                 <div class="card kpi-card">
-                    <div class="icon" style="color: var(--color-excellent);"><i class="fa-solid fa-award"></i></div>
+                    <div class="icon" style="color: #389e0d;"><i class="fa-solid fa-award"></i></div>
                     <div class="value">28%</div>
                     <div class="label">菁英人員比例</div>
                     <div class="trend"><i class="fa-solid fa-arrow-up"></i> 3% vs 上期</div>
                 </div>
                 <div class="card kpi-card">
-                    <div class="icon" style="color: var(--color-pass);"><i class="fa-solid fa-dumbbell"></i></div>
+                    <div class="icon" style="color: #faad14;"><i class="fa-solid fa-dumbbell"></i></div>
                     <div class="value">118 KG</div>
                     <div class="label">硬舉平均重量</div>
                     <div class="trend"><i class="fa-solid fa-arrow-up"></i> 3.5KG vs 上期</div>
                 </div>
                 <div class="card kpi-card">
-                    <div class="icon" style="color: var(--color-fail);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="icon" style="color: #d4380d;"><i class="fa-solid fa-triangle-exclamation"></i></div>
                     <div class="value">8%</div>
                     <div class="label">待加強人員比例</div>
                     <div class="trend"><i class="fa-solid fa-arrow-down"></i> 2% vs 上期</div>
@@ -398,7 +402,7 @@
             <!-- 圖表區 -->
             <div class="charts-grid">
                 <div class="card">
-                    <h3 class="card-title">各大隊 1500公尺 成績分佈比例</h3>
+                    <h3 class="card-title">各大隊 1500公尺 戰力分析雷達圖</h3>
                     <canvas id="battalionRunChart"></canvas>
                 </div>
                 <div class="card">
@@ -424,7 +428,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>1</td><td>林昶輔</td><td>第三大隊</td><td>大直分隊</td><td>20-29</td><td style="color:var(--color-fail); font-weight:bold;">5分17秒</td><td>150</td></tr>
+                            <tr><td>1</td><td>林昶輔</td><td>第三大隊</td><td>大直分隊</td><td>20-29</td><td style="font-weight:bold;">5分17秒</td><td>150</td></tr>
                             <tr><td>2</td><td>李皆賢</td><td>第三大隊</td><td>中山中隊</td><td>20-29</td><td style="font-weight:bold;">5分28秒</td><td>135</td></tr>
                             <tr><td>3</td><td>曾麟宗</td><td>第四大隊</td><td>建成分隊</td><td>30-39</td><td style="font-weight:bold;">5分30秒</td><td>120</td></tr>
                             <tr><td>4</td><td>蔡孟杰</td><td>第二大隊</td><td>莊敬分隊</td><td>20-29</td><td>5分33秒</td><td>130</td></tr>
@@ -454,90 +458,93 @@
         
         // === Chart.js 圖表腳本 ===
 
-        // 1. 各大隊跑步成績分佈圖 (水平100% 堆疊長條圖)
+        // 1. 各大隊跑步戰力雷達圖
         const ctxRun = document.getElementById('battalionRunChart').getContext('2d');
         
-        const runData = {
-            labels: ['第一大隊', '第二大隊', '第三大隊', '第四大隊'],
-            excellent: [95, 120, 110, 80],   
-            good:      [150, 160, 140, 130],
-            pass:      [80, 50, 70, 100], 
-            fail:      [25, 15, 20, 45]    
+        // 範例數據：代表每個大隊中，各等級的人員百分比
+        const radarData = {
+            labels: ['菁英級', '良好級', '合格級', '待加強'],
+            datasets: [
+                {
+                    label: '第一大隊',
+                    data: [27, 43, 23, 7], // 總和為100
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b1').trim(),
+                    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b1-fill').trim(),
+                    borderWidth: 2,
+                    pointBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b1').trim(),
+                },
+                {
+                    label: '第二大隊',
+                    data: [35, 46, 14, 5], // 總和為100
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b2').trim(),
+                    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b2-fill').trim(),
+                    borderWidth: 2,
+                    pointBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b2').trim(),
+                },
+                {
+                    label: '第三大隊',
+                    data: [32, 41, 20, 7], // 總和為100
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b3').trim(),
+                    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b3-fill').trim(),
+                    borderWidth: 2,
+                    pointBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b3').trim(),
+                },
+                {
+                    label: '第四大隊',
+                    data: [23, 37, 29, 11], // 總和為100
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b4').trim(),
+                    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b4-fill').trim(),
+                    borderWidth: 2,
+                    pointBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-b4').trim(),
+                }
+            ]
         };
-
-        // 將原始數據轉換為百分比數據
-        const totals = runData.labels.map((_, i) => 
-            runData.excellent[i] + runData.good[i] + runData.pass[i] + runData.fail[i]
-        );
-        const excellentPercentage = runData.excellent.map((v, i) => (v / totals[i]) * 100);
-        const goodPercentage = runData.good.map((v, i) => (v / totals[i]) * 100);
-        const passPercentage = runData.pass.map((v, i) => (v / totals[i]) * 100);
-        const failPercentage = runData.fail.map((v, i) => (v / totals[i]) * 100);
         
         const runChart = new Chart(ctxRun, {
-            type: 'bar',
-            data: {
-                labels: runData.labels,
-                datasets: [
-                    {
-                        label: '菁英 (<7分)',
-                        data: excellentPercentage,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-excellent').trim(),
-                        // 附加原始人數數據，方便 tooltip 顯示
-                        originalData: runData.excellent
-                    },
-                    {
-                        label: '良好 (7分-8分半)',
-                        data: goodPercentage,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-good').trim(),
-                        originalData: runData.good
-                    },
-                    {
-                        label: '合格 (8分半-10分)',
-                        data: passPercentage,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-pass').trim(),
-                        originalData: runData.pass
-                    },
-                    {
-                        label: '待加強 (>10分)',
-                        data: failPercentage,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-fail').trim(),
-                        originalData: runData.fail
-                    }
-                ]
-            },
+            // *** 核心修改：圖表類型改為 'radar' ***
+            type: 'radar',
+            data: radarData,
             options: {
-                // *** 核心修改：將圖表轉為水平方向 ***
-                indexAxis: 'y',
-
                 responsive: true,
                 maintainAspectRatio: false,
+                // 雷達圖專用設定
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                },
                 scales: {
-                    x: {
-                        stacked: true,
-                        // X軸現在是數值軸，顯示為百分比
-                        ticks: {
-                            callback: function(value) {
-                                return value + '%';
+                    r: { // r 代表徑向軸 (radius)
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 40, // 設定一個最大值讓圖形有比較基準
+                        pointLabels: {
+                            font: {
+                                size: 14,
+                                weight: 'bold'
                             }
                         },
-                         // 確保最大值為100%
-                        max: 100 
-                    },
-                    y: {
-                        // Y軸現在是類別軸
-                        stacked: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%'; // 在刻度上加上百分比
+                            }
+                        }
                     }
                 },
                 plugins: {
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                const datasetLabel = context.dataset.label || '';
-                                const percentage = context.raw.toFixed(1);
-                                // 從附加的原始數據中獲取人數
-                                const count = context.dataset.originalData[context.dataIndex];
-                                return `${datasetLabel}: ${percentage}% (${count}人)`;
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.r !== null) {
+                                    label += context.parsed.r.toFixed(1) + '%';
+                                }
+                                return label;
                             }
                         }
                     },
