@@ -1240,9 +1240,7 @@
                     .slice(0, 10); // 只顯示前10名
 
                 sortedData.forEach((person, index) => {
-                    const grade = currentTest === 'overall' ?
-                        (person.currentScore >= 105 ? 'excellent' : person.currentScore >= 84 ? 'good' : person.currentScore >= 70 ? 'pass' : 'fail') :
-                        getGradeByScore(person.currentScore);
+                    const grade = getGradeByScore(person.currentScore); // 使用統一的評分標準
 
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -1406,14 +1404,14 @@
                     }
                 });
 
-                // 總分分佈圖
-                const scoreRanges = { '0-35': 0, '36-70': 0, '71-105': 0, '106-140': 0 };
+                // 總分分佈圖 (符合100分制和評分標準)
+                const scoreRanges = { '0-49分 (待加強)': 0, '50-69分 (合格)': 0, '70-84分 (良好)': 0, '85-100分 (優秀)': 0 };
                 data.forEach(person => {
                     const totalScore = person.totalScore;
-                    if (totalScore <= 35) scoreRanges['0-35']++;
-                    else if (totalScore <= 70) scoreRanges['36-70']++;
-                    else if (totalScore <= 105) scoreRanges['71-105']++;
-                    else scoreRanges['106-140']++;
+                    if (totalScore < 50) scoreRanges['0-49分 (待加強)']++;
+                    else if (totalScore < 70) scoreRanges['50-69分 (合格)']++;
+                    else if (totalScore < 85) scoreRanges['70-84分 (良好)']++;
+                    else scoreRanges['85-100分 (優秀)']++;
                 });
 
                 charts.score = new Chart(document.getElementById('scoreChart'), {
