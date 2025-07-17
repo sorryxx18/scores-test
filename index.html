@@ -797,7 +797,7 @@
                             <i class="fa-solid fa-award"></i>
                         </div>
                         <div>
-                            <div class="label">優秀 (76-100分)</div>
+                            <div class="label">優秀 (85-100分)</div>
                             <div class="value" data-target="0">0%</div>
                             <div class="count" id="excellent-count">(0人)</div>
                         </div>
@@ -807,7 +807,7 @@
                             <i class="fa-solid fa-thumbs-up"></i>
                         </div>
                         <div>
-                            <div class="label">良好 (61-75分)</div>
+                            <div class="label">良好 (70-84分)</div>
                             <div class="value" data-target="0">0%</div>
                             <div class="count" id="good-count">(0人)</div>
                         </div>
@@ -817,7 +817,7 @@
                             <i class="fa-solid fa-check"></i>
                         </div>
                         <div>
-                            <div class="label">合格 (50-60分)</div>
+                            <div class="label">合格 (50-69分)</div>
                             <div class="value" data-target="0">0%</div>
                             <div class="count" id="pass-count">(0人)</div>
                         </div>
@@ -843,10 +843,20 @@
                     <div id="standards-content">
                         <p>根據 114年新式消防體測標準，總分制評分：</p>
                         <ul style="margin: 16px 0; padding-left: 20px;">
-                            <li><strong>優秀 (76-100分)</strong>：表現卓越，超越標準要求</li>
-                            <li><strong>良好 (61-75分)</strong>：表現良好，符合標準要求</li>
-                            <li><strong>合格 (50-60分)</strong>：達到基本要求</li>
+                            <li><strong>優秀 (85-100分)</strong>：表現卓越，超越標準要求</li>
+                            <li><strong>良好 (70-84分)</strong>：表現良好，符合標準要求</li>
+                            <li><strong>合格 (50-69分)</strong>：達到基本要求</li>
                             <li><strong>待加強 (0-49分)</strong>：未達標準，需要改善</li>
+                        </ul>
+                        <p><strong>各項目滿分：</strong></p>
+                        <ul style="margin: 8px 0; padding-left: 20px; font-size: 13px;">
+                            <li>1500公尺跑步：20分</li>
+                            <li>菱形槓硬舉：20分</li>
+                            <li>後拋擲遠：15分</li>
+                            <li>懸吊屈體：15分</li>
+                            <li>立定跳遠：10分</li>
+                            <li>折返跑：10分</li>
+                            <li>負重行走：10分</li>
                         </ul>
                         <p><strong>總分計算：</strong>各項目得分總和，滿分100分</p>
                         <p><strong>及格標準：</strong>總分需達50分以上</p>
@@ -1078,9 +1088,9 @@
 
             // --- 根據分數計算等級 (100分制，50分及格) ---
             const getGradeByScore = (score) => {
-                if (score >= 76) return 'excellent';  // 76-100分：優秀
-                if (score >= 61) return 'good';       // 61-75分：良好
-                if (score >= 50) return 'pass';       // 50-60分：合格
+                if (score >= 85) return 'excellent';  // 85-100分：優秀
+                if (score >= 70) return 'good';       // 70-84分：良好
+                if (score >= 50) return 'pass';       // 50-69分：合格
                 return 'fail';                        // 0-49分：待加強
             };
 
