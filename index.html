@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +29,7 @@
 
         /* --- 基本設定 --- */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-        
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -62,7 +63,7 @@
             font-weight: 700;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .sidebar-header i {
@@ -114,7 +115,7 @@
             font-size: 13px;
             color: var(--secondary-text);
             text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         /* --- 主內容區塊 --- */
@@ -190,7 +191,7 @@
         }
 
         .card:hover {
-            box-shadow: 0 8px 15px rgba(0,0,0,0.07);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.07);
             transform: translateY(-3px);
         }
 
@@ -243,7 +244,8 @@
             color: var(--secondary-text);
         }
 
-        select, button {
+        select,
+        button {
             padding: 10px 15px;
             border-radius: 8px;
             border: 1px solid #ced4da;
@@ -347,10 +349,21 @@
             border-left: 5px solid;
         }
 
-        .kpi-card.excellent { border-color: var(--color-excellent); }
-        .kpi-card.good { border-color: var(--color-good); }
-        .kpi-card.pass { border-color: var(--color-pass); }
-        .kpi-card.fail { border-color: var(--color-fail); }
+        .kpi-card.excellent {
+            border-color: var(--color-excellent);
+        }
+
+        .kpi-card.good {
+            border-color: var(--color-good);
+        }
+
+        .kpi-card.pass {
+            border-color: var(--color-pass);
+        }
+
+        .kpi-card.fail {
+            border-color: var(--color-fail);
+        }
 
         .kpi-card .icon {
             font-size: 32px;
@@ -420,10 +433,21 @@
             font-weight: 700;
         }
 
-        .standards-table .excellent { background: rgba(40, 167, 69, 0.1); }
-        .standards-table .good { background: rgba(0, 123, 255, 0.1); }
-        .standards-table .pass { background: rgba(255, 193, 7, 0.1); }
-        .standards-table .fail { background: rgba(220, 53, 69, 0.1); }
+        .standards-table .excellent {
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .standards-table .good {
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .standards-table .pass {
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        .standards-table .fail {
+            background: rgba(220, 53, 69, 0.1);
+        }
 
         /* --- 圖表容器 --- */
         .chart-wrapper {
@@ -526,7 +550,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* --- 資料狀態提示 --- */
@@ -559,9 +585,11 @@
             .standards-panel {
                 grid-column: 1 / -1;
             }
+
             .main-chart-panel {
                 grid-column: 1 / -1;
             }
+
             .side-panels {
                 grid-template-columns: 1fr;
             }
@@ -573,10 +601,12 @@
                 left: -250px;
                 z-index: 1001;
             }
+
             .sidebar.active {
                 left: 0;
-                box-shadow: 0 0 20px rgba(0,0,0,0.2);
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             }
+
             .sidebar-toggle {
                 display: flex;
                 align-items: center;
@@ -593,13 +623,16 @@
                 height: 40px;
                 cursor: pointer;
             }
+
             .page-title {
                 font-size: 18px;
                 margin-left: 45px;
             }
+
             .kpi-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
             .test-tabs {
                 justify-content: center;
             }
@@ -614,6 +647,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="loading" class="loading-overlay">
         <div class="spinner"></div>
@@ -848,7 +882,10 @@
                                     </tr>
                                 </thead>
                                 <tbody id="ranking-body">
-                                    <tr><td colspan="5" style="text-align: center; color: #6c757d;">請上傳 Excel 檔案以顯示排行榜</td></tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: #6c757d;">請上傳 Excel 檔案以顯示排行榜
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -876,9 +913,9 @@
                 </div>
             </div>
         </main>
-    </div> 
-   <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
             const loadingOverlay = document.getElementById('loading');
             let charts = {}; // 儲存所有圖表實例
             let currentTest = 'jump'; // 當前選擇的測驗項目
@@ -900,30 +937,49 @@
             // --- Excel 檔案處理功能 ---
             const processExcelFile = (file) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     try {
                         const data = new Uint8Array(e.target.result);
                         const workbook = XLSX.read(data, { type: 'array' });
-                        
+
+                        console.log('工作表名稱:', workbook.SheetNames);
+
                         // 讀取成績輸入工作表 (原始資料)
                         const inputSheet = workbook.Sheets['成績輸入'];
+                        if (!inputSheet) {
+                            updateDataStatus('error', '找不到「成績輸入」工作表');
+                            return;
+                        }
                         const inputData = XLSX.utils.sheet_to_json(inputSheet);
-                        
-                        // 讀取換算結果工作表 (計分結果)
-                        const resultSheet = workbook.Sheets['換算結果'];
+                        console.log('成績輸入資料筆數:', inputData.length);
+
+                        // 讀取換算結果工作表 (計分結果) - 注意工作表名稱後面有空格
+                        const resultSheet = workbook.Sheets['換算結果 '] || workbook.Sheets['換算結果'];
+                        if (!resultSheet) {
+                            updateDataStatus('error', '找不到「換算結果」工作表');
+                            return;
+                        }
                         const resultData = XLSX.utils.sheet_to_json(resultSheet);
-                        
+                        console.log('換算結果資料筆數:', resultData.length);
+
                         if (inputData.length > 0 && resultData.length > 0) {
+                            console.log('開始處理資料...');
                             excelData = processRawExcelData(inputData, resultData);
-                            isUsingRealData = true;
-                            updateDataStatus('success', `成功載入 ${excelData.length} 筆資料`);
-                            refreshData();
+                            console.log('處理後資料筆數:', excelData.length);
+
+                            if (excelData.length > 0) {
+                                isUsingRealData = true;
+                                updateDataStatus('success', `成功載入 ${excelData.length} 筆資料`);
+                                refreshData();
+                            } else {
+                                updateDataStatus('error', '資料處理後沒有有效資料');
+                            }
                         } else {
-                            updateDataStatus('error', 'Excel 檔案中沒有找到資料');
+                            updateDataStatus('error', `Excel 檔案中沒有找到資料 (成績輸入: ${inputData.length}筆, 換算結果: ${resultData.length}筆)`);
                         }
                     } catch (error) {
                         console.error('Excel 處理錯誤:', error);
-                        updateDataStatus('error', 'Excel 檔案格式錯誤，請檢查檔案格式');
+                        updateDataStatus('error', `Excel 檔案處理錯誤: ${error.message}`);
                     }
                 };
                 reader.readAsArrayBuffer(file);
@@ -931,59 +987,70 @@
 
             // --- 處理原始 Excel 資料 ---
             const processRawExcelData = (inputData, resultData) => {
+                console.log('處理資料中...');
+                console.log('輸入資料第一筆:', inputData[0]);
+                console.log('結果資料第一筆:', resultData[0]);
+
                 // 合併原始資料和計分結果
                 const processedData = [];
-                
+
                 inputData.forEach((inputRow, index) => {
                     const resultRow = resultData[index];
-                    if (resultRow) {
-                        processedData.push({
+                    if (resultRow && inputRow['姓名'] && resultRow['姓名']) {
+                        const processedRow = {
                             // 基本資訊
                             name: inputRow['姓名'] || '',
                             unit: inputRow['大隊'] || '',
                             gender: inputRow['性別'] || '',
                             age: parseInt(inputRow['年齡']) || 0,
                             ageGroup: inputRow['年齡層'] || '',
-                            
+
                             // 原始成績
-                            jumpRaw: inputRow['立定跳遠(cm)'] || 0,
-                            throwRaw: inputRow['後拋擲遠(m)'] || 0,
-                            shuttleRaw: inputRow['折返跑(趟)'] || 0,
-                            deadliftRaw: inputRow['菱形槓硬舉(公斤)'] || 0,
-                            hangingRaw: inputRow['懸吊屈體(次)'] || 0,
-                            hangingTimeRaw: inputRow['懸吊屈體(秒)'] || 0,
-                            carryRaw: inputRow['六角槓負重行走(公斤)'] || 0,
-                            run1500Raw: inputRow['1500公尺跑步(秒)'] || 0,
-                            
+                            jumpRaw: parseFloat(inputRow['立定跳遠(cm)']) || 0,
+                            throwRaw: parseFloat(inputRow['後拋擲遠(m)']) || 0,
+                            shuttleRaw: parseFloat(inputRow['折返跑(趟)']) || 0,
+                            deadliftRaw: parseFloat(inputRow['菱形槓硬舉(公斤)']) || 0,
+                            hangingRaw: parseFloat(inputRow['懸吊屈體(次)']) || 0,
+                            hangingTimeRaw: parseFloat(inputRow['懸吊屈體(秒)']) || 0,
+                            carryRaw: parseFloat(inputRow['六角槓負重行走(公斤)']) || 0,
+                            run1500Raw: parseFloat(inputRow['1500公尺跑步(秒)']) || 0,
+
                             // 得分
-                            jumpScore: resultRow['立定跳遠_得分'] || 0,
-                            throwScore: resultRow['後拋擲遠_得分'] || 0,
-                            shuttleScore: resultRow['折返跑_得分'] || 0,
-                            deadliftScore: resultRow['菱形槓硬舉_得分'] || 0,
-                            hangingScore: resultRow['懸吊屈體_得分'] || 0,
-                            hangingTimeScore: resultRow['懸吊秒數_得分'] || 0,
-                            carryScore: resultRow['負重行走_得分'] || 0,
-                            run1500Score: resultRow['1500跑步_得分'] || 0,
-                            
+                            jumpScore: parseFloat(resultRow['立定跳遠_得分']) || 0,
+                            throwScore: parseFloat(resultRow['後拋擲遠_得分']) || 0,
+                            shuttleScore: parseFloat(resultRow['折返跑_得分']) || 0,
+                            deadliftScore: parseFloat(resultRow['菱形槓硬舉_得分']) || 0,
+                            hangingScore: parseFloat(resultRow['懸吊屈體_得分']) || 0,
+                            hangingTimeScore: parseFloat(resultRow['懸吊秒數_得分']) || 0,
+                            carryScore: parseFloat(resultRow['負重行走_得分']) || 0,
+                            run1500Score: parseFloat(resultRow['1500跑步_得分']) || 0,
+
                             // 總分和及格狀態
-                            totalScore: resultRow['總分'] || 0,
-                            passed: resultRow['及格'] === '是' || resultRow['及格'] === 'Y' || resultRow['及格'] === 1
-                        });
+                            totalScore: parseFloat(resultRow['總分']) || 0,
+                            passed: resultRow['及格'] === '及格' || resultRow['及格'] === '是' || resultRow['及格'] === 'Y' || resultRow['及格'] === true
+                        };
+
+                        processedData.push(processedRow);
                     }
                 });
-                
-                return processedData.filter(person => person.name); // 過濾掉沒有姓名的資料
+
+                console.log('處理完成，有效資料筆數:', processedData.length);
+                if (processedData.length > 0) {
+                    console.log('第一筆處理後資料:', processedData[0]);
+                }
+
+                return processedData;
             };
 
             // --- 更新資料狀態提示 ---
             const updateDataStatus = (type, message) => {
                 const statusDiv = document.getElementById('data-status');
                 const messageSpan = document.getElementById('status-message');
-                
+
                 statusDiv.className = `data-status ${type}`;
                 messageSpan.textContent = message;
                 statusDiv.style.display = 'flex';
-                
+
                 if (type === 'success') {
                     setTimeout(() => {
                         statusDiv.style.display = 'none';
@@ -996,15 +1063,15 @@
                 if (!isUsingRealData || !excelData) {
                     return []; // 沒有資料時返回空陣列
                 }
-                
+
                 // 根據篩選條件過濾資料
                 const selectedUnit = document.getElementById('unit').value;
                 let filteredData = excelData;
-                
+
                 if (selectedUnit !== '全部大隊') {
                     filteredData = excelData.filter(person => person.unit === selectedUnit);
                 }
-                
+
                 return filteredData;
             };
 
@@ -1050,17 +1117,17 @@
             const calculateStats = () => {
                 const data = getCurrentData();
                 const total = data.length;
-                
+
                 if (total === 0) return { excellent: 0, good: 0, pass: 0, fail: 0, counts: { excellent: 0, good: 0, pass: 0, fail: 0 } };
-                
+
                 let excellent = 0, good = 0, pass = 0, fail = 0;
-                
+
                 data.forEach(person => {
                     const score = getCurrentTestScore(person);
-                    const grade = currentTest === 'overall' ? 
+                    const grade = currentTest === 'overall' ?
                         (score >= 105 ? 'excellent' : score >= 84 ? 'good' : score >= 70 ? 'pass' : 'fail') :
                         getGradeByScore(score);
-                    
+
                     switch (grade) {
                         case 'excellent': excellent++; break;
                         case 'good': good++; break;
@@ -1068,7 +1135,7 @@
                         default: fail++; break;
                     }
                 });
-                
+
                 return {
                     excellent: Math.round((excellent / total) * 100),
                     good: Math.round((good / total) * 100),
@@ -1090,7 +1157,7 @@
 
                 // 菜單點擊效果
                 document.querySelectorAll('.sidebar-menu li').forEach(item => {
-                    item.addEventListener('click', function() {
+                    item.addEventListener('click', function () {
                         document.querySelector('.sidebar-menu li.active')?.classList.remove('active');
                         this.classList.add('active');
                     });
@@ -1098,7 +1165,7 @@
 
                 // 測驗項目切換
                 document.querySelectorAll('.test-tab').forEach(tab => {
-                    tab.addEventListener('click', function() {
+                    tab.addEventListener('click', function () {
                         document.querySelector('.test-tab.active')?.classList.remove('active');
                         this.classList.add('active');
                         currentTest = this.dataset.test;
@@ -1130,12 +1197,12 @@
             // --- 更新測驗內容 ---
             const updateTestContent = () => {
                 const testInfo = testMapping[currentTest];
-                
+
                 // 更新標題
                 document.getElementById('current-test-name').textContent = testInfo.name;
                 document.getElementById('chart-test-name').textContent = testInfo.name;
                 document.getElementById('ranking-test-name').textContent = testInfo.name;
-                
+
                 // 更新排行榜
                 updateRankingTable();
             };
@@ -1162,7 +1229,7 @@
                     .slice(0, 10); // 只顯示前10名
 
                 sortedData.forEach((person, index) => {
-                    const grade = currentTest === 'overall' ? 
+                    const grade = currentTest === 'overall' ?
                         (person.currentScore >= 105 ? 'excellent' : person.currentScore >= 84 ? 'good' : person.currentScore >= 70 ? 'pass' : 'fail') :
                         getGradeByScore(person.currentScore);
 
@@ -1181,13 +1248,13 @@
             // --- KPI 數字動畫 ---
             const animateCounters = () => {
                 const stats = calculateStats();
-                
+
                 // 更新數值和人數
                 document.querySelector('.kpi-card.excellent .value').setAttribute('data-target', stats.excellent);
                 document.querySelector('.kpi-card.good .value').setAttribute('data-target', stats.good);
                 document.querySelector('.kpi-card.pass .value').setAttribute('data-target', stats.pass);
                 document.querySelector('.kpi-card.fail .value').setAttribute('data-target', stats.fail);
-                
+
                 document.getElementById('excellent-count').textContent = `(${stats.counts.excellent}人)`;
                 document.getElementById('good-count').textContent = `(${stats.counts.good}人)`;
                 document.getElementById('pass-count').textContent = `(${stats.counts.pass}人)`;
@@ -1199,7 +1266,7 @@
                     const duration = 1500;
                     let start = 0;
                     const stepTime = Math.abs(Math.floor(duration / Math.max(target, 1)));
-                    
+
                     const timer = setInterval(() => {
                         start += 1;
                         counter.textContent = `${start}%`;
@@ -1465,7 +1532,7 @@
             // --- 模擬數據刷新 ---
             const refreshData = () => {
                 loadingOverlay.style.display = 'flex';
-                
+
                 setTimeout(() => {
                     renderCharts();
                     animateCounters();
@@ -1480,4 +1547,5 @@
         });
     </script>
 </body>
+
 </html>
