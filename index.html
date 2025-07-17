@@ -19,6 +19,7 @@
             --primary-text: #344767;
             --secondary-text: #6c757d;
             --primary-blue: #007bff;
+            --primary-blue: #007bff;
             --border-color: #e9ecef;
             --shadow-color: rgba(0, 0, 0, 0.05);
             --color-excellent: #28a745;
@@ -796,7 +797,7 @@
                             <i class="fa-solid fa-award"></i>
                         </div>
                         <div>
-                            <div class="label">優秀 (15-20分)</div>
+                            <div class="label">優秀 (76-100分)</div>
                             <div class="value" data-target="0">0%</div>
                             <div class="count" id="excellent-count">(0人)</div>
                         </div>
@@ -806,7 +807,7 @@
                             <i class="fa-solid fa-thumbs-up"></i>
                         </div>
                         <div>
-                            <div class="label">良好 (10-14分)</div>
+                            <div class="label">良好 (61-75分)</div>
                             <div class="value" data-target="0">0%</div>
                             <div class="count" id="good-count">(0人)</div>
                         </div>
@@ -816,7 +817,7 @@
                             <i class="fa-solid fa-check"></i>
                         </div>
                         <div>
-                            <div class="label">合格 (5-9分)</div>
+                            <div class="label">合格 (50-60分)</div>
                             <div class="value" data-target="0">0%</div>
                             <div class="count" id="pass-count">(0人)</div>
                         </div>
@@ -826,7 +827,7 @@
                             <i class="fa-solid fa-triangle-exclamation"></i>
                         </div>
                         <div>
-                            <div class="label">待加強 (0-4分)</div>
+                            <div class="label">待加強 (0-49分)</div>
                             <div class="value" data-target="0">0%</div>
                             <div class="count" id="fail-count">(0人)</div>
                         </div>
@@ -840,15 +841,15 @@
                         <span id="current-test-name">立定跳遠</span> 評分標準
                     </h3>
                     <div id="standards-content">
-                        <p>根據 114年新式消防體測標準，各項目採用分數制評分：</p>
+                        <p>根據 114年新式消防體測標準，總分制評分：</p>
                         <ul style="margin: 16px 0; padding-left: 20px;">
-                            <li><strong>優秀 (15-20分)</strong>：表現卓越，超越標準要求</li>
-                            <li><strong>良好 (10-14分)</strong>：表現良好，符合標準要求</li>
-                            <li><strong>合格 (5-9分)</strong>：達到基本要求</li>
-                            <li><strong>待加強 (0-4分)</strong>：未達標準，需要改善</li>
+                            <li><strong>優秀 (76-100分)</strong>：表現卓越，超越標準要求</li>
+                            <li><strong>良好 (61-75分)</strong>：表現良好，符合標準要求</li>
+                            <li><strong>合格 (50-60分)</strong>：達到基本要求</li>
+                            <li><strong>待加強 (0-49分)</strong>：未達標準，需要改善</li>
                         </ul>
-                        <p><strong>總分計算：</strong>各項目得分總和，滿分140分</p>
-                        <p><strong>及格標準：</strong>總分需達70分以上</p>
+                        <p><strong>總分計算：</strong>各項目得分總和，滿分100分</p>
+                        <p><strong>及格標準：</strong>總分需達50分以上</p>
                     </div>
                 </div>
 
@@ -1075,12 +1076,12 @@
                 return filteredData;
             };
 
-            // --- 根據分數計算等級 ---
+            // --- 根據分數計算等級 (100分制，50分及格) ---
             const getGradeByScore = (score) => {
-                if (score >= 15) return 'excellent';
-                if (score >= 10) return 'good';
-                if (score >= 5) return 'pass';
-                return 'fail';
+                if (score >= 76) return 'excellent';  // 76-100分：優秀
+                if (score >= 61) return 'good';       // 61-75分：良好
+                if (score >= 50) return 'pass';       // 50-60分：合格
+                return 'fail';                        // 0-49分：待加強
             };
 
             // --- 獲取當前測驗項目的分數 ---
@@ -1341,7 +1342,7 @@
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                max: currentTest === 'overall' ? 140 : 20,
+                                max: 100,  // 統一使用100分制
                                 title: {
                                     display: true,
                                     text: '平均得分'
