@@ -4,88 +4,122 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>國家防災日 學習成果</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-    body { background: #f1f5f9; }
-    .main-bg { background: linear-gradient(90deg, #2563eb 0%, #fbbf24 100%);}
+    body {
+      background: #f1f5f9; /* slate-100 */
+      font-family: 'Inter', 'Helvetica Neue', 'Arial', 'sans-serif';
+    }
+    .main-header-bg {
+      background-color: #1e3a8a; /* blue-900 */
+      color: #fff;
+      letter-spacing: 2px;
+    }
     .pdf-photo {
-      width: 132px;
-      height: 80px;
+      width: 150px;
+      height: 90px;
       object-fit: cover;
-      border-radius: 12px;
-      margin-left: 14px;
-      box-shadow: 0 4px 20px #0002;
-      border: 2px solid #38bdf8;
+      border-radius: 8px;
+      margin-left: 16px;
+      box-shadow: 0 4px 12px #00000022;
+      border: 1px solid #e2e8f0; /* slate-200 */
       background: #fff;
     }
-    .photo-ans-group {
-      display: flex;
-      align-items: flex-start;
+    .question-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
       margin-bottom: 44px;
-      border-bottom: 1.5px dashed #93c5fd;
-      padding-bottom: 18px;
-      gap: 18px;
-      page-break-inside: avoid; break-inside: avoid;
-      background: #f9fafb;
-      border-radius: 10px;
+      border-top-width: 4px;
+      border-color: var(--topic-color, #9ca3af); /* gray-400 */
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
-    .topic-title { font-size:1.09em; color:#1d4ed8; font-weight:600; letter-spacing:1px;}
-    .topic-1 {border-left: 5px solid #38bdf8;}
-    .topic-2 {border-left: 5px solid #fbbf24;}
-    .topic-3 {border-left: 5px solid #34d399;}
-    .topic-4 {border-left: 5px solid #f87171;}
-    .topic-5 {border-left: 5px solid #a78bfa;}
-    .topic-6 {border-left: 5px solid #f472b6;}
-    .pdf-page {page-break-after: always;}
-    .pdf-page:last-child {page-break-after: auto;}
+    .summary-card {
+       display: flex;
+       align-items: flex-start;
+       gap: 18px;
+    }
+    .topic-title { font-size: 1.1em; color: var(--topic-color, #1e3a8a); font-weight: 700; letter-spacing: 1px;}
+    .topic-1 { --topic-color: #38bdf8; } /* sky-400 */
+    .topic-2 { --topic-color: #fbbf24; } /* amber-400 */
+    .topic-3 { --topic-color: #34d399; } /* emerald-400 */
+    .topic-4 { --topic-color: #f87171; } /* red-400 */
+    .topic-5 { --topic-color: #a78bfa; } /* violet-400 */
+    .topic-6 { --topic-color: #f472b6; } /* pink-400 */
+
+    /* The div used to force a page break in the PDF */
+    .page-break { page-break-after: always; }
+
     #summary-area, #summary-content {
       max-width: 830px;
       margin: auto;
       background: #fff;
       box-sizing: border-box;
-      padding: 32px 18px 18px 18px;
+      padding: 32px 24px 18px 24px;
       border-radius: 15px;
-      box-shadow: 0 2px 12px #2563eb14;
+      box-shadow: 0 4px 12px #2563eb18;
     }
     @media (max-width: 700px){
-      #summary-area, #summary-content {padding:10px 2vw 8px 2vw;}
-      .photo-ans-group { flex-direction:column;}
-      .pdf-photo { margin-left:0; margin-top:8px;}
+      #summary-area, #summary-content { padding: 16px; }
+      .summary-card { flex-direction: column; }
+      .pdf-photo { margin-left: 0; margin-top: 8px; }
     }
-    .logo {height:42px;}
-    .qnum {background:#2563eb;color:#fff;border-radius:8px;font-weight:bold;padding:2px 10px;margin-right:8px;}
-    .summary-group { margin-bottom: 48px; }
-    .page-break { page-break-after: always; }
+    .logo { height: 48px; }
+    .qnum {
+      background-color: var(--topic-color, #3b82f6);
+      color: #fff;
+      border-radius: 6px;
+      font-weight: bold;
+      padding: 3px 10px;
+      margin-right: 10px;
+      font-size: 0.9em;
+    }
+    .option-btn {
+        transition: background-color 0.2s, border-color 0.2s;
+        border: 1px solid #e5e7eb; /* gray-200 */
+    }
+    .option-btn.selected {
+        background-color: #eff6ff; /* blue-50 */
+        border-color: #3b82f6; /* blue-500 */
+        font-weight: 600;
+    }
+    .main-btn {
+      transition: background-color 0.2s ease-in-out;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center">
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-<!-- 這裡LOGO直接用base64（範例） -->
 <script>
-const base64Logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAOVBMVEUAAACSkpKQkJCXl5eYmJidnZ2ioqKnp6eioqKjo6OgoKCnp6fAwMDEyMjc3Nzf39/4+Pje3t7t7e2Xl5f///+RqZP1AAAAAXRSTlMAQObYZgAAAGdJREFUGFctykkSgCAMBdFZwQB90f3fDwl3m0MgslwZSWvA5A8W9f1eUlXAYBMGshwXKoZo8FeZgbXljOSjANqN9uJ9ZruTBlzJcvlPAnR8uuv6egrH1TDsO8syZyGavU+AE0eOeEVFgwiAAAAAElFTkSuQmCC";
+// New, professional SVG logo, Base64 encoded.
+const base64Logo = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI0IDI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiMxZTNhOGEiPjxwYXRoIGQ9Ik0xMiAyTDIgNWw١MCAyIDUtMTB6bTAgMGwxMCAzIDItMTAtMTItM3ptLTYuNSAxN2wxLjUgMmgybDIgMi0yIDNoLTdsMy03em0xMyAwbC0xLjUgMi0yIDItMiAyIDIgM2g3bC0zLTd6bS02LjUtNGwtMy0yLTItNC0yIDRoMyAyaC02bC0yIDJoMTBsMi0yeiIvPjwvc3ZnPg==";
 </script>
 
-<div id="main" class="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg mt-6 p-6">
-  <div class="flex flex-col items-center mb-3">
-    <img id="mainLogo" src="" class="logo mb-2" alt="Logo">
-    <h1 class="text-2xl font-bold text-center mb-2 text-blue-900 main-bg rounded p-2 shadow" style="color:#fff;letter-spacing:2px;">國家防災日 學習成果</h1>
+<div id="main" class="w-full max-w-3xl mx-auto bg-white shadow-xl rounded-2xl mt-6 p-6 md:p-8">
+  <div class="flex flex-col items-center mb-6">
+    <img id="mainLogo" src="" class="logo mb-3" alt="Logo">
+    <h1 class="text-3xl font-bold text-center mb-2 main-header-bg rounded-lg p-3 shadow-md">國家防災日 學習成果</h1>
   </div>
-  <p class="text-center text-gray-700 mb-5">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
-  <div id="stepper" class="flex items-center justify-center mb-4"></div>
+  <p class="text-center text-gray-600 mb-6">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
+  <div id="stepper" class="flex items-center justify-center mb-6"></div>
   <div id="topic-area"></div>
 </div>
 
-<!-- 學習成果總覽 -->
 <div id="summary-area" style="display:none;">
-  <div class="flex flex-col items-center mb-3">
-    <img id="pdfLogo" src="" class="logo mb-2" alt="Logo">
-    <div class="text-2xl font-bold text-blue-800 mb-3 main-bg p-2 rounded" style="color:#fff;letter-spacing:2px;">學習成果總覽</div>
-    <div class="text-gray-700 mb-2 text-base" style="letter-spacing:1px;">台北市政府消防局 國家防災日</div>
+  <div class="flex flex-col items-center mb-5">
+    <img id="pdfLogo" src="" class="logo mb-3" alt="Logo">
+    <div class="text-2xl font-bold main-header-bg p-3 rounded-lg shadow-md mb-3">學習成果總覽</div>
+    <div class="text-gray-700 text-base" style="letter-spacing:1px;">臺北市政府消防局 國家防災日</div>
   </div>
   <div id="summary-content"></div>
-  <button onclick="downloadPDF()" class="mt-7 w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 text-lg font-bold shadow">匯出學習成果 PDF</button>
-  <button onclick="location.reload()" class="mt-3 w-full bg-gray-300 text-gray-800 py-2 rounded">重新填寫</button>
+  <button onclick="downloadPDF()" class="mt-8 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 text-lg font-bold shadow-md main-btn">匯出學習成果 PDF</button>
+  <button onclick="location.reload()" class="mt-3 w-full bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 main-btn">重新填寫</button>
 </div>
 
 <script>
@@ -177,76 +211,96 @@ let photos = Array(topics.length).fill(null);
 function renderStepper() {
   let html = "";
   for (let i = 0; i < topics.length; i++) {
-    html += `<div class="w-8 h-8 rounded-full flex items-center justify-center ${current===i?"bg-blue-600 text-white":"bg-gray-200 text-gray-700"} font-bold mx-1">${i+1}</div>`;
+    const isCompleted = userAnswers[i] !== null && photos[i] !== null;
+    const isActive = current === i;
+    let stepClass = "bg-gray-200 text-gray-700";
+    if(isActive) {
+        stepClass = "bg-blue-600 text-white ring-2 ring-offset-2 ring-blue-500";
+    } else if (isCompleted) {
+        stepClass = "bg-green-500 text-white";
+    }
+    html += `<div class="w-8 h-8 rounded-full flex items-center justify-center ${stepClass} font-bold mx-1 transition-all">${i+1}</div>`;
+    if (i < topics.length - 1) {
+      html += `<div class="flex-1 h-1 bg-gray-200"></div>`;
+    }
   }
-  document.getElementById('stepper').innerHTML = html;
+  document.getElementById('stepper').innerHTML = `<div class="w-full flex items-center">${html}</div>`;
 }
 
 function renderTopic() {
   renderStepper();
   const t = topics[current];
   let photoPreview = photos[current]
-    ? `<img src="${photos[current]}" class="pdf-photo my-2" id="photo-prev-${current}">`
+    ? `<img src="${photos[current]}" class="pdf-photo my-2 block" id="photo-prev-${current}">`
     : `<img src="" class="pdf-photo my-2 hidden" id="photo-prev-${current}">`;
   let options = "";
   for(let i=0; i<4; i++){
-    let selected = userAnswers[current]===i ? 'ring-2 ring-blue-500' : '';
+    let selectedClass = userAnswers[current] === i ? 'selected' : '';
     options += `
-      <button onclick="chooseAnswer(${i})" class="block w-full text-left bg-gray-100 hover:bg-blue-100 rounded px-4 py-2 my-1 ${selected}">
+      <button onclick="chooseAnswer(${i})" class="block w-full text-left bg-white hover:bg-blue-50 rounded-lg px-4 py-3 my-2 option-btn ${selectedClass}">
         ${t.options[i]}
       </button>`;
   }
   document.getElementById('topic-area').innerHTML = `
-    <div class="${t.tclass} photo-ans-group">
-      <div style="flex:1;">
-        <h2 class="topic-title mb-1"><span class="qnum">${current+1}</span>${t.title}</h2>
-        <div class="text-gray-800 mb-3">${t.question}</div>
+    <div class="question-card ${t.tclass}">
+      <div>
+        <h2 class="topic-title mb-3"><span class="qnum">${current+1}</span>${t.title}</h2>
+        <div class="text-gray-800 text-base mb-4 leading-relaxed">${t.question}</div>
         <div id="options">${options}</div>
-        <div id="explanation" class="text-green-600 font-semibold mt-2 mb-2" style="min-height:1.8em"></div>
-        <div class="mt-2">
-          <label class="font-semibold">上傳照片（JPG/PNG，建議橫式）</label>
-          <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="block my-2">
+        <div id="explanation" class="text-green-700 font-semibold mt-3 mb-3 p-3 rounded-lg bg-green-50" style="min-height:3em; display:none;"></div>
+        <div class="mt-4 border-t pt-4">
+          <label class="font-semibold text-gray-700">上傳活動照片 (JPG/PNG)</label>
+          <input type="file" accept="image/jpeg, image/png" onchange="uploadPhoto(event, ${current})" class="block my-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
           ${photoPreview}
-        </div>
-        <div class="mt-4 flex justify-between">
-          <button ${current===0?'disabled':''} onclick="prevTopic()" class="px-5 py-2 bg-gray-200 rounded ${current===0?'opacity-50':''}">上一題</button>
-          <button onclick="nextTopic()" class="px-5 py-2 bg-blue-600 text-white rounded">${current<topics.length-1?'下一題':'完成'}</button>
         </div>
       </div>
     </div>
+    <div class="mt-6 flex justify-between">
+      <button ${current===0?'disabled':''} onclick="prevTopic()" class="px-6 py-2 bg-gray-200 rounded-lg ${current===0?'opacity-50 cursor-not-allowed':'hover:bg-gray-300'} main-btn">上一題</button>
+      <button onclick="nextTopic()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 main-btn shadow">${current<topics.length-1?'下一題':'完成作答'}</button>
+    </div>
   `;
-  if(userAnswers[current]!=null){
+  if(userAnswers[current] !== null){
     showExplanation();
-  }
-  if(photos[current]){
-    document.getElementById(`photo-prev-${current}`).classList.remove('hidden');
   }
 }
 
 function chooseAnswer(idx){
   userAnswers[current] = idx;
-  showExplanation();
   renderTopic();
 }
+
 function showExplanation(){
   let idx = userAnswers[current];
   let correct = topics[current].answer;
+  let expDiv = document.getElementById('explanation');
   let text = '';
-  if(idx!==null){
-    text = idx===correct ? "✔️ 答對了！" : "❌ 答錯了。";
-    text += " " + topics[current].explanation;
+  if(idx !== null){
+    if (idx === correct) {
+        text = "✔️ 答對了！ " + topics[current].explanation;
+        expDiv.className = "text-green-800 font-semibold mt-3 mb-3 p-3 rounded-lg bg-green-100";
+    } else {
+        text = "❌ 答錯了。 " + topics[current].explanation;
+        expDiv.className = "text-red-800 font-semibold mt-3 mb-3 p-3 rounded-lg bg-red-100";
+    }
+    expDiv.textContent = text;
+    expDiv.style.display = 'block';
   }
-  document.getElementById('explanation').textContent = text;
 }
 
 function uploadPhoto(e, topicIdx){
   const file = e.target.files[0];
   if(!file) return;
-  if(!file.type.startsWith("image/")) return alert("僅支援圖片檔！");
+  if(!file.type.startsWith("image/")) {
+    alert("請上傳圖片格式檔案 (JPG, PNG)！");
+    return;
+  }
   const reader = new FileReader();
   reader.onload = function(ev){
     photos[topicIdx] = ev.target.result;
-    renderTopic();
+    document.getElementById(`photo-prev-${topicIdx}`).src = ev.target.result;
+    document.getElementById(`photo-prev-${topicIdx}`).classList.remove('hidden');
+    renderStepper(); // Update stepper to show completion
   };
   reader.readAsDataURL(file);
 }
@@ -258,6 +312,14 @@ function prevTopic(){
   }
 }
 function nextTopic(){
+  if (userAnswers[current] === null) {
+    alert('請先回答問題再前往下一題！');
+    return;
+  }
+  if (photos[current] === null) {
+    alert('請先上傳照片再前往下一題！');
+    return;
+  }
   if(current < topics.length-1){
     current++;
     renderTopic();
@@ -269,39 +331,47 @@ function nextTopic(){
 function showSummary(){
   document.getElementById('main').style.display = "none";
   document.getElementById('summary-area').style.display = "block";
-  // 設定LOGO
   document.getElementById('pdfLogo').src = base64Logo;
   let html = '';
   for(let i=0;i<topics.length;i++){
-    if(i > 0 && i % 3 === 0) html += `<div class="pdf-page"></div>`;
+    const isCorrect = userAnswers[i] === topics[i].answer;
+    const answerText = userAnswers[i] !== null ? topics[i].options[userAnswers[i]] : '未作答';
+
     html += `
-      <div class="photo-ans-group summary-group ${topics[i].tclass}">
+      <div class="question-card summary-card ${topics[i].tclass}">
         <div style="flex:1;">
-          <h3 class="topic-title mb-1"><span class="qnum">${i+1}</span>${topics[i].title}</h3>
-          <div class="text-gray-800 mb-1">${topics[i].question}</div>
-          <div class="mb-1">你的答案：<span style="font-weight:600;color:${userAnswers[i]===topics[i].answer?'#15803d':'#dc2626'}">${topics[i].options[userAnswers[i]||0]||'未作答'}</span></div>
-          <div class="mb-1">正確答案：<span style="font-weight:600;">${topics[i].options[topics[i].answer]}</span></div>
-          <div class="mb-1 text-gray-600">${topics[i].explanation}</div>
+          <h3 class="topic-title mb-2"><span class="qnum">${i+1}</span>${topics[i].title}</h3>
+          <p class="text-gray-800 mb-2 font-semibold">${topics[i].question}</p>
+          <p class="mb-1 text-sm">你的答案：<span style="font-weight:600; color:${isCorrect ? '#166534' : '#991b1b'};">${answerText}</span></p>
+          <p class="mb-1 text-sm">正確答案：<span class="font-semibold text-gray-700">${topics[i].options[topics[i].answer]}</span></p>
+          <p class="text-xs text-gray-500 mt-2">${topics[i].explanation}</p>
         </div>
-        ${photos[i]?`<img src="${photos[i]}" class="pdf-photo">`:"<div class='text-sm text-gray-400 italic'>（未上傳照片）</div>"}
+        ${photos[i] ? `<img src="${photos[i]}" class="pdf-photo">`:"<div class='text-sm text-gray-400 italic self-center'>（未上傳照片）</div>"}
       </div>
     `;
+    // **FIXED PDF PAGE BREAK**: Insert page break div AFTER every 3rd item, but not after the last one.
+    if ((i + 1) % 3 === 0 && i < topics.length - 1) {
+      html += `<div class="page-break"></div>`;
+    }
   }
   document.getElementById('summary-content').innerHTML = html;
 }
 
 function downloadPDF(){
   window.scrollTo(0,0);
+  const summaryContent = document.getElementById('summary-content');
+  const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  
+  // Give a brief moment for the browser to render everything at the top of the page.
   setTimeout(function(){
-    const summary = document.getElementById('summary-content');
-    html2pdf(summary, {
-      margin:       0.4,
-      filename:     `國家防災日學習成果.pdf`,
+    html2pdf(summaryContent, {
+      margin:       0.5, // Increased margin for safety
+      filename:     `國家防災日學習成果_${timestamp}.pdf`,
       image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+      html2canvas:  { scale: 2, useCORS: true, scrollY: -window.scrollY },
       jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
     });
-  }, 120);
+  }, 200);
 }
 
 window.onload = function(){
