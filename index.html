@@ -10,8 +10,8 @@
     body { background: #f1f5f9; }
     .main-bg { background: linear-gradient(90deg, #2563eb 0%, #fbbf24 100%);}
     .pdf-photo {
-      width: 140px;
-      height: 88px;
+      width: 138px;
+      height: 84px;
       object-fit: cover;
       border-radius: 12px;
       margin-left: 14px;
@@ -22,9 +22,9 @@
     .photo-ans-group {
       display: flex;
       align-items: flex-start;
-      margin-bottom: 26px;
+      margin-bottom: 48px;
       border-bottom: 1.5px dashed #93c5fd;
-      padding-bottom: 16px;
+      padding-bottom: 20px;
       gap: 18px;
       page-break-inside: avoid; break-inside: avoid;
       background: #f9fafb;
@@ -55,250 +55,12 @@
     }
     .logo {height:42px;}
     .qnum {background:#2563eb;color:#fff;border-radius:8px;font-weight:bold;padding:2px 10px;margin-right:8px;}
+    .summary-group { margin-bottom: 50px; }
+    .page-break { page-break-after: always; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center">
 
-<div id="main" class="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg mt-6 p-6">
-  <div class="flex flex-col items-center mb-3">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Emblem_of_the_National_Fire_Agency_of_Taiwan.svg/256px-Emblem_of_the_National_Fire_Agency_of_Taiwan.svg.png" class="logo mb-2" alt="Logo">
-    <h1 class="text-2xl font-bold text-center mb-2 text-blue-900 main-bg rounded p-2 shadow" style="color:#fff;letter-spacing:2px;">國家防災日 學習成果</h1>
-  </div>
-  <p class="text-center text-gray-700 mb-5">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
-  <div id="stepper" class="flex items-center justify-center mb-4"></div>
-  <div id="topic-area"></div>
-</div>
-
-<!-- 學習成果總覽 -->
-<div id="summary-area" style="display:none;">
-  <div class="flex flex-col items-center mb-3">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Emblem_of_the_National_Fire_Agency_of_Taiwan.svg/256px-Emblem_of_the_National_Fire_Agency_of_Taiwan.svg.png" class="logo mb-2" alt="Logo">
-    <div class="text-2xl font-bold text-blue-800 mb-3 main-bg p-2 rounded" style="color:#fff;letter-spacing:2px;">學習成果總覽</div>
-    <div class="text-gray-700 mb-2 text-base" style="letter-spacing:1px;">台北市政府消防局 國家防災日</div>
-  </div>
-  <div id="summary-content"></div>
-  <button onclick="downloadPDF()" class="mt-7 w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 text-lg font-bold shadow">匯出學習成果 PDF</button>
-  <button onclick="location.reload()" class="mt-3 w-full bg-gray-300 text-gray-800 py-2 rounded">重新填寫</button>
-</div>
-
+<!-- LOGO base64 (台灣消防署範例，可替換) -->
 <script>
-const topics = [
-  {
-    title: "防災學習主題區",
-    tclass: "topic-1",
-    question: "當面臨突發地震時，下列哪一項不是正確的避難應變方式？",
-    options: [
-      "A. 就地尋找堅固桌椅下方蹲下掩護",
-      "B. 第一時間跑到陽台或樓梯間",
-      "C. 用手護住頭部，保護自身重要部位",
-      "D. 等地震停止後再依指示有秩序撤離建築物"
-    ],
-    answer: 1,
-    explanation: "地震時應先在安全處蹲下掩護，絕不應第一時間跑到陽台或樓梯間，這些地方危險且容易倒塌。"
-  },
-  {
-    title: "市府災害防救宣導主題區",
-    tclass: "topic-2",
-    question: "臺北市政府在災害發生後，為協助民眾災後復原，下列哪一項不是市府單位可以提供的協助？",
-    options: [
-      "A. 災害損失稅捐減免",
-      "B. 不動產交易安全諮詢",
-      "C. 災民安置與心理輔導",
-      "D. 免費贈送新房屋"
-    ],
-    answer: 3,
-    explanation: "市府會提供多元協助如稅捐減免、安置及心理輔導，但不會直接免費贈送新房屋。"
-  },
-  {
-    title: "環境永續主題區",
-    tclass: "topic-3",
-    question: "為了達到環境永續，下列哪一種日常行為最有助於減緩全球暖化及減少碳排放？",
-    options: [
-      "A. 多搭乘大眾運輸工具取代開車",
-      "B. 常用一次性塑膠產品，因為方便",
-      "C. 把可回收的物品直接丟進垃圾桶",
-      "D. 夏天將冷氣溫度設定為最低並長時間使用"
-    ],
-    answer: 0,
-    explanation: "搭乘大眾運輸可有效減少碳排放，是最有助於環境永續的日常行為。"
-  },
-  {
-    title: "多元國際主題區",
-    tclass: "topic-4",
-    question: "國家防災日活動邀請多國團體共同參與，這麼做的主要目的是什麼？",
-    options: [
-      "A. 讓大家比賽誰的防災知識最強",
-      "B. 讓不同國籍的人只關心自己國家的防災方式",
-      "C. 促進不同文化之間的交流，學習各國防災經驗",
-      "D. 減少台灣本地居民參與防災活動的機會"
-    ],
-    answer: 2,
-    explanation: "多國參與是為了文化交流與互學，增強整體社會防災能力。"
-  },
-  {
-    title: "國軍守護主題區",
-    tclass: "topic-5",
-    question: "關於國軍在天然災害中的角色，下列哪一項描述最正確？",
-    options: [
-      "A. 國軍僅負責戰爭時期的軍事行動，平時不參與災害救援",
-      "B. 國軍平時結合地方政府，主動規劃並投入災害救援",
-      "C. 國軍只負責維持秩序，不會動用專業救災部隊或器材",
-      "D. 國軍在災害發生時比消防隊更晚抵達現場"
-    ],
-    answer: 1,
-    explanation: "國軍會結合地方政府，主動投入救災，守護民眾安全。"
-  },
-  {
-    title: "防災體驗主題區",
-    tclass: "topic-6",
-    question: "參加「地震求生72小時」體驗活動，學習的最重要核心觀念為何？",
-    options: [
-      "A. 只要有手機就不用準備其他物資",
-      "B. 學會善用日常物品及具備自救能力",
-      "C. 災害來臨時只依賴他人救援",
-      "D. 災害發生時第一時間拍照上傳社群網站"
-    ],
-    answer: 1,
-    explanation: "重點在學會自救與善用日常物資，提升面對災害的生存能力。"
-  }
-];
-
-let current = 0;
-let userAnswers = Array(topics.length).fill(null);
-let photos = Array(topics.length).fill(null);
-
-function renderStepper() {
-  let html = "";
-  for (let i = 0; i < topics.length; i++) {
-    html += `<div class="w-8 h-8 rounded-full flex items-center justify-center ${current===i?"bg-blue-600 text-white":"bg-gray-200 text-gray-700"} font-bold mx-1">${i+1}</div>`;
-  }
-  document.getElementById('stepper').innerHTML = html;
-}
-
-function renderTopic() {
-  renderStepper();
-  const t = topics[current];
-  let photoPreview = photos[current]
-    ? `<img src="${photos[current]}" class="pdf-photo my-2" id="photo-prev-${current}">`
-    : `<img src="" class="pdf-photo my-2 hidden" id="photo-prev-${current}">`;
-  let options = "";
-  for(let i=0; i<4; i++){
-    let selected = userAnswers[current]===i ? 'ring-2 ring-blue-500' : '';
-    options += `
-      <button onclick="chooseAnswer(${i})" class="block w-full text-left bg-gray-100 hover:bg-blue-100 rounded px-4 py-2 my-1 ${selected}">
-        ${t.options[i]}
-      </button>`;
-  }
-  document.getElementById('topic-area').innerHTML = `
-    <div class="${t.tclass} photo-ans-group">
-      <div style="flex:1;">
-        <h2 class="topic-title mb-1"><span class="qnum">${current+1}</span>${t.title}</h2>
-        <div class="text-gray-800 mb-3">${t.question}</div>
-        <div id="options">${options}</div>
-        <div id="explanation" class="text-green-600 font-semibold mt-2 mb-2" style="min-height:1.8em"></div>
-        <div class="mt-2">
-          <label class="font-semibold">上傳照片（JPG/PNG，建議橫式）</label>
-          <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="block my-2">
-          ${photoPreview}
-        </div>
-        <div class="mt-4 flex justify-between">
-          <button ${current===0?'disabled':''} onclick="prevTopic()" class="px-5 py-2 bg-gray-200 rounded ${current===0?'opacity-50':''}">上一題</button>
-          <button onclick="nextTopic()" class="px-5 py-2 bg-blue-600 text-white rounded">${current<topics.length-1?'下一題':'完成'}</button>
-        </div>
-      </div>
-    </div>
-  `;
-  if(userAnswers[current]!=null){
-    showExplanation();
-  }
-  if(photos[current]){
-    document.getElementById(`photo-prev-${current}`).classList.remove('hidden');
-  }
-}
-
-function chooseAnswer(idx){
-  userAnswers[current] = idx;
-  showExplanation();
-  renderTopic();
-}
-function showExplanation(){
-  let idx = userAnswers[current];
-  let correct = topics[current].answer;
-  let text = '';
-  if(idx!==null){
-    text = idx===correct ? "✔️ 答對了！" : "❌ 答錯了。";
-    text += " " + topics[current].explanation;
-  }
-  document.getElementById('explanation').textContent = text;
-}
-
-function uploadPhoto(e, topicIdx){
-  const file = e.target.files[0];
-  if(!file) return;
-  if(!file.type.startsWith("image/")) return alert("僅支援圖片檔！");
-  const reader = new FileReader();
-  reader.onload = function(ev){
-    photos[topicIdx] = ev.target.result;
-    renderTopic();
-  };
-  reader.readAsDataURL(file);
-}
-
-function prevTopic(){
-  if(current > 0){
-    current--;
-    renderTopic();
-  }
-}
-function nextTopic(){
-  if(current < topics.length-1){
-    current++;
-    renderTopic();
-  } else {
-    showSummary();
-  }
-}
-
-function showSummary(){
-  document.getElementById('main').style.display = "none";
-  document.getElementById('summary-area').style.display = "block";
-  let html = '';
-  for(let i=0;i<topics.length;i++){
-    // 每三題插入分頁
-    if(i > 0 && i % 3 === 0) html += `<div style="page-break-after: always;"></div>`;
-    html += `
-      <div class="photo-ans-group ${topics[i].tclass}">
-        <div style="flex:1;">
-          <h3 class="topic-title mb-1"><span class="qnum">${i+1}</span>${topics[i].title}</h3>
-          <div class="text-gray-800 mb-1">${topics[i].question}</div>
-          <div class="mb-1">你的答案：<span style="font-weight:600;color:${userAnswers[i]===topics[i].answer?'#15803d':'#dc2626'}">${topics[i].options[userAnswers[i]||0]||'未作答'}</span></div>
-          <div class="mb-1">正確答案：<span style="font-weight:600;">${topics[i].options[topics[i].answer]}</span></div>
-          <div class="mb-1 text-gray-600">${topics[i].explanation}</div>
-        </div>
-        ${photos[i]?`<img src="${photos[i]}" class="pdf-photo">`:"<div class='text-sm text-gray-400 italic'>（未上傳照片）</div>"}
-      </div>
-    `;
-  }
-  document.getElementById('summary-content').innerHTML = html;
-}
-
-function downloadPDF(){
-  window.scrollTo(0,0);
-  setTimeout(function(){
-    const summary = document.getElementById('summary-content');
-    html2pdf(summary, {
-      margin:       0.4,
-      filename:     `國家防災日學習成果.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-    });
-  }, 120);
-}
-
-window.onload = function(){
-  renderTopic();
-}
-</script>
-</body>
-</html>
+const base64Logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAYAAADgdz34AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA6ElEQVR4nO3VMQ0CMRQE0e9+llOZkZ5QAA2Lz5nx4JqVv79MQAAAAAAAAAAAAAgFWlJKUupSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpShKgpSXpSh
