@@ -8,6 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body { background: #f5f7fa; }
+    .topic-photo { width: 100%; max-width: 320px; height: 180px; object-fit: cover; border-radius: 12px; }
     .photo-ans-group {
       display: flex;
       align-items: flex-start;
@@ -26,23 +27,25 @@
       border: 1px solid #eee;
       background: #fff;
     }
+    .hidden { display: none; }
     @media (max-width: 600px){
       .photo-ans-group { flex-direction:column;}
       .pdf-photo { margin-left:0; margin-top:8px;}
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center">
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
 <div id="main" class="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg mt-6 p-6">
   <h1 class="text-2xl font-bold text-center mb-2 text-blue-900">國家防災日學習互動平台</h1>
   <p class="text-center text-gray-600 mb-6">依序完成每個主題的問題與照片上傳，最後可下載個人學習成果 PDF！</p>
-  <div id="stepper" class="flex items-center justify-center mb-4"></div>
-  <div id="topic-area"></div>
+  <div id="stepper" class="flex items-center justify-center mb-4">
+    </div>
+  <div id="topic-area">
+    </div>
 </div>
 
-<!-- 學習成果總覽 -->
-<div id="summary-area" class="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg mt-6 p-6" style="display:none;">
+<div id="summary-area" class="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg mt-6 p-6 hidden">
   <div id="summary-content"></div>
   <button onclick="downloadPDF()" class="mt-6 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 text-lg font-bold">匯出學習成果 PDF</button>
   <button onclick="location.reload()" class="mt-4 w-full bg-gray-300 text-gray-800 py-2 rounded">重新填寫</button>
@@ -140,8 +143,8 @@ function renderTopic() {
   renderStepper();
   const t = topics[current];
   let photoPreview = photos[current]
-    ? `<img src="${photos[current]}" class="pdf-photo my-2" id="photo-prev-${current}">`
-    : `<img src="" class="pdf-photo my-2 hidden" id="photo-prev-${current}">`;
+    ? `<img src="${photos[current]}" class="topic-photo my-2" id="photo-prev-${current}">`
+    : `<img src="" class="topic-photo my-2 hidden" id="photo-prev-${current}">`;
   let options = "";
   for(let i=0; i<4; i++){
     let selected = userAnswers[current]===i ? 'ring-2 ring-blue-500' : '';
@@ -157,7 +160,7 @@ function renderTopic() {
     <div id="explanation" class="text-green-600 font-semibold mt-2 mb-2" style="min-height:1.8em"></div>
     <div class="mt-2">
       <label class="font-semibold">上傳照片（JPG/PNG，建議橫式）</label>
-      <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="block my-2">
+      <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="block my-2 w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
       ${photoPreview}
     </div>
     <div class="mt-4 flex justify-between">
@@ -178,6 +181,7 @@ function chooseAnswer(idx){
   showExplanation();
   renderTopic();
 }
+
 function showExplanation(){
   let idx = userAnswers[current];
   let correct = topics[current].answer;
@@ -189,15 +193,65 @@ function showExplanation(){
   document.getElementById('explanation').textContent = text;
 }
 
+// === 已更新為自動縮圖版本 ===
 function uploadPhoto(e, topicIdx){
   const file = e.target.files[0];
   if(!file) return;
   if(!file.type.startsWith("image/")) return alert("僅支援圖片檔！");
+
   const reader = new FileReader();
-  reader.onload = function(ev){
-    photos[topicIdx] = ev.target.result;
-    renderTopic();
+  
+  // 檔案讀取完成後觸發
+  reader.onload = function(ev) {
+    // 建立一個 Image 物件
+    const img = new Image();
+    
+    // Image 物件載入 FileReader 讀取的原始圖片資料
+    img.src = ev.target.result;
+    
+    // Image 物件成功載入圖片後觸發
+    img.onload = function() {
+      // --- 圖片縮放核心邏輯 ---
+      const MAX_WIDTH = 1024; // 設定圖片最大寬度為 1024 像素
+      const MAX_HEIGHT = 1024; // 設定圖片最大高度為 1024 像素
+
+      let width = img.width;
+      let height = img.height;
+
+      // 按比例縮放
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+      
+      // 建立一個看不見的 canvas
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      
+      // 將圖片以新的尺寸繪製到 canvas 上
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // 從 canvas 取得壓縮後的 JPEG 格式圖片資料 (品質 90%)
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+      
+      // 將"縮小後"的圖片資料存起來
+      photos[topicIdx] = dataUrl;
+      
+      // 重新渲染當前主題區塊，顯示縮小後的圖片預覽
+      renderTopic();
+    };
   };
+  
+  // 開始讀取檔案
   reader.readAsDataURL(file);
 }
 
@@ -207,6 +261,7 @@ function prevTopic(){
     renderTopic();
   }
 }
+
 function nextTopic(){
   if(current < topics.length-1){
     current++;
@@ -217,21 +272,23 @@ function nextTopic(){
 }
 
 function showSummary(){
-  document.getElementById('main').style.display = "none";
-  document.getElementById('summary-area').style.display = "block";
-  // 美觀嵌入照片 summary
-  let html = `<h2 class="text-xl font-bold text-center mb-4 text-blue-900">學習成果總覽</h2>`;
+  document.getElementById('main').classList.add('hidden');
+  document.getElementById('summary-area').classList.remove('hidden');
+  
+  // 產生學習成果總覽
+  let html = `<h2 class="text-xl font-bold text-center mb-6 text-blue-900">學習成果總覽</h2>`;
   for(let i=0;i<topics.length;i++){
+    const userAnswerText = userAnswers[i] !== null ? topics[i].options[userAnswers[i]] : '未作答';
     html += `
       <div class="photo-ans-group">
-        <div>
+        <div class="flex-1">
           <h3 class="text-lg font-semibold text-blue-800">${i+1}. ${topics[i].title}</h3>
-          <div class="text-gray-700 mb-1">${topics[i].question}</div>
-          <div class="mb-1">你的答案：<span class="${userAnswers[i]===topics[i].answer?'text-green-700':'text-red-700'} font-semibold">${topics[i].options[userAnswers[i]||0]||'未作答'}</span></div>
+          <div class="text-gray-700 mt-2 mb-1">${topics[i].question}</div>
+          <div class="mb-1">你的答案：<span class="${userAnswers[i]===topics[i].answer?'text-green-700':'text-red-700'} font-semibold">${userAnswerText}</span></div>
           <div class="mb-1">正確答案：<span class="font-semibold">${topics[i].options[topics[i].answer]}</span></div>
-          <div class="mb-1 text-gray-600">${topics[i].explanation}</div>
+          <div class="mb-1 text-gray-600 text-sm">${topics[i].explanation}</div>
         </div>
-        ${photos[i]?`<img src="${photos[i]}" class="pdf-photo">`:"<div class='text-sm text-gray-400 italic'>（未上傳照片）</div>"}
+        ${photos[i]?`<img src="${photos[i]}" class="pdf-photo">`:`<div class='pdf-photo flex items-center justify-center text-sm text-gray-400 italic bg-gray-50' style='width:160px; height:100px;'>（未上傳照片）</div>`}
       </div>
     `;
   }
@@ -240,12 +297,19 @@ function showSummary(){
 
 function downloadPDF(){
   const summary = document.getElementById('summary-content');
+  // 暫時移除陰影以利PDF生成
+  const images = summary.querySelectorAll('.pdf-photo');
+  images.forEach(img => img.style.boxShadow = 'none');
+
   html2pdf(summary, {
     margin:       0.5,
     filename:     `國家防災日學習成果.pdf`,
     image:        { type: 'jpeg', quality: 0.95 },
     html2canvas:  { scale: 2, useCORS: true },
     jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+  }).then(() => {
+    // PDF生成後恢復陰影
+    images.forEach(img => img.style.boxShadow = '0 2px 8px #0002');
   });
 }
 
