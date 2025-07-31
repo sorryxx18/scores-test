@@ -283,8 +283,15 @@
             max-width: 100%;
             max-height: 60vh;
             border-radius: 8px;
-            transform: rotate(90deg);
+            transform: none;
             transform-origin: center;
+        }
+
+        /* 針對不同裝置方向優化攝影機顯示 */
+        @media (orientation: portrait) {
+            #camera-video {
+                transform: none;
+            }
         }
 
         @media (orientation: landscape) {
