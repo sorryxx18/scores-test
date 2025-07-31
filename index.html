@@ -17,6 +17,104 @@
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 動態背景粒子效果 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            left: 20%;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            left: 30%;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            left: 40%;
+            animation-delay: 3s;
+        }
+
+        .particle:nth-child(5) {
+            width: 50px;
+            height: 50px;
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(6) {
+            width: 70px;
+            height: 70px;
+            left: 60%;
+            animation-delay: 5s;
+        }
+
+        .particle:nth-child(7) {
+            width: 30px;
+            height: 30px;
+            left: 70%;
+            animation-delay: 1.5s;
+        }
+
+        .particle:nth-child(8) {
+            width: 90px;
+            height: 90px;
+            left: 80%;
+            animation-delay: 2.5s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         .main-bg {
@@ -29,6 +127,98 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 3D 卡片效果 */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .card-3d:hover {
+            transform: rotateY(5deg) rotateX(5deg);
+        }
+
+        /* 進度條動畫 */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 4px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #10b981, #34d399, #6ee7b7);
+            border-radius: 16px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        /* 主題圖標 */
+        .topic-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .topic-1 .topic-icon {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .topic-2 .topic-icon {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .topic-3 .topic-icon {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+
+        .topic-4 .topic-icon {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .topic-5 .topic-icon {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .topic-6 .topic-icon {
+            background: linear-gradient(135deg, #ec4899, #be185d);
         }
 
         .pdf-photo {
@@ -194,12 +384,145 @@
             color: #be185d;
         }
 
+        /* PDF 專用樣式 */
         .pdf-page {
             page-break-after: always;
         }
 
         .pdf-page:last-child {
             page-break-after: auto;
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .pdf-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+
+        .pdf-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+        }
+
+        .pdf-question-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .pdf-question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .pdf-question-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .pdf-question-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .pdf-question-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .pdf-answer-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .pdf-answer-content {
+            flex: 1;
+        }
+
+        .pdf-answer-item {
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .pdf-answer-label {
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .pdf-correct-answer {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .pdf-wrong-answer {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .pdf-explanation {
+            background: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #0c4a6e;
+        }
+
+        .pdf-photo-container {
+            flex-shrink: 0;
+            width: 160px;
+            text-align: center;
+        }
+
+        .pdf-photo-final {
+            width: 160px;
+            height: 120px;
+            object-fit: contain;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .pdf-no-photo {
+            width: 160px;
+            height: 120px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9fafb;
+            color: #9ca3af;
+            font-size: 12px;
+            text-align: center;
         }
 
         #summary-area,
@@ -349,11 +672,30 @@
         const base64Logo = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzAiIGZpbGw9IiNGRjY2MDAiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CjxwYXRoIGQ9Ik0yMCAyMEg0NFYyOEgzNlYzNkgyOFYyOEgyMFYyMFoiIGZpbGw9IiNGRkZGRkYiLz4KPHA+dGggZD0iTTI0IDQwSDQwVjQ4SDI0VjQwWiIgZmlsbD0iI0ZGRkZGRiIvPgo8Y2lyY2xlIGN4PSIzMiIgY3k9IjE2IiByPSI0IiBmaWxsPSIjRkZGRkZGIi8+CjwvdGV4dD4KPC9zdmc+";
     </script>
 
-    <div id="main" class="w-full max-w-4xl mx-auto glass-card rounded-3xl mt-8 p-8">
+    <!-- 動態背景粒子 -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div id="main" class="w-full max-w-4xl mx-auto glass-card card-3d rounded-3xl mt-8 p-8">
         <div class="flex flex-col items-center mb-6">
-            <h1 class="text-3xl font-bold text-center mb-4 main-title">國家防災日 學習成果</h1>
+            <div class="text-4xl mb-4">🛡️</div>
+            <h1 class="text-4xl font-bold text-center mb-4 main-title">國家防災日 學習成果</h1>
         </div>
-        <p class="text-center text-gray-600 mb-8 text-lg">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
+        <p class="text-center text-gray-600 mb-6 text-lg">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
+
+        <!-- 進度條 -->
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+        </div>
+
         <div id="stepper" class="flex items-center justify-center mb-8"></div>
         <div id="topic-area"></div>
     </div>
@@ -497,8 +839,14 @@
                 options += `<button onclick="chooseAnswer(${i})" class="option-btn block w-full text-left rounded-xl px-6 py-4 my-3 ${selected}">${t.options[i]}</button>`;
             }
 
+            // 獲取主題圖標
+            const topicIcons = ['🏠', '🏛️', '🌱', '🌍', '⚔️', '🎯'];
+
             document.getElementById('topic-area').innerHTML = `
                 <div class="${t.tclass} photo-ans-group">
+                    <div class="topic-icon">
+                        ${topicIcons[current]}
+                    </div>
                     <div style="flex:1;">
                         <h2 class="topic-title mb-1"><span class="qnum">${current + 1}</span>${t.title}</h2>
                         <div class="text-gray-800 mb-3">${t.question}</div>
@@ -520,6 +868,9 @@
                     </div>
                 </div>
             `;
+
+            // 更新進度條
+            updateProgressBar();
 
             if (userAnswers[current] != null) {
                 showExplanation();
@@ -594,24 +945,75 @@
             document.getElementById('main').style.display = "none";
             document.getElementById('summary-area').style.display = "block";
 
-            let html = '';
+            // 計算答對題數
+            const correctCount = userAnswers.filter((answer, index) => answer === topics[index].answer).length;
+            const totalQuestions = topics.length;
+            const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
+
+            let html = `
+                <!-- PDF 標題頁 -->
+                <div class="pdf-header">
+                    <div class="pdf-title">🛡️ 國家防災日學習成果報告</div>
+                    <div class="pdf-subtitle">台北市政府消防局</div>
+                    <div style="margin-top: 15px; font-size: 14px; color: #6b7280;">
+                        完成時間：${new Date().toLocaleDateString('zh-TW')} ${new Date().toLocaleTimeString('zh-TW')}
+                    </div>
+                    <div style="margin-top: 10px; padding: 10px; background: #f0f9ff; border-radius: 8px; display: inline-block;">
+                        <span style="font-size: 16px; font-weight: 600; color: #0c4a6e;">
+                            總成績：${correctCount}/${totalQuestions} 題正確 (${scorePercentage}%)
+                        </span>
+                    </div>
+                </div>
+            `;
+
+            // 每頁放 2 題，確保版面整齊
             for (let i = 0; i < topics.length; i++) {
-                // 每三題換頁，但第一頁可以放三題
-                if (i === 3) html += `<div class="pdf-page"></div>`;
+                // 每 2 題換頁（除了第一頁）
+                if (i > 0 && i % 2 === 0) {
+                    html += `<div class="pdf-page"></div>`;
+                }
+
+                const isCorrect = userAnswers[i] === topics[i].answer;
+                const userAnswerText = topics[i].options[userAnswers[i]] || '未作答';
+                const correctAnswerText = topics[i].options[topics[i].answer];
 
                 html += `
-                    <div class="photo-ans-group summary-group ${topics[i].tclass}" style="margin-bottom: ${i === 2 || i === 5 ? '20px' : '24px'};">
-                        <div style="flex:1; min-width: 0;">
-                            <h3 class="topic-title mb-2"><span class="qnum">${i + 1}</span>${topics[i].title}</h3>
-                            <div class="text-gray-800 mb-2 text-sm leading-relaxed">${topics[i].question}</div>
-                            <div class="mb-1 text-sm">你的答案：<span style="font-weight:600;color:${userAnswers[i] === topics[i].answer ? '#15803d' : '#dc2626'}">${topics[i].options[userAnswers[i] || 0] || '未作答'}</span></div>
-                            <div class="mb-1 text-sm">正確答案：<span style="font-weight:600;">${topics[i].options[topics[i].answer]}</span></div>
-                            <div class="mb-1 text-gray-600 text-sm leading-relaxed">${topics[i].explanation}</div>
+                    <div class="pdf-question-card">
+                        <div class="pdf-question-header">
+                            <div class="pdf-question-number">${i + 1}</div>
+                            <div class="pdf-question-title">${topics[i].title}</div>
                         </div>
-                        ${photos[i] ? `<div style="flex-shrink: 0;"><img src="${photos[i]}" class="pdf-photo" style="width: 140px; height: 105px; object-fit: contain; border: 1px solid #d1d5db;"></div>` : "<div class='text-xs text-gray-400 italic flex-shrink-0' style='width: 140px; text-align: center; padding: 20px;'>（未上傳照片）</div>"}
+                        
+                        <div class="pdf-question-text">${topics[i].question}</div>
+                        
+                        <div class="pdf-answer-section">
+                            <div class="pdf-answer-content">
+                                <div class="pdf-answer-item">
+                                    <span class="pdf-answer-label">你的答案：</span>
+                                    <span class="${isCorrect ? 'pdf-correct-answer' : 'pdf-wrong-answer'}">${userAnswerText}</span>
+                                </div>
+                                
+                                <div class="pdf-answer-item">
+                                    <span class="pdf-answer-label">正確答案：</span>
+                                    <span class="pdf-correct-answer">${correctAnswerText}</span>
+                                </div>
+                                
+                                <div class="pdf-explanation">
+                                    <strong>💡 解析：</strong>${topics[i].explanation}
+                                </div>
+                            </div>
+                            
+                            <div class="pdf-photo-container">
+                                ${photos[i] ?
+                        `<img src="${photos[i]}" class="pdf-photo-final" alt="學習照片">` :
+                        `<div class="pdf-no-photo">📷<br>未上傳照片</div>`
+                    }
+                            </div>
+                        </div>
                     </div>
                 `;
             }
+
             document.getElementById('summary-content').innerHTML = html;
         }
 
@@ -703,8 +1105,70 @@
             renderTopic();
         }
 
+        // 更新進度條
+        function updateProgressBar() {
+            const completedQuestions = userAnswers.filter(answer => answer !== null).length;
+            const completedPhotos = photos.filter(photo => photo !== null).length;
+            const totalProgress = (completedQuestions + completedPhotos) / (topics.length * 2) * 100;
+
+            document.getElementById('progress-bar').style.width = totalProgress + '%';
+        }
+
+        // 添加成功動畫效果
+        function showSuccessAnimation() {
+            const confetti = document.createElement('div');
+            confetti.innerHTML = '🎉';
+            confetti.style.position = 'fixed';
+            confetti.style.fontSize = '2rem';
+            confetti.style.zIndex = '9999';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-50px';
+            confetti.style.animation = 'confetti 3s ease-out forwards';
+            document.body.appendChild(confetti);
+
+            setTimeout(() => confetti.remove(), 3000);
+        }
+
+        // 添加 confetti 動畫
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes confetti {
+                to {
+                    transform: translateY(100vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+            
+            .shake {
+                animation: shake 0.5s ease-in-out;
+            }
+            
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+            
+            .bounce-in {
+                animation: bounceIn 0.6s ease-out;
+            }
+            
+            @keyframes bounceIn {
+                0% { transform: scale(0.3); opacity: 0; }
+                50% { transform: scale(1.05); }
+                70% { transform: scale(0.9); }
+                100% { transform: scale(1); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
         window.onload = function () {
             renderTopic();
+
+            // 添加歡迎動畫
+            setTimeout(() => {
+                document.querySelector('.glass-card').classList.add('bounce-in');
+            }, 200);
         }
     </script>
 </body>
