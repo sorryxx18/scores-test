@@ -951,68 +951,109 @@
             const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
 
             let html = `
-                <!-- PDF 標題頁 -->
-                <div class="pdf-header">
-                    <div class="pdf-title">🛡️ 國家防災日學習成果報告</div>
-                    <div class="pdf-subtitle">台北市政府消防局</div>
-                    <div style="margin-top: 15px; font-size: 14px; color: #6b7280;">
-                        完成時間：${new Date().toLocaleDateString('zh-TW')} ${new Date().toLocaleTimeString('zh-TW')}
+                <!-- 第 1 頁：標題 + 前 3 題 -->
+                <div style="padding: 20px 0;">
+                    <!-- 緊湊標題 -->
+                    <div style="text-align: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #667eea;">
+                        <div style="font-size: 18px; font-weight: bold; color: #1e40af; margin-bottom: 4px;">🛡️ 國家防災日學習成果</div>
+                        <div style="font-size: 12px; color: #6b7280;">台北市政府消防局</div>
+                        <div style="margin-top: 8px; font-size: 11px; color: #6b7280;">
+                            ${new Date().toLocaleDateString('zh-TW')} | 成績：${correctCount}/${totalQuestions} (${scorePercentage}%)
+                        </div>
                     </div>
-                    <div style="margin-top: 10px; padding: 10px; background: #f0f9ff; border-radius: 8px; display: inline-block;">
-                        <span style="font-size: 16px; font-weight: 600; color: #0c4a6e;">
-                            總成績：${correctCount}/${totalQuestions} 題正確 (${scorePercentage}%)
-                        </span>
-                    </div>
-                </div>
             `;
 
-            // 每頁放 2 題，確保版面整齊
-            for (let i = 0; i < topics.length; i++) {
-                // 每 2 題換頁（除了第一頁）
-                if (i > 0 && i % 2 === 0) {
-                    html += `<div class="pdf-page"></div>`;
-                }
-
+            // 第 1 頁：前 3 題
+            for (let i = 0; i < 3; i++) {
                 const isCorrect = userAnswers[i] === topics[i].answer;
                 const userAnswerText = topics[i].options[userAnswers[i]] || '未作答';
                 const correctAnswerText = topics[i].options[topics[i].answer];
 
                 html += `
-                    <div class="pdf-question-card">
-                        <div class="pdf-question-header">
-                            <div class="pdf-question-number">${i + 1}</div>
-                            <div class="pdf-question-title">${topics[i].title}</div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 12px; page-break-inside: avoid;">
+                        <!-- 題目標題 -->
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 8px; font-size: 12px;">${i + 1}</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #1e40af;">${topics[i].title}</div>
                         </div>
                         
-                        <div class="pdf-question-text">${topics[i].question}</div>
+                        <!-- 題目內容 -->
+                        <div style="font-size: 11px; line-height: 1.4; color: #374151; margin-bottom: 8px;">${topics[i].question}</div>
                         
-                        <div class="pdf-answer-section">
-                            <div class="pdf-answer-content">
-                                <div class="pdf-answer-item">
-                                    <span class="pdf-answer-label">你的答案：</span>
-                                    <span class="${isCorrect ? 'pdf-correct-answer' : 'pdf-wrong-answer'}">${userAnswerText}</span>
+                        <!-- 答案和照片區域 -->
+                        <div style="display: flex; gap: 10px; align-items: flex-start;">
+                            <div style="flex: 1;">
+                                <div style="margin-bottom: 4px; font-size: 10px;">
+                                    <span style="font-weight: 600; color: #4b5563;">你的答案：</span>
+                                    <span style="color: ${isCorrect ? '#059669' : '#dc2626'}; font-weight: 600;">${userAnswerText}</span>
                                 </div>
-                                
-                                <div class="pdf-answer-item">
-                                    <span class="pdf-answer-label">正確答案：</span>
-                                    <span class="pdf-correct-answer">${correctAnswerText}</span>
+                                <div style="margin-bottom: 6px; font-size: 10px;">
+                                    <span style="font-weight: 600; color: #4b5563;">正確答案：</span>
+                                    <span style="color: #059669; font-weight: 600;">${correctAnswerText}</span>
                                 </div>
-                                
-                                <div class="pdf-explanation">
-                                    <strong>💡 解析：</strong>${topics[i].explanation}
+                                <div style="background: #f0f9ff; border-left: 3px solid #0ea5e9; padding: 6px; font-size: 10px; line-height: 1.3; color: #0c4a6e;">
+                                    <strong>💡</strong> ${topics[i].explanation}
                                 </div>
                             </div>
-                            
-                            <div class="pdf-photo-container">
+                            <div style="flex-shrink: 0; width: 80px; text-align: center;">
                                 ${photos[i] ?
-                        `<img src="${photos[i]}" class="pdf-photo-final" alt="學習照片">` :
-                        `<div class="pdf-no-photo">📷<br>未上傳照片</div>`
+                        `<img src="${photos[i]}" style="width: 80px; height: 60px; object-fit: contain; border: 1px solid #d1d5db; border-radius: 4px; background: white;">` :
+                        `<div style="width: 80px; height: 60px; border: 1px dashed #d1d5db; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #f9fafb; color: #9ca3af; font-size: 9px;">📷<br>未上傳</div>`
                     }
                             </div>
                         </div>
                     </div>
                 `;
             }
+
+            html += `</div><div class="pdf-page"></div>`;
+
+            // 第 2 頁：後 3 題
+            html += `<div style="padding: 20px 0;">`;
+
+            for (let i = 3; i < 6; i++) {
+                const isCorrect = userAnswers[i] === topics[i].answer;
+                const userAnswerText = topics[i].options[userAnswers[i]] || '未作答';
+                const correctAnswerText = topics[i].options[topics[i].answer];
+
+                html += `
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 12px; page-break-inside: avoid;">
+                        <!-- 題目標題 -->
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 8px; font-size: 12px;">${i + 1}</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #1e40af;">${topics[i].title}</div>
+                        </div>
+                        
+                        <!-- 題目內容 -->
+                        <div style="font-size: 11px; line-height: 1.4; color: #374151; margin-bottom: 8px;">${topics[i].question}</div>
+                        
+                        <!-- 答案和照片區域 -->
+                        <div style="display: flex; gap: 10px; align-items: flex-start;">
+                            <div style="flex: 1;">
+                                <div style="margin-bottom: 4px; font-size: 10px;">
+                                    <span style="font-weight: 600; color: #4b5563;">你的答案：</span>
+                                    <span style="color: ${isCorrect ? '#059669' : '#dc2626'}; font-weight: 600;">${userAnswerText}</span>
+                                </div>
+                                <div style="margin-bottom: 6px; font-size: 10px;">
+                                    <span style="font-weight: 600; color: #4b5563;">正確答案：</span>
+                                    <span style="color: #059669; font-weight: 600;">${correctAnswerText}</span>
+                                </div>
+                                <div style="background: #f0f9ff; border-left: 3px solid #0ea5e9; padding: 6px; font-size: 10px; line-height: 1.3; color: #0c4a6e;">
+                                    <strong>💡</strong> ${topics[i].explanation}
+                                </div>
+                            </div>
+                            <div style="flex-shrink: 0; width: 80px; text-align: center;">
+                                ${photos[i] ?
+                        `<img src="${photos[i]}" style="width: 80px; height: 60px; object-fit: contain; border: 1px solid #d1d5db; border-radius: 4px; background: white;">` :
+                        `<div style="width: 80px; height: 60px; border: 1px dashed #d1d5db; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: #f9fafb; color: #9ca3af; font-size: 9px;">📷<br>未上傳</div>`
+                    }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
 
             document.getElementById('summary-content').innerHTML = html;
         }
