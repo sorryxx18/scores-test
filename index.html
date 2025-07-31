@@ -7,440 +7,192 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
+            font-family: 'Microsoft JhengHei', sans-serif;
         }
-        
-        /* 動態背景粒子效果 */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .particle:nth-child(1) { width: 80px; height: 80px; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 60px; height: 60px; left: 20%; animation-delay: 1s; }
-        .particle:nth-child(3) { width: 40px; height: 40px; left: 30%; animation-delay: 2s; }
-        .particle:nth-child(4) { width: 100px; height: 100px; left: 40%; animation-delay: 3s; }
-        .particle:nth-child(5) { width: 50px; height: 50px; left: 50%; animation-delay: 4s; }
-        .particle:nth-child(6) { width: 70px; height: 70px; left: 60%; animation-delay: 5s; }
-        .particle:nth-child(7) { width: 30px; height: 30px; left: 70%; animation-delay: 1.5s; }
-        .particle:nth-child(8) { width: 90px; height: 90px; left: 80%; animation-delay: 2.5s; }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-        }
-        
-        .main-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-        }
-        
-        .glass-card {
+        .main-container {
+            max-width: 900px;
+            margin: 20px auto;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            position: relative;
-            z-index: 10;
-            animation: slideInUp 0.8s ease-out;
-        }
-        
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .card-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-        }
-        
-        .card-3d:hover {
-            transform: rotateY(5deg) rotateX(5deg);
-        }
-        
-        .progress-container {
-            background: rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 4px;
-            margin: 20px 0;
-            backdrop-filter: blur(10px);
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
-        
-        .progress-bar {
-            height: 8px;
-            background: linear-gradient(90deg, #10b981, #34d399, #6ee7b7);
-            border-radius: 16px;
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        .topic-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
         }
-        
-        .topic-icon {
-            width: 60px;
-            height: 60px;
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option-btn:hover {
+            border-color: #667eea;
+            background: #f0f9ff;
+        }
+        .option-btn.selected {
+            border-color: #667eea;
+            background: #eff6ff;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .stepper-item {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-right: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .topic-1 .topic-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-        .topic-2 .topic-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .topic-3 .topic-icon { background: linear-gradient(135deg, #10b981, #047857); }
-        .topic-4 .topic-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        .topic-5 .topic-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .topic-6 .topic-icon { background: linear-gradient(135deg, #ec4899, #be185d); }
-    </style>
-</head>   
-     .pdf-photo {
-            width: 160px;
-            height: 120px;
-            object-fit: contain;
-            border-radius: 12px;
-            margin-left: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            border: 2px solid #e5e7eb;
-            background: #fff;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .camera-controls {
-            display: flex;
-            gap: 12px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-        
-        .camera-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
+            margin: 0 8px;
+            font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
-        
-        .camera-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        .stepper-item.active {
+            background: #667eea;
+            color: white;
         }
-        
+        .stepper-item.completed {
+            background: #10b981;
+            color: white;
+        }
+        .stepper-item.pending {
+            background: white;
+            color: #6b7280;
+            border: 2px solid #d1d5db;
+        }
+        .photo-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 16px 0;
+        }
+        .photo-preview {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #10b981, #34d399);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        #summary-area {
+            display: none;
+        }
         #camera-modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            display: none;
+            z-index: 1000;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
         }
-        
         .camera-container {
             background: white;
             padding: 20px;
-            border-radius: 16px;
+            border-radius: 12px;
+            text-align: center;
             max-width: 90vw;
             max-height: 90vh;
-            text-align: center;
         }
-        
         #camera-video {
             max-width: 100%;
             max-height: 60vh;
             border-radius: 8px;
-            transform: none;
-            transform-origin: center;
         }
-        
-        @media (orientation: portrait) {
-            #camera-video { transform: none; }
-        }
-        
-        @media (orientation: landscape) {
-            #camera-video { transform: none; }
-        }
-        
         #camera-canvas {
             display: none;
         }
-        
-        .photo-ans-group {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 32px;
-            padding: 24px;
-            gap: 24px;
-            page-break-inside: avoid;
-            break-inside: avoid;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        .photo-ans-group:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        }
-        
-        .topic-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            margin-bottom: 16px;
-        }
-        
-        .topic-1 {
-            border-left: 6px solid #3b82f6;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.1));
-        }
-        .topic-1 .topic-title { color: #1d4ed8; }
-        
-        .topic-2 {
-            border-left: 6px solid #f59e0b;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(252, 211, 77, 0.1));
-        }
-        .topic-2 .topic-title { color: #d97706; }
-        
-        .topic-3 {
-            border-left: 6px solid #10b981;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(110, 231, 183, 0.1));
-        }
-        .topic-3 .topic-title { color: #047857; }
-        
-        .topic-4 {
-            border-left: 6px solid #ef4444;
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(252, 165, 165, 0.1));
-        }
-        .topic-4 .topic-title { color: #dc2626; }
-        
-        .topic-5 {
-            border-left: 6px solid #8b5cf6;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(196, 181, 253, 0.1));
-        }
-        .topic-5 .topic-title { color: #7c3aed; }
-        
-        .topic-6 {
-            border-left: 6px solid #ec4899;
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(251, 207, 232, 0.1));
-        }
-        .topic-6 .topic-title { color: #be185d; }
-        
-        .pdf-page { page-break-after: always; }
-        .pdf-page:last-child { page-break-after: auto; }
-        
-        #summary-area, #summary-content {
-            max-width: 900px;
-            margin: auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            box-sizing: border-box;
-            padding: 40px 32px;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        @media (max-width: 700px) {
-            #summary-area, #summary-content { padding: 20px 16px; }
-            .photo-ans-group { flex-direction: column; padding: 20px; }
-            .pdf-photo { margin-left: 0; margin-top: 16px; width: 100%; max-width: 300px; }
-        }
-        
-        .qnum {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            border-radius: 12px;
-            font-weight: 600;
-            padding: 8px 16px;
-            margin-right: 12px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            font-size: 0.9rem;
-        }
-        
-        .summary-group { margin-bottom: 40px; }
-        .page-break { page-break-after: always; }
-        
-        .stepper-item {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .stepper-item.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .option-btn {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-        
-        .option-btn:hover {
-            background: rgba(102, 126, 234, 0.1);
-            border-color: rgba(102, 126, 234, 0.3);
-            transform: translateX(4px);
-        }
-        
-        .option-btn.selected {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
-            border-color: #667eea;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
-        }
-        
-        .nav-btn {
-            transition: all 0.3s ease;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .nav-btn.primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .nav-btn.primary:hover {
-            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
-        }
-        
-        .file-input {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border: 2px dashed rgba(102, 126, 234, 0.3);
-            border-radius: 12px;
-            padding: 12px;
-            transition: all 0.3s ease;
-        }
-        
-        .file-input:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
-        }
-        
-        .explanation-text {
-            background: rgba(16, 185, 129, 0.1);
-            border-left: 4px solid #10b981;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-top: 12px;
-        }
-        
-        .main-title {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
     </style>
-</head><body
- class="min-h-screen flex flex-col items-center justify-center">
-    <!-- 動態背景粒子 -->
-    <div class="particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+</head>
+<body>
+    <div class="main-container">
+        <div id="main-quiz">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; font-weight: bold; color: #1e40af; margin-bottom: 10px;">
+                    🛡️ 國家防災日 學習成果
+                </h1>
+                <p style="color: #6b7280; font-size: 1.1rem;">請完成六大主題問題與照片，最後匯出專屬成果 PDF</p>
+            </div>
+            
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
+            </div>
+            
+            <div id="stepper" style="display: flex; justify-content: center; margin-bottom: 30px;"></div>
+            
+            <div id="quiz-content"></div>
+        </div>
     </div>
 
-    <div id="main" class="w-full max-w-4xl mx-auto glass-card card-3d rounded-3xl mt-8 p-8">
-        <div class="flex flex-col items-center mb-6">
-            <div class="text-4xl mb-4">🛡️</div>
-            <h1 class="text-4xl font-bold text-center mb-4 main-title">國家防災日 學習成果</h1>
-        </div>
-        <p class="text-center text-gray-600 mb-6 text-lg">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
-        
-        <!-- 進度條 -->
-        <div class="progress-container">
-            <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
-        </div>
-        
-        <div id="stepper" class="flex items-center justify-center mb-8"></div>
-        <div id="topic-area"></div>
-    </div>
-
-    <!-- 學習成果總覽 -->
-    <div id="summary-area" style="display:none;">
-        <div class="flex flex-col items-center mb-6">
-            <div class="text-3xl font-bold text-blue-800 mb-4 main-bg p-3 rounded-xl" style="color:#fff;letter-spacing:2px;">學習成果總覽</div>
-            <div class="text-gray-700 mb-2 text-lg" style="letter-spacing:1px;">台北市政府消防局 國家防災日</div>
-        </div>
+    <div id="summary-area" class="main-container">
+        <h2 style="text-align: center; color: #1e40af; margin-bottom: 30px; font-size: 2rem;">學習成果總覽</h2>
         <div id="summary-content"></div>
-        <button onclick="downloadPDF()" class="nav-btn primary mt-8 w-full text-white py-4 rounded-xl text-lg font-bold">📄 匯出學習成果 PDF</button>
-        <button onclick="location.reload()" class="nav-btn mt-4 w-full bg-gray-200 text-gray-700 py-3 rounded-xl hover:bg-gray-300">🔄 重新填寫</button>
+        <button onclick="downloadPDF()" class="btn btn-primary" style="width: 100%; margin-top: 20px; font-size: 1.1rem;">
+            📄 匯出學習成果 PDF
+        </button>
+        <button onclick="location.reload()" class="btn" style="width: 100%; margin-top: 10px; background: #f3f4f6;">
+            🔄 重新填寫
+        </button>
     </div>
 
-    <!-- 拍照模態框 -->
     <div id="camera-modal">
         <div class="camera-container">
-            <h3 class="text-xl font-bold mb-4">📷 拍攝照片</h3>
+            <h3 style="margin-bottom: 15px;">📷 拍攝照片</h3>
             <video id="camera-video" autoplay playsinline></video>
             <canvas id="camera-canvas"></canvas>
-            <div class="mt-4 flex gap-3 justify-center">
-                <button onclick="capturePhoto()" class="camera-btn">📸 拍照</button>
-                <button onclick="closeCameraModal()" class="camera-btn" style="background: #ef4444;">❌ 取消</button>
+            <div style="margin-top: 15px;">
+                <button onclick="capturePhoto()" class="btn btn-primary">📸 拍照</button>
+                <button onclick="closeCameraModal()" class="btn" style="background: #ef4444; color: white; margin-left: 10px;">❌ 取消</button>
             </div>
         </div>
-    </div>    <s
-cript>
+    </div>
+
+    <script>
         const topics = [
             {
                 title: "防災學習主題區",
-                tclass: "topic-1",
                 question: "當面臨突發地震時，下列哪一項不是正確的避難應變方式？",
                 options: [
                     "A. 就地尋找堅固桌椅下方蹲下掩護",
@@ -453,7 +205,6 @@ cript>
             },
             {
                 title: "市府災害防救宣導主題區",
-                tclass: "topic-2",
                 question: "臺北市政府在災害發生後，為協助民眾災後復原，下列哪一項不是市府單位可以提供的協助？",
                 options: [
                     "A. 災害損失稅捐減免",
@@ -466,7 +217,6 @@ cript>
             },
             {
                 title: "環境永續主題區",
-                tclass: "topic-3",
                 question: "為了達到環境永續，下列哪一種日常行為最有助於減緩全球暖化及減少碳排放？",
                 options: [
                     "A. 多搭乘大眾運輸工具取代開車",
@@ -479,7 +229,6 @@ cript>
             },
             {
                 title: "多元國際主題區",
-                tclass: "topic-4",
                 question: "國家防災日活動邀請多國團體共同參與，這麼做的主要目的是什麼？",
                 options: [
                     "A. 讓大家比賽誰的防災知識最強",
@@ -492,7 +241,6 @@ cript>
             },
             {
                 title: "國軍守護主題區",
-                tclass: "topic-5",
                 question: "關於國軍在天然災害中的角色，下列哪一項描述最正確？",
                 options: [
                     "A. 國軍僅負責戰爭時期的軍事行動，平時不參與災害救援",
@@ -505,7 +253,6 @@ cript>
             },
             {
                 title: "防災體驗主題區",
-                tclass: "topic-6",
                 question: "參加「地震求生72小時」體驗活動，學習的最重要核心觀念為何？",
                 options: [
                     "A. 只要有手機就不用準備其他物資",
@@ -518,318 +265,215 @@ cript>
             }
         ];
 
-        let current = 0;
+        let currentQuestion = 0;
         let userAnswers = Array(topics.length).fill(null);
         let photos = Array(topics.length).fill(null);
 
+        function updateProgress() {
+            const answeredQuestions = userAnswers.filter(a => a !== null).length;
+            const uploadedPhotos = photos.filter(p => p !== null).length;
+            const totalProgress = (answeredQuestions + uploadedPhotos) / (topics.length * 2) * 100;
+            document.getElementById('progress-fill').style.width = totalProgress + '%';
+        }
+
         function renderStepper() {
-            let html = "";
+            let html = '';
             for (let i = 0; i < topics.length; i++) {
-                const isActive = current === i;
-                const isCompleted = userAnswers[i] !== null;
-                html += `<div class="stepper-item w-10 h-10 rounded-full flex items-center justify-center font-bold mx-2 ${
-                    isActive ? 'active text-white' : 
-                    isCompleted ? 'bg-green-500 text-white' : 
-                    'bg-white text-gray-600 border-2 border-gray-300'
-                }">${i + 1}</div>`;
+                const isActive = currentQuestion === i;
+                const isCompleted = userAnswers[i] !== null && photos[i] !== null;
+                const className = isActive ? 'active' : isCompleted ? 'completed' : 'pending';
+                html += `<div class="stepper-item ${className}">${i + 1}</div>`;
             }
             document.getElementById('stepper').innerHTML = html;
         }
 
-        function renderTopic() {
-            renderStepper();
-            const t = topics[current];
-            let photoPreview = photos[current] ? 
-                `<img src="${photos[current]}" class="pdf-photo my-2" id="photo-prev-${current}">` : 
-                `<img src="" class="pdf-photo my-2 hidden" id="photo-prev-${current}">`;
+        function renderQuestion() {
+            const topic = topics[currentQuestion];
+            let optionsHtml = '';
             
-            let options = "";
-            for(let i = 0; i < 4; i++){
-                let selected = userAnswers[current] === i ? 'selected' : '';
-                options += `<button onclick="chooseAnswer(${i})" class="option-btn block w-full text-left rounded-xl px-6 py-4 my-3 ${selected}">${t.options[i]}</button>`;
+            for (let i = 0; i < topic.options.length; i++) {
+                const selected = userAnswers[currentQuestion] === i ? 'selected' : '';
+                optionsHtml += `<button class="option-btn ${selected}" onclick="selectAnswer(${i})">${topic.options[i]}</button>`;
             }
 
-            // 獲取主題圖標
-            const topicIcons = ['🏠', '🏛️', '🌱', '🌍', '⚔️', '🎯'];
-            
-            document.getElementById('topic-area').innerHTML = `
-                <div class="${t.tclass} photo-ans-group">
-                    <div class="topic-icon">
-                        ${topicIcons[current]}
+            const photoDisplay = photos[currentQuestion] ? 
+                `<img src="${photos[currentQuestion]}" class="photo-preview" style="display: block; margin: 10px auto;">` : 
+                '<div style="color: #9ca3af; font-style: italic; margin: 10px 0;">尚未上傳照片</div>';
+
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="topic-card">
+                    <h3 style="color: #1e40af; font-size: 1.3rem; margin-bottom: 15px;">
+                        ${currentQuestion + 1}. ${topic.title}
+                    </h3>
+                    <p style="margin-bottom: 20px; line-height: 1.6; font-size: 1.05rem;">${topic.question}</p>
+                    ${optionsHtml}
+                    <div id="explanation" style="margin-top: 15px; min-height: 20px;"></div>
+                    
+                    <div class="photo-area">
+                        <p style="margin-bottom: 15px; font-weight: 600; color: #374151;">📸 上傳學習照片</p>
+                        <input type="file" accept="image/*" onchange="uploadPhoto(event)" style="margin-bottom: 15px;">
+                        <div>
+                            <button onclick="openCamera()" class="btn" style="background: #10b981; color: white; margin-right: 10px;">📷 即時拍照</button>
+                            ${photos[currentQuestion] ? '<button onclick="removePhoto()" class="btn" style="background: #ef4444; color: white;">🗑️ 移除照片</button>' : ''}
+                        </div>
+                        ${photoDisplay}
                     </div>
-                    <div style="flex:1;">
-                        <h2 class="topic-title mb-1"><span class="qnum">${current + 1}</span>${t.title}</h2>
-                        <div class="text-gray-800 mb-3">${t.question}</div>
-                        <div id="options">${options}</div>
-                        <div id="explanation" class="text-green-600 font-semibold mt-2 mb-2" style="min-height:1.8em"></div>
-                        <div class="mt-6">
-                            <label class="font-semibold text-gray-700 block mb-3">📸 上傳照片（JPG/PNG，建議橫式）</label>
-                            <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="file-input block w-full mb-3">
-                            <div class="camera-controls">
-                                <button onclick="openCameraModal(${current})" class="camera-btn">📷 即時拍照</button>
-                                ${photos[current] ? `<button onclick="removePhoto(${current})" class="camera-btn" style="background: #ef4444;">🗑️ 移除照片</button>` : ''}
-                            </div>
-                            ${photoPreview}
-                        </div>
-                        <div class="mt-8 flex justify-between gap-4">
-                            <button ${current === 0 ? 'disabled' : ''} onclick="prevTopic()" class="nav-btn px-6 py-3 bg-gray-200 text-gray-700 rounded-xl ${current === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'}">← 上一題</button>
-                            <button onclick="nextTopic()" class="nav-btn primary px-6 py-3 text-white rounded-xl">${current < topics.length - 1 ? '下一題 →' : '完成 ✓'}</button>
-                        </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 25px;">
+                        <button onclick="prevQuestion()" ${currentQuestion === 0 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''} class="btn" style="background: #f3f4f6;">← 上一題</button>
+                        <button onclick="nextQuestion()" class="btn btn-primary">${currentQuestion === topics.length - 1 ? '完成測驗 ✓' : '下一題 →'}</button>
                     </div>
                 </div>
             `;
             
-            // 更新進度條
-            updateProgressBar();
-
-            if(userAnswers[current] != null){
-                showExplanation();
-            }
-            if(photos[current]){
-                document.getElementById(`photo-prev-${current}`).classList.remove('hidden');
-            }
-        }
-
-        function chooseAnswer(idx){
-            userAnswers[current] = idx;
+            renderStepper();
+            updateProgress();
             showExplanation();
-            renderTopic();
         }
 
-        function showExplanation(){
-            let idx = userAnswers[current];
-            let correct = topics[current].answer;
-            let html = '';
-            if(idx !== null){
-                const isCorrect = idx === correct;
-                html = `<div class="explanation-text ${isCorrect ? 'bg-green-50 border-green-400 text-green-800' : 'bg-red-50 border-red-400 text-red-800'}">
-                    <div class="font-semibold mb-2">${isCorrect ? "✔️ 答對了！" : "❌ 答錯了。"}</div>
-                    <div>${topics[current].explanation}</div>
-                </div>`;
-            }
-            document.getElementById('explanation').innerHTML = html;
+        function selectAnswer(index) {
+            userAnswers[currentQuestion] = index;
+            renderQuestion();
         }
 
-        function uploadPhoto(e, topicIdx){
-            const file = e.target.files[0];
-            if(!file) return;
-            if(!file.type.startsWith("image/")) return alert("僅支援圖片檔！");
-            
-            const reader = new FileReader();
-            reader.onload = function(ev){
-                photos[topicIdx] = ev.target.result;
-                renderTopic();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function prevTopic(){
-            if(current > 0){
-                current--;
-                renderTopic();
+        function showExplanation() {
+            const explanationDiv = document.getElementById('explanation');
+            if (userAnswers[currentQuestion] !== null) {
+                const isCorrect = userAnswers[currentQuestion] === topics[currentQuestion].answer;
+                const icon = isCorrect ? '✅' : '❌';
+                const color = isCorrect ? '#059669' : '#dc2626';
+                const bgColor = isCorrect ? '#f0fdf4' : '#fef2f2';
+                const text = isCorrect ? '答對了！' : '答錯了。';
+                explanationDiv.innerHTML = `
+                    <div style="background: ${bgColor}; border-left: 4px solid ${color}; padding: 15px; border-radius: 6px;">
+                        <div style="color: ${color}; font-weight: 600; margin-bottom: 8px;">${icon} ${text}</div>
+                        <div style="line-height: 1.5;">${topics[currentQuestion].explanation}</div>
+                    </div>
+                `;
+            } else {
+                explanationDiv.innerHTML = '';
             }
         }
 
-        function nextTopic(){
-            // 檢查是否已回答問題
-            if (userAnswers[current] === null) {
+        function uploadPhoto(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photos[currentQuestion] = e.target.result;
+                    renderQuestion();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removePhoto() {
+            photos[currentQuestion] = null;
+            renderQuestion();
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestion] === null) {
                 alert('請先回答問題再進入下一題！');
                 return;
             }
-            
-            // 檢查是否已上傳照片
-            if (photos[current] === null) {
+            if (photos[currentQuestion] === null) {
                 alert('請先上傳照片再進入下一題！');
                 return;
             }
             
-            if(current < topics.length - 1){
-                current++;
-                renderTopic();
+            if (currentQuestion < topics.length - 1) {
+                currentQuestion++;
+                renderQuestion();
             } else {
                 showSummary();
             }
-        }        
-function showSummary() {
-            document.getElementById('main').style.display = "none";
-            document.getElementById('summary-area').style.display = "block";
+        }
 
-            // 計算答對題數
+        function showSummary() {
+            document.getElementById('main-quiz').parentElement.style.display = 'none';
+            document.getElementById('summary-area').style.display = 'block';
+            
             const correctCount = userAnswers.filter((answer, index) => answer === topics[index].answer).length;
-            const totalQuestions = topics.length;
-            const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
-
-            let html = `
-                <!-- 實用的直式單頁版面 -->
-                <div style="
-                    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-                    padding: 12px;
-                    min-height: 100vh;
-                ">
-                    <!-- 精簡標題 -->
-                    <div style="
-                        text-align: center; 
-                        margin-bottom: 12px; 
-                        padding: 8px; 
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        border-radius: 6px;
-                        color: white;
-                    ">
-                        <div style="font-size: 16px; font-weight: bold;">🛡️ 國家防災日學習成果</div>
-                        <div style="font-size: 11px; margin-top: 2px;">
-                            ${new Date().toLocaleDateString('zh-TW')} | 成績：${correctCount}/${totalQuestions} 題 (${scorePercentage}%)
-                        </div>
-                    </div>
-                    
-                    <!-- 直式排列 - 每題一行，充分利用空間 -->
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
+            const percentage = Math.round((correctCount / topics.length) * 100);
+            
+            let summaryHtml = `
+                <div style="text-align: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px;">
+                    <h3 style="margin: 0 0 8px 0; font-size: 1.8rem;">🛡️ 國家防災日學習成果</h3>
+                    <p style="margin: 0 0 8px 0; font-size: 1.1rem;">台北市政府消防局</p>
+                    <p style="margin: 0; opacity: 0.9;">${new Date().toLocaleDateString('zh-TW')} | 成績：${correctCount}/${topics.length} 題正確 (${percentage}%)</p>
+                </div>
             `;
-
-            // 生成所有 6 題，使用直式排列，字體更大更易讀
+            
             for (let i = 0; i < topics.length; i++) {
                 const isCorrect = userAnswers[i] === topics[i].answer;
-                const userAnswerText = topics[i].options[userAnswers[i]] || '未作答';
-                const correctAnswerText = topics[i].options[topics[i].answer];
+                const userAnswer = topics[i].options[userAnswers[i]];
+                const correctAnswer = topics[i].options[topics[i].answer];
                 
-                // 每個主題的專屬色彩
-                const themeColors = [
-                    { bg: '#eff6ff', border: '#3b82f6', accent: '#1d4ed8' },
-                    { bg: '#fffbeb', border: '#f59e0b', accent: '#d97706' },
-                    { bg: '#ecfdf5', border: '#10b981', accent: '#047857' },
-                    { bg: '#fef2f2', border: '#ef4444', accent: '#dc2626' },
-                    { bg: '#f3e8ff', border: '#8b5cf6', accent: '#7c3aed' },
-                    { bg: '#fdf2f8', border: '#ec4899', accent: '#be185d' }
-                ];
-
-                html += `
-                    <div style="
-                        background: ${themeColors[i].bg}; 
-                        border: 2px solid ${themeColors[i].border}; 
-                        border-radius: 12px; 
-                        padding: 16px; 
-                        page-break-inside: avoid;
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                    ">
-                        <!-- 題目標題 -->
-                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <div style="
-                                background: linear-gradient(135deg, ${themeColors[i].border} 0%, ${themeColors[i].accent} 100%); 
-                                color: white; 
-                                width: 32px; 
-                                height: 32px; 
-                                border-radius: 50%; 
-                                display: flex; 
-                                align-items: center; 
-                                justify-content: center; 
-                                font-weight: bold; 
-                                margin-right: 10px; 
-                                font-size: 16px;
-                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-                            ">${i + 1}</div>
-                            <div style="font-size: 15px; font-weight: 600; color: ${themeColors[i].accent};">${topics[i].title}</div>
-                        </div>
-                        
-                        <!-- 題目內容 -->
-                        <div style="font-size: 13px; line-height: 1.5; color: #374151; margin-bottom: 10px; background: rgba(255, 255, 255, 0.8); padding: 8px; border-radius: 6px;">${topics[i].question}</div>
-                        
-                        <!-- 答案和照片區域 -->
-                        <div style="display: flex; gap: 12px; align-items: flex-start;">
+                summaryHtml += `
+                    <div style="border: 2px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 20px; background: white;">
+                        <div style="display: flex; gap: 20px; align-items: flex-start;">
                             <div style="flex: 1;">
-                                <!-- 答案區域 -->
-                                <div style="background: rgba(255, 255, 255, 0.6); padding: 8px; border-radius: 6px; margin-bottom: 8px;">
-                                    <div style="margin-bottom: 4px; font-size: 12px;">
-                                        <span style="font-weight: 600; color: #4b5563;">你的答案：</span>
-                                        <span style="color: ${isCorrect ? '#059669' : '#dc2626'}; font-weight: 600;">${userAnswerText}</span>
-                                    </div>
-                                    <div style="margin-bottom: 4px; font-size: 12px;">
-                                        <span style="font-weight: 600; color: #4b5563;">正確答案：</span>
-                                        <span style="color: #059669; font-weight: 600;">${correctAnswerText}</span>
-                                    </div>
+                                <h4 style="color: #1e40af; margin: 0 0 10px 0; font-size: 1.2rem;">
+                                    ${i + 1}. ${topics[i].title}
+                                </h4>
+                                <p style="margin: 0 0 15px 0; line-height: 1.6;">${topics[i].question}</p>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>你的答案：</strong>
+                                    <span style="color: ${isCorrect ? '#059669' : '#dc2626'}; font-weight: 600;">${userAnswer}</span>
                                 </div>
-                                
-                                <!-- 解析 -->
-                                <div style="
-                                    background: rgba(240, 249, 255, 0.9); 
-                                    border-left: 3px solid #0ea5e9; 
-                                    padding: 8px; 
-                                    font-size: 11px; 
-                                    line-height: 1.4; 
-                                    color: #0c4a6e; 
-                                    border-radius: 4px;
-                                ">
-                                    <strong>💡</strong> ${topics[i].explanation}
+                                <div style="margin-bottom: 15px;">
+                                    <strong>正確答案：</strong>
+                                    <span style="color: #059669; font-weight: 600;">${correctAnswer}</span>
+                                </div>
+                                <div style="background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 12px; border-radius: 6px;">
+                                    <strong>💡 解析：</strong>${topics[i].explanation}
                                 </div>
                             </div>
-                            
-                            <!-- 照片區域 -->
                             <div style="flex-shrink: 0;">
                                 ${photos[i] ? 
-                                    `<img src="${photos[i]}" style="
-                                        width: 180px; 
-                                        height: 135px; 
-                                        object-fit: contain; 
-                                        border: 2px solid ${themeColors[i].border}; 
-                                        border-radius: 8px; 
-                                        background: white;
-                                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                                    ">` : 
-                                    `<div style="
-                                        width: 180px; 
-                                        height: 135px; 
-                                        border: 2px dashed ${themeColors[i].border}; 
-                                        border-radius: 8px; 
-                                        display: flex; 
-                                        align-items: center; 
-                                        justify-content: center; 
-                                        background: rgba(255, 255, 255, 0.7); 
-                                        color: #9ca3af; 
-                                        font-size: 12px; 
-                                        text-align: center;
-                                    ">📷<br>未上傳照片</div>`
+                                    `<img src="${photos[i]}" style="width: 180px; height: 135px; object-fit: contain; border: 2px solid #e5e7eb; border-radius: 8px; background: white;">` : 
+                                    `<div style="width: 180px; height: 135px; border: 2px dashed #d1d5db; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #9ca3af; text-align: center; font-size: 0.9rem;">📷<br>未上傳照片</div>`
                                 }
                             </div>
                         </div>
                     </div>
                 `;
             }
-
-            html += `
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('summary-content').innerHTML = html;
+            
+            document.getElementById('summary-content').innerHTML = summaryHtml;
         }
 
         function downloadPDF() {
-            window.scrollTo(0, 0);
-            setTimeout(function () {
-                const summary = document.getElementById('summary-content');
-                html2pdf(summary, {
-                    margin: 0.4,
-                    filename: `國家防災日學習成果.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-                });
-            }, 120);
+            const element = document.getElementById('summary-content');
+            html2pdf(element, {
+                margin: 0.5,
+                filename: '國家防災日學習成果.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            });
         }
 
-        // 拍照相關功能
-        let currentCameraTopicIdx = 0;
+        // 拍照功能
         let cameraStream = null;
 
-        function openCameraModal(topicIdx) {
-            currentCameraTopicIdx = topicIdx;
+        function openCamera() {
             const modal = document.getElementById('camera-modal');
             const video = document.getElementById('camera-video');
             
             modal.style.display = 'flex';
             
-            // 請求攝影機權限
             navigator.mediaDevices.getUserMedia({ 
                 video: { 
-                    facingMode: 'environment', // 優先使用後鏡頭
+                    facingMode: 'environment',
                     width: { ideal: 1280 },
                     height: { ideal: 720 }
                 } 
@@ -839,8 +483,7 @@ function showSummary() {
                 video.srcObject = stream;
             })
             .catch(err => {
-                console.error('無法存取攝影機:', err);
-                alert('無法存取攝影機，請檢查權限設定或使用檔案上傳功能。');
+                alert('無法開啟攝影機，請使用檔案上傳功能');
                 closeCameraModal();
             });
         }
@@ -851,7 +494,6 @@ function showSummary() {
             
             modal.style.display = 'none';
             
-            // 停止攝影機串流
             if (cameraStream) {
                 cameraStream.getTracks().forEach(track => track.stop());
                 cameraStream = null;
@@ -864,96 +506,19 @@ function showSummary() {
             const canvas = document.getElementById('camera-canvas');
             const ctx = canvas.getContext('2d');
             
-            // 設定 canvas 尺寸
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-            
-            // 將影片畫面繪製到 canvas
             ctx.drawImage(video, 0, 0);
             
-            // 轉換為 base64
-            const photoData = canvas.toDataURL('image/jpeg', 0.8);
-            
-            // 儲存照片
-            photos[currentCameraTopicIdx] = photoData;
-            
-            // 關閉攝影機
+            photos[currentQuestion] = canvas.toDataURL('image/jpeg', 0.8);
             closeCameraModal();
-            
-            // 重新渲染當前題目
-            renderTopic();
+            renderQuestion();
         }
 
-        function removePhoto(topicIdx) {
-            photos[topicIdx] = null;
-            renderTopic();
-        }
-
-        // 更新進度條
-        function updateProgressBar() {
-            const completedQuestions = userAnswers.filter(answer => answer !== null).length;
-            const completedPhotos = photos.filter(photo => photo !== null).length;
-            const totalProgress = (completedQuestions + completedPhotos) / (topics.length * 2) * 100;
-            
-            document.getElementById('progress-bar').style.width = totalProgress + '%';
-        }
-
-        // 添加成功動畫效果
-        function showSuccessAnimation() {
-            const confetti = document.createElement('div');
-            confetti.innerHTML = '🎉';
-            confetti.style.position = 'fixed';
-            confetti.style.fontSize = '2rem';
-            confetti.style.zIndex = '9999';
-            confetti.style.left = Math.random() * window.innerWidth + 'px';
-            confetti.style.top = '-50px';
-            confetti.style.animation = 'confetti 3s ease-out forwards';
-            document.body.appendChild(confetti);
-            
-            setTimeout(() => confetti.remove(), 3000);
-        }
-
-        // 添加 confetti 動畫
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes confetti {
-                to {
-                    transform: translateY(100vh) rotate(720deg);
-                    opacity: 0;
-                }
-            }
-            
-            .shake {
-                animation: shake 0.5s ease-in-out;
-            }
-            
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-5px); }
-                75% { transform: translateX(5px); }
-            }
-            
-            .bounce-in {
-                animation: bounceIn 0.6s ease-out;
-            }
-            
-            @keyframes bounceIn {
-                0% { transform: scale(0.3); opacity: 0; }
-                50% { transform: scale(1.05); }
-                70% { transform: scale(0.9); }
-                100% { transform: scale(1); opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
-
-        window.onload = function () {
-            renderTopic();
-            
-            // 添加歡迎動畫
-            setTimeout(() => {
-                document.querySelector('.glass-card').classList.add('bounce-in');
-            }, 200);
-        }
+        // 初始化
+        window.onload = function() {
+            renderQuestion();
+        };
     </script>
 </body>
 </html>
