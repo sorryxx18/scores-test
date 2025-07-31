@@ -951,64 +951,179 @@
             const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
 
             let html = `
-                <!-- 美化的單頁版面 -->
+                <!-- 實用的直式單頁版面 -->
                 <div style="
-                    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 50%, #f0f9ff 100%);
+                    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                    padding: 12px;
                     min-height: 100vh;
-                    padding: 20px;
-                    position: relative;
-                    overflow: hidden;
                 ">
-                    <!-- 背景裝飾元素 -->
-                    <div style="
-                        position: absolute;
-                        top: -50px;
-                        right: -50px;
-                        width: 200px;
-                        height: 200px;
-                        background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
-                        border-radius: 50%;
-                    "></div>
-                    <div style="
-                        position: absolute;
-                        bottom: -100px;
-                        left: -100px;
-                        width: 300px;
-                        height: 300px;
-                        background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
-                        border-radius: 50%;
-                    "></div>
-                    
-                    <!-- 標題區域 -->
+                    <!-- 精簡標題 -->
                     <div style="
                         text-align: center; 
-                        margin-bottom: 20px; 
-                        padding: 15px 20px; 
+                        margin-bottom: 12px; 
+                        padding: 8px; 
                         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        border-radius: 12px;
+                        border-radius: 6px;
                         color: white;
-                        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
-                        position: relative;
-                        z-index: 10;
                     ">
-                        <div style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">🛡️ 國家防災日學習成果</div>
-                        <div style="font-size: 16px; opacity: 0.9;">台北市政府消防局</div>
-                        <div style="margin-top: 8px; font-size: 14px; opacity: 0.8;">
-                            ${new Date().toLocaleDateString('zh-TW')} | 成績：${correctCount}/${totalQuestions} 題正確 (${scorePercentage}%)
+                        <div style="font-size: 16px; font-weight: bold;">🛡️ 國家防災日學習成果</div>
+                        <div style="font-size: 11px; margin-top: 2px;">
+                            ${new Date().toLocaleDateString('zh-TW')} | 成績：${correctCount}/${totalQuestions} 題 (${scorePercentage}%)
                         </div>
                     </div>
                     
-                    <!-- 6 題內容區域 - 使用 3x2 網格佈局 -->
-                    <div style="
-                        display: grid; 
-                        grid-template-columns: repeat(3, 1fr); 
-                        gap: 15px; 
-                        position: relative;
-                        z-index: 10;
-                    ">
+                    <!-- 直式排列 - 每題一行，充分利用空間 -->
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
             `;
 
-            // 生成所有 6 題，使用 3x2 網格佈局
+            // 生成所有 6 題，使用直式排列，字體更大更易讀
+            for (let i = 0; i < topics.length; i++) {
+                const isCorrect = userAnswers[i] === topics[i].answer;
+                const userAnswerText = topics[i].options[userAnswers[i]] || '未作答';
+                const correctAnswerText = topics[i].options[topics[i].answer];
+
+                // 每個主題的專屬色彩
+                const themeColors = [
+                    { bg: '#eff6ff', border: '#3b82f6', accent: '#1d4ed8' },
+                    { bg: '#fffbeb', border: '#f59e0b', accent: '#d97706' },
+                    { bg: '#ecfdf5', border: '#10b981', accent: '#047857' },
+                    { bg: '#fef2f2', border: '#ef4444', accent: '#dc2626' },
+                    { bg: '#f3e8ff', border: '#8b5cf6', accent: '#7c3aed' },
+                    { bg: '#fdf2f8', border: '#ec4899', accent: '#be185d' }
+                ];
+
+                html += `
+                    <div style="
+                        background: ${themeColors[i].bg}; 
+                        border: 2px solid ${themeColors[i].border}; 
+                        border-radius: 12px; 
+                        padding: 16px; 
+                        page-break-inside: avoid;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                    ">
+                        <!-- 題目標題 -->
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <div style="
+                                background: linear-gradient(135deg, ${themeColors[i].border} 0%, ${themeColors[i].accent} 100%); 
+                                color: white; 
+                                width: 32px; 
+                                height: 32px; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center; 
+                                font-weight: bold; 
+                                margin-right: 10px; 
+                                font-size: 16px;
+                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                            ">${i + 1}</div>
+                            <div style="font-size: 15px; font-weight: 600; color: ${themeColors[i].accent};">${topics[i].title}</div>
+                        </div>
+                        
+                        <!-- 題目內容 -->
+                        <div style="font-size: 13px; line-height: 1.5; color: #374151; margin-bottom: 10px; background: rgba(255, 255, 255, 0.8); padding: 8px; border-radius: 6px;">${topics[i].question}</div>
+                        
+                        <!-- 答案和照片區域 -->
+                        <div style="display: flex; gap: 12px; align-items: flex-start;">
+                            <div style="flex: 1;">
+                                <!-- 答案區域 -->
+                                <div style="background: rgba(255, 255, 255, 0.6); padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+                                    <div style="margin-bottom: 4px; font-size: 12px;">
+                                        <span style="font-weight: 600; color: #4b5563;">你的答案：</span>
+                                        <span style="color: ${isCorrect ? '#059669' : '#dc2626'}; font-weight: 600;">${userAnswerText}</span>
+                                    </div>
+                                    <div style="margin-bottom: 4px; font-size: 12px;">
+                                        <span style="font-weight: 600; color: #4b5563;">正確答案：</span>
+                                        <span style="color: #059669; font-weight: 600;">${correctAnswerText}</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 解析 -->
+                                <div style="
+                                    background: rgba(240, 249, 255, 0.9); 
+                                    border-left: 3px solid #0ea5e9; 
+                                    padding: 8px; 
+                                    font-size: 11px; 
+                                    line-height: 1.4; 
+                                    color: #0c4a6e; 
+                                    border-radius: 4px;
+                                ">
+                                    <strong>💡</strong> ${topics[i].explanation}
+                                </div>
+                            </div>
+                            
+                            <!-- 照片區域 -->
+                            <div style="flex-shrink: 0;">
+                                ${photos[i] ?
+                        `<img src="${photos[i]}" style="
+                                        width: 180px; 
+                                        height: 135px; 
+                                        object-fit: contain; 
+                                        border: 2px solid ${themeColors[i].border}; 
+                                        border-radius: 8px; 
+                                        background: white;
+                                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                                    ">` :
+                        `<div style="
+                                        width: 180px; 
+                                        height: 135px; 
+                                        border: 2px dashed ${themeColors[i].border}; 
+                                        border-radius: 8px; 
+                                        display: flex; 
+                                        align-items: center; 
+                                        justify-content: center; 
+                                        background: rgba(255, 255, 255, 0.7); 
+                                        color: #9ca3af; 
+                                        font-size: 12px; 
+                                        text-align: center;
+                                    ">📷<br>未上傳照片</div>`
+                    }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('summary-content').innerHTML = html;
+            document.getElementById('summary-area').style.display = "block";
+
+            // 計算答對題數
+            const correctCount = userAnswers.filter((answer, index) => answer === topics[index].answer).length;
+            const totalQuestions = topics.length;
+            const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
+
+            let html = `
+                <!-- 實用的直式單頁版面 -->
+                <div style="
+                    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                    padding: 12px;
+                    min-height: 100vh;
+                ">
+                    <!-- 精簡標題 -->
+                    <div style="
+                        text-align: center; 
+                        margin-bottom: 12px; 
+                        padding: 8px; 
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        border-radius: 6px;
+                        color: white;
+                    ">
+                        <div style="font-size: 16px; font-weight: bold;">🛡️ 國家防災日學習成果</div>
+                        <div style="font-size: 11px; margin-top: 2px;">
+                            ${new Date().toLocaleDateString('zh-TW')} | 成績：${correctCount}/${totalQuestions} 題 (${scorePercentage}%)
+                        </div>
+                    </div>
+                    
+                    <!-- 直式排列 - 每題一行，充分利用空間 -->
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+            `;
+
+            // 生成所有 6 題，使用 2x3 網格佈局，字體更大更易讀
             for (let i = 0; i < topics.length; i++) {
                 const isCorrect = userAnswers[i] === topics[i].answer;
                 const userAnswerText = topics[i].options[userAnswers[i]] || '未作答';
