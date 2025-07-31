@@ -93,6 +93,14 @@
             max-width: 100%;
             max-height: 60vh;
             border-radius: 8px;
+            transform: rotate(90deg);
+            transform-origin: center;
+        }
+
+        @media (orientation: landscape) {
+            #camera-video {
+                transform: none;
+            }
         }
 
         #camera-canvas {
@@ -343,7 +351,6 @@
 
     <div id="main" class="w-full max-w-4xl mx-auto glass-card rounded-3xl mt-8 p-8">
         <div class="flex flex-col items-center mb-6">
-            <img id="mainLogo" src="" class="logo mb-4" alt="Logo">
             <h1 class="text-3xl font-bold text-center mb-4 main-title">國家防災日 學習成果</h1>
         </div>
         <p class="text-center text-gray-600 mb-8 text-lg">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
@@ -353,11 +360,10 @@
 
     <!-- 學習成果總覽 -->
     <div id="summary-area" style="display:none;">
-        <div class="flex flex-col items-center mb-3">
-            <img id="pdfLogo" src="" class="logo mb-2" alt="Logo">
-            <div class="text-2xl font-bold text-blue-800 mb-3 main-bg p-2 rounded"
+        <div class="flex flex-col items-center mb-6">
+            <div class="text-3xl font-bold text-blue-800 mb-4 main-bg p-3 rounded-xl"
                 style="color:#fff;letter-spacing:2px;">學習成果總覽</div>
-            <div class="text-gray-700 mb-2 text-base" style="letter-spacing:1px;">台北市政府消防局 國家防災日</div>
+            <div class="text-gray-700 mb-2 text-lg" style="letter-spacing:1px;">台北市政府消防局 國家防災日</div>
         </div>
         <div id="summary-content"></div>
         <button onclick="downloadPDF()"
@@ -564,6 +570,18 @@
         }
 
         function nextTopic() {
+            // 檢查是否已回答問題
+            if (userAnswers[current] === null) {
+                alert('請先回答問題再進入下一題！');
+                return;
+            }
+
+            // 檢查是否已上傳照片
+            if (photos[current] === null) {
+                alert('請先上傳照片再進入下一題！');
+                return;
+            }
+
             if (current < topics.length - 1) {
                 current++;
                 renderTopic();
@@ -575,9 +593,6 @@
         function showSummary() {
             document.getElementById('main').style.display = "none";
             document.getElementById('summary-area').style.display = "block";
-
-            // 設定LOGO
-            document.getElementById('pdfLogo').src = base64Logo;
 
             let html = '';
             for (let i = 0; i < topics.length; i++) {
@@ -689,7 +704,6 @@
         }
 
         window.onload = function () {
-            document.getElementById('mainLogo').src = base64Logo;
             renderTopic();
         }
     </script>
