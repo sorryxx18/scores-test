@@ -32,15 +32,71 @@
         }
 
         .pdf-photo {
-            width: 140px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 16px;
+            width: 160px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 12px;
             margin-left: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            border: 3px solid #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e5e7eb;
             background: #fff;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .camera-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .camera-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        #camera-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .camera-container {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            max-width: 90vw;
+            max-height: 90vh;
+            text-align: center;
+        }
+
+        #camera-video {
+            max-width: 100%;
+            max-height: 60vh;
+            border-radius: 8px;
+        }
+
+        #camera-canvas {
+            display: none;
         }
 
         .pdf-photo:hover {
@@ -281,7 +337,8 @@
 <body class="min-h-screen flex flex-col items-center justify-center">
     <!-- 這裡LOGO直接用base64（範例） -->
     <script>
-        const base64Logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAOVBMVEUAAACSkpKQkJCXl5eYmJidnZ2ioqKnp6eioqKjo6OgoKCnp6fAwMDEyMjc3Nzf39/4+Pje3t7t7e2Xl5f///+RqZP1AAAAAXRSTlMAQObYZgAAAGdJREFUGFctykkSgCAMBdFZwQB90f3fDwl3m0MgslwZSWvA5A8W9f1eUlXAYBMGshwXKoZo8FeZgbXljOSjANqN9uJ9ZruTBlzJcvlPAnR8uuv6egrH1TDsO8syZyGavU+AE0eOeEVFgwiAAAAAElFTkSuQmCC";
+        // 更清晰的防災 LOGO
+        const base64Logo = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzAiIGZpbGw9IiNGRjY2MDAiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSI0Ii8+CjxwYXRoIGQ9Ik0yMCAyMEg0NFYyOEgzNlYzNkgyOFYyOEgyMFYyMFoiIGZpbGw9IiNGRkZGRkYiLz4KPHA+dGggZD0iTTI0IDQwSDQwVjQ4SDI0VjQwWiIgZmlsbD0iI0ZGRkZGRiIvPgo8Y2lyY2xlIGN4PSIzMiIgY3k9IjE2IiByPSI0IiBmaWxsPSIjRkZGRkZGIi8+CjwvdGV4dD4KPC9zdmc+";
     </script>
 
     <div id="main" class="w-full max-w-4xl mx-auto glass-card rounded-3xl mt-8 p-8">
@@ -308,6 +365,20 @@
         <button onclick="location.reload()"
             class="nav-btn mt-4 w-full bg-gray-200 text-gray-700 py-3 rounded-xl hover:bg-gray-300">🔄 重新填寫</button>
     </div>
+
+    <!-- 拍照模態框 -->
+    <div id="camera-modal">
+        <div class="camera-container">
+            <h3 class="text-xl font-bold mb-4">📷 拍攝照片</h3>
+            <video id="camera-video" autoplay playsinline></video>
+            <canvas id="camera-canvas"></canvas>
+            <div class="mt-4 flex gap-3 justify-center">
+                <button onclick="capturePhoto()" class="camera-btn">📸 拍照</button>
+                <button onclick="closeCameraModal()" class="camera-btn" style="background: #ef4444;">❌ 取消</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const topics = [
             {
@@ -400,8 +471,8 @@
                 const isActive = current === i;
                 const isCompleted = userAnswers[i] !== null;
                 html += `<div class="stepper-item w-10 h-10 rounded-full flex items-center justify-center font-bold mx-2 ${isActive ? 'active text-white' :
-                        isCompleted ? 'bg-green-500 text-white' :
-                            'bg-white text-gray-600 border-2 border-gray-300'
+                    isCompleted ? 'bg-green-500 text-white' :
+                        'bg-white text-gray-600 border-2 border-gray-300'
                     }">${i + 1}</div>`;
             }
             document.getElementById('stepper').innerHTML = html;
@@ -429,7 +500,11 @@
                         <div id="explanation" class="text-green-600 font-semibold mt-2 mb-2" style="min-height:1.8em"></div>
                         <div class="mt-6">
                             <label class="font-semibold text-gray-700 block mb-3">📸 上傳照片（JPG/PNG，建議橫式）</label>
-                            <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="file-input block w-full">
+                            <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="file-input block w-full mb-3">
+                            <div class="camera-controls">
+                                <button onclick="openCameraModal(${current})" class="camera-btn">📷 即時拍照</button>
+                                ${photos[current] ? `<button onclick="removePhoto(${current})" class="camera-btn" style="background: #ef4444;">🗑️ 移除照片</button>` : ''}
+                            </div>
                             ${photoPreview}
                         </div>
                         <div class="mt-8 flex justify-between gap-4">
@@ -506,17 +581,19 @@
 
             let html = '';
             for (let i = 0; i < topics.length; i++) {
-                if (i > 0 && i % 3 === 0) html += `<div class="pdf-page"></div>`;
+                // 每三題換頁，但第一頁可以放三題
+                if (i === 3) html += `<div class="pdf-page"></div>`;
+
                 html += `
-                    <div class="photo-ans-group summary-group ${topics[i].tclass}">
-                        <div style="flex:1;">
-                            <h3 class="topic-title mb-1"><span class="qnum">${i + 1}</span>${topics[i].title}</h3>
-                            <div class="text-gray-800 mb-1">${topics[i].question}</div>
-                            <div class="mb-1">你的答案：<span style="font-weight:600;color:${userAnswers[i] === topics[i].answer ? '#15803d' : '#dc2626'}">${topics[i].options[userAnswers[i] || 0] || '未作答'}</span></div>
-                            <div class="mb-1">正確答案：<span style="font-weight:600;">${topics[i].options[topics[i].answer]}</span></div>
-                            <div class="mb-1 text-gray-600">${topics[i].explanation}</div>
+                    <div class="photo-ans-group summary-group ${topics[i].tclass}" style="margin-bottom: ${i === 2 || i === 5 ? '20px' : '24px'};">
+                        <div style="flex:1; min-width: 0;">
+                            <h3 class="topic-title mb-2"><span class="qnum">${i + 1}</span>${topics[i].title}</h3>
+                            <div class="text-gray-800 mb-2 text-sm leading-relaxed">${topics[i].question}</div>
+                            <div class="mb-1 text-sm">你的答案：<span style="font-weight:600;color:${userAnswers[i] === topics[i].answer ? '#15803d' : '#dc2626'}">${topics[i].options[userAnswers[i] || 0] || '未作答'}</span></div>
+                            <div class="mb-1 text-sm">正確答案：<span style="font-weight:600;">${topics[i].options[topics[i].answer]}</span></div>
+                            <div class="mb-1 text-gray-600 text-sm leading-relaxed">${topics[i].explanation}</div>
                         </div>
-                        ${photos[i] ? `<img src="${photos[i]}" class="pdf-photo">` : "<div class='text-sm text-gray-400 italic'>（未上傳照片）</div>"}
+                        ${photos[i] ? `<div style="flex-shrink: 0;"><img src="${photos[i]}" class="pdf-photo" style="width: 140px; height: 105px; object-fit: contain; border: 1px solid #d1d5db;"></div>` : "<div class='text-xs text-gray-400 italic flex-shrink-0' style='width: 140px; text-align: center; padding: 20px;'>（未上傳照片）</div>"}
                     </div>
                 `;
             }
@@ -535,6 +612,80 @@
                     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
                 });
             }, 120);
+        }
+
+        // 拍照相關功能
+        let currentCameraTopicIdx = 0;
+        let cameraStream = null;
+
+        function openCameraModal(topicIdx) {
+            currentCameraTopicIdx = topicIdx;
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-video');
+
+            modal.style.display = 'flex';
+
+            // 請求攝影機權限
+            navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: 'environment', // 優先使用後鏡頭
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                }
+            })
+                .then(stream => {
+                    cameraStream = stream;
+                    video.srcObject = stream;
+                })
+                .catch(err => {
+                    console.error('無法存取攝影機:', err);
+                    alert('無法存取攝影機，請檢查權限設定或使用檔案上傳功能。');
+                    closeCameraModal();
+                });
+        }
+
+        function closeCameraModal() {
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-video');
+
+            modal.style.display = 'none';
+
+            // 停止攝影機串流
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            video.srcObject = null;
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('camera-video');
+            const canvas = document.getElementById('camera-canvas');
+            const ctx = canvas.getContext('2d');
+
+            // 設定 canvas 尺寸
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // 將影片畫面繪製到 canvas
+            ctx.drawImage(video, 0, 0);
+
+            // 轉換為 base64
+            const photoData = canvas.toDataURL('image/jpeg', 0.8);
+
+            // 儲存照片
+            photos[currentCameraTopicIdx] = photoData;
+
+            // 關閉攝影機
+            closeCameraModal();
+
+            // 重新渲染當前題目
+            renderTopic();
+        }
+
+        function removePhoto(topicIdx) {
+            photos[topicIdx] = null;
+            renderTopic();
         }
 
         window.onload = function () {
