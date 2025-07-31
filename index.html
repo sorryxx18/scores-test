@@ -1,313 +1,547 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>國家防災日 學習成果</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <style>
-    body { background: #f1f5f9; }
-    .main-bg { background: linear-gradient(90deg, #2563eb 0%, #fbbf24 100%);}
-    .pdf-photo {
-      width: 132px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-left: 14px;
-      box-shadow: 0 4px 20px #0002;
-      border: 2px solid #38bdf8;
-      background: #fff;
-    }
-    .photo-ans-group {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 44px;
-      border-bottom: 1.5px dashed #93c5fd;
-      padding-bottom: 18px;
-      gap: 18px;
-      page-break-inside: avoid; break-inside: avoid;
-      background: #f9fafb;
-      border-radius: 10px;
-    }
-    .topic-title { font-size:1.09em; color:#1d4ed8; font-weight:600; letter-spacing:1px;}
-    .topic-1 {border-left: 5px solid #38bdf8;}
-    .topic-2 {border-left: 5px solid #fbbf24;}
-    .topic-3 {border-left: 5px solid #34d399;}
-    .topic-4 {border-left: 5px solid #f87171;}
-    .topic-5 {border-left: 5px solid #a78bfa;}
-    .topic-6 {border-left: 5px solid #f472b6;}
-    .pdf-page {page-break-after: always;}
-    .pdf-page:last-child {page-break-after: auto;}
-    #summary-area, #summary-content {
-      max-width: 830px;
-      margin: auto;
-      background: #fff;
-      box-sizing: border-box;
-      padding: 32px 18px 18px 18px;
-      border-radius: 15px;
-      box-shadow: 0 2px 12px #2563eb14;
-    }
-    @media (max-width: 700px){
-      #summary-area, #summary-content {padding:10px 2vw 8px 2vw;}
-      .photo-ans-group { flex-direction:column;}
-      .pdf-photo { margin-left:0; margin-top:8px;}
-    }
-    .logo {height:42px;}
-    .qnum {background:#2563eb;color:#fff;border-radius:8px;font-weight:bold;padding:2px 10px;margin-right:8px;}
-    .summary-group { margin-bottom: 48px; }
-    .page-break { page-break-after: always; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>國家防災日 學習成果</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .main-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .pdf-photo {
+            width: 140px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-left: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border: 3px solid #fff;
+            background: #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pdf-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .photo-ans-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            padding: 24px;
+            gap: 24px;
+            page-break-inside: avoid;
+            break-inside: avoid;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .photo-ans-group:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .topic-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .topic-1 {
+            border-left: 6px solid #3b82f6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.1));
+        }
+
+        .topic-1 .topic-title {
+            color: #1d4ed8;
+        }
+
+        .topic-2 {
+            border-left: 6px solid #f59e0b;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(252, 211, 77, 0.1));
+        }
+
+        .topic-2 .topic-title {
+            color: #d97706;
+        }
+
+        .topic-3 {
+            border-left: 6px solid #10b981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(110, 231, 183, 0.1));
+        }
+
+        .topic-3 .topic-title {
+            color: #047857;
+        }
+
+        .topic-4 {
+            border-left: 6px solid #ef4444;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(252, 165, 165, 0.1));
+        }
+
+        .topic-4 .topic-title {
+            color: #dc2626;
+        }
+
+        .topic-5 {
+            border-left: 6px solid #8b5cf6;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(196, 181, 253, 0.1));
+        }
+
+        .topic-5 .topic-title {
+            color: #7c3aed;
+        }
+
+        .topic-6 {
+            border-left: 6px solid #ec4899;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(251, 207, 232, 0.1));
+        }
+
+        .topic-6 .topic-title {
+            color: #be185d;
+        }
+
+        .pdf-page {
+            page-break-after: always;
+        }
+
+        .pdf-page:last-child {
+            page-break-after: auto;
+        }
+
+        #summary-area,
+        #summary-content {
+            max-width: 900px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-sizing: border-box;
+            padding: 40px 32px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 700px) {
+
+            #summary-area,
+            #summary-content {
+                padding: 20px 16px;
+            }
+
+            .photo-ans-group {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .pdf-photo {
+                margin-left: 0;
+                margin-top: 16px;
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        .logo {
+            height: 48px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        .qnum {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 8px 16px;
+            margin-right: 12px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            font-size: 0.9rem;
+        }
+
+        .summary-group {
+            margin-bottom: 40px;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        .stepper-item {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stepper-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .option-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateX(4px);
+        }
+
+        .option-btn.selected {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-color: #667eea;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+        }
+
+        .nav-btn {
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .nav-btn.primary:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+
+        .file-input {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px dashed rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .file-input:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .explanation-text {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .main-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
+
 <body class="min-h-screen flex flex-col items-center justify-center">
+    <!-- 這裡LOGO直接用base64（範例） -->
+    <script>
+        const base64Logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAOVBMVEUAAACSkpKQkJCXl5eYmJidnZ2ioqKnp6eioqKjo6OgoKCnp6fAwMDEyMjc3Nzf39/4+Pje3t7t7e2Xl5f///+RqZP1AAAAAXRSTlMAQObYZgAAAGdJREFUGFctykkSgCAMBdFZwQB90f3fDwl3m0MgslwZSWvA5A8W9f1eUlXAYBMGshwXKoZo8FeZgbXljOSjANqN9uJ9ZruTBlzJcvlPAnR8uuv6egrH1TDsO8syZyGavU+AE0eOeEVFgwiAAAAAElFTkSuQmCC";
+    </script>
 
-<!-- 這裡LOGO直接用base64（範例） -->
-<script>
-const base64Logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAOVBMVEUAAACSkpKQkJCXl5eYmJidnZ2ioqKnp6eioqKjo6OgoKCnp6fAwMDEyMjc3Nzf39/4+Pje3t7t7e2Xl5f///+RqZP1AAAAAXRSTlMAQObYZgAAAGdJREFUGFctykkSgCAMBdFZwQB90f3fDwl3m0MgslwZSWvA5A8W9f1eUlXAYBMGshwXKoZo8FeZgbXljOSjANqN9uJ9ZruTBlzJcvlPAnR8uuv6egrH1TDsO8syZyGavU+AE0eOeEVFgwiAAAAAElFTkSuQmCC";
-</script>
-
-<div id="main" class="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-lg mt-6 p-6">
-  <div class="flex flex-col items-center mb-3">
-    <img id="mainLogo" src="" class="logo mb-2" alt="Logo">
-    <h1 class="text-2xl font-bold text-center mb-2 text-blue-900 main-bg rounded p-2 shadow" style="color:#fff;letter-spacing:2px;">國家防災日 學習成果</h1>
-  </div>
-  <p class="text-center text-gray-700 mb-5">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
-  <div id="stepper" class="flex items-center justify-center mb-4"></div>
-  <div id="topic-area"></div>
-</div>
-
-<!-- 學習成果總覽 -->
-<div id="summary-area" style="display:none;">
-  <div class="flex flex-col items-center mb-3">
-    <img id="pdfLogo" src="" class="logo mb-2" alt="Logo">
-    <div class="text-2xl font-bold text-blue-800 mb-3 main-bg p-2 rounded" style="color:#fff;letter-spacing:2px;">學習成果總覽</div>
-    <div class="text-gray-700 mb-2 text-base" style="letter-spacing:1px;">台北市政府消防局 國家防災日</div>
-  </div>
-  <div id="summary-content"></div>
-  <button onclick="downloadPDF()" class="mt-7 w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 text-lg font-bold shadow">匯出學習成果 PDF</button>
-  <button onclick="location.reload()" class="mt-3 w-full bg-gray-300 text-gray-800 py-2 rounded">重新填寫</button>
-</div>
-
-<script>
-const topics = [
-  {
-    title: "防災學習主題區",
-    tclass: "topic-1",
-    question: "當面臨突發地震時，下列哪一項不是正確的避難應變方式？",
-    options: [
-      "A. 就地尋找堅固桌椅下方蹲下掩護",
-      "B. 第一時間跑到陽台或樓梯間",
-      "C. 用手護住頭部，保護自身重要部位",
-      "D. 等地震停止後再依指示有秩序撤離建築物"
-    ],
-    answer: 1,
-    explanation: "地震時應先在安全處蹲下掩護，絕不應第一時間跑到陽台或樓梯間，這些地方危險且容易倒塌。"
-  },
-  {
-    title: "市府災害防救宣導主題區",
-    tclass: "topic-2",
-    question: "臺北市政府在災害發生後，為協助民眾災後復原，下列哪一項不是市府單位可以提供的協助？",
-    options: [
-      "A. 災害損失稅捐減免",
-      "B. 不動產交易安全諮詢",
-      "C. 災民安置與心理輔導",
-      "D. 免費贈送新房屋"
-    ],
-    answer: 3,
-    explanation: "市府會提供多元協助如稅捐減免、安置及心理輔導，但不會直接免費贈送新房屋。"
-  },
-  {
-    title: "環境永續主題區",
-    tclass: "topic-3",
-    question: "為了達到環境永續，下列哪一種日常行為最有助於減緩全球暖化及減少碳排放？",
-    options: [
-      "A. 多搭乘大眾運輸工具取代開車",
-      "B. 常用一次性塑膠產品，因為方便",
-      "C. 把可回收的物品直接丟進垃圾桶",
-      "D. 夏天將冷氣溫度設定為最低並長時間使用"
-    ],
-    answer: 0,
-    explanation: "搭乘大眾運輸可有效減少碳排放，是最有助於環境永續的日常行為。"
-  },
-  {
-    title: "多元國際主題區",
-    tclass: "topic-4",
-    question: "國家防災日活動邀請多國團體共同參與，這麼做的主要目的是什麼？",
-    options: [
-      "A. 讓大家比賽誰的防災知識最強",
-      "B. 讓不同國籍的人只關心自己國家的防災方式",
-      "C. 促進不同文化之間的交流，學習各國防災經驗",
-      "D. 減少台灣本地居民參與防災活動的機會"
-    ],
-    answer: 2,
-    explanation: "多國參與是為了文化交流與互學，增強整體社會防災能力。"
-  },
-  {
-    title: "國軍守護主題區",
-    tclass: "topic-5",
-    question: "關於國軍在天然災害中的角色，下列哪一項描述最正確？",
-    options: [
-      "A. 國軍僅負責戰爭時期的軍事行動，平時不參與災害救援",
-      "B. 國軍平時結合地方政府，主動規劃並投入災害救援",
-      "C. 國軍只負責維持秩序，不會動用專業救災部隊或器材",
-      "D. 國軍在災害發生時比消防隊更晚抵達現場"
-    ],
-    answer: 1,
-    explanation: "國軍會結合地方政府，主動投入救災，守護民眾安全。"
-  },
-  {
-    title: "防災體驗主題區",
-    tclass: "topic-6",
-    question: "參加「地震求生72小時」體驗活動，學習的最重要核心觀念為何？",
-    options: [
-      "A. 只要有手機就不用準備其他物資",
-      "B. 學會善用日常物品及具備自救能力",
-      "C. 災害來臨時只依賴他人救援",
-      "D. 災害發生時第一時間拍照上傳社群網站"
-    ],
-    answer: 1,
-    explanation: "重點在學會自救與善用日常物資，提升面對災害的生存能力。"
-  }
-];
-
-let current = 0;
-let userAnswers = Array(topics.length).fill(null);
-let photos = Array(topics.length).fill(null);
-
-function renderStepper() {
-  let html = "";
-  for (let i = 0; i < topics.length; i++) {
-    html += `<div class="w-8 h-8 rounded-full flex items-center justify-center ${current===i?"bg-blue-600 text-white":"bg-gray-200 text-gray-700"} font-bold mx-1">${i+1}</div>`;
-  }
-  document.getElementById('stepper').innerHTML = html;
-}
-
-function renderTopic() {
-  renderStepper();
-  const t = topics[current];
-  let photoPreview = photos[current]
-    ? `<img src="${photos[current]}" class="pdf-photo my-2" id="photo-prev-${current}">`
-    : `<img src="" class="pdf-photo my-2 hidden" id="photo-prev-${current}">`;
-  let options = "";
-  for(let i=0; i<4; i++){
-    let selected = userAnswers[current]===i ? 'ring-2 ring-blue-500' : '';
-    options += `
-      <button onclick="chooseAnswer(${i})" class="block w-full text-left bg-gray-100 hover:bg-blue-100 rounded px-4 py-2 my-1 ${selected}">
-        ${t.options[i]}
-      </button>`;
-  }
-  document.getElementById('topic-area').innerHTML = `
-    <div class="${t.tclass} photo-ans-group">
-      <div style="flex:1;">
-        <h2 class="topic-title mb-1"><span class="qnum">${current+1}</span>${t.title}</h2>
-        <div class="text-gray-800 mb-3">${t.question}</div>
-        <div id="options">${options}</div>
-        <div id="explanation" class="text-green-600 font-semibold mt-2 mb-2" style="min-height:1.8em"></div>
-        <div class="mt-2">
-          <label class="font-semibold">上傳照片（JPG/PNG，建議橫式）</label>
-          <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="block my-2">
-          ${photoPreview}
+    <div id="main" class="w-full max-w-4xl mx-auto glass-card rounded-3xl mt-8 p-8">
+        <div class="flex flex-col items-center mb-6">
+            <img id="mainLogo" src="" class="logo mb-4" alt="Logo">
+            <h1 class="text-3xl font-bold text-center mb-4 main-title">國家防災日 學習成果</h1>
         </div>
-        <div class="mt-4 flex justify-between">
-          <button ${current===0?'disabled':''} onclick="prevTopic()" class="px-5 py-2 bg-gray-200 rounded ${current===0?'opacity-50':''}">上一題</button>
-          <button onclick="nextTopic()" class="px-5 py-2 bg-blue-600 text-white rounded">${current<topics.length-1?'下一題':'完成'}</button>
-        </div>
-      </div>
+        <p class="text-center text-gray-600 mb-8 text-lg">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
+        <div id="stepper" class="flex items-center justify-center mb-8"></div>
+        <div id="topic-area"></div>
     </div>
-  `;
-  if(userAnswers[current]!=null){
-    showExplanation();
-  }
-  if(photos[current]){
-    document.getElementById(`photo-prev-${current}`).classList.remove('hidden');
-  }
-}
 
-function chooseAnswer(idx){
-  userAnswers[current] = idx;
-  showExplanation();
-  renderTopic();
-}
-function showExplanation(){
-  let idx = userAnswers[current];
-  let correct = topics[current].answer;
-  let text = '';
-  if(idx!==null){
-    text = idx===correct ? "✔️ 答對了！" : "❌ 答錯了。";
-    text += " " + topics[current].explanation;
-  }
-  document.getElementById('explanation').textContent = text;
-}
-
-function uploadPhoto(e, topicIdx){
-  const file = e.target.files[0];
-  if(!file) return;
-  if(!file.type.startsWith("image/")) return alert("僅支援圖片檔！");
-  const reader = new FileReader();
-  reader.onload = function(ev){
-    photos[topicIdx] = ev.target.result;
-    renderTopic();
-  };
-  reader.readAsDataURL(file);
-}
-
-function prevTopic(){
-  if(current > 0){
-    current--;
-    renderTopic();
-  }
-}
-function nextTopic(){
-  if(current < topics.length-1){
-    current++;
-    renderTopic();
-  } else {
-    showSummary();
-  }
-}
-
-function showSummary(){
-  document.getElementById('main').style.display = "none";
-  document.getElementById('summary-area').style.display = "block";
-  // 設定LOGO
-  document.getElementById('pdfLogo').src = base64Logo;
-  let html = '';
-  for(let i=0;i<topics.length;i++){
-    if(i > 0 && i % 3 === 0) html += `<div class="pdf-page"></div>`;
-    html += `
-      <div class="photo-ans-group summary-group ${topics[i].tclass}">
-        <div style="flex:1;">
-          <h3 class="topic-title mb-1"><span class="qnum">${i+1}</span>${topics[i].title}</h3>
-          <div class="text-gray-800 mb-1">${topics[i].question}</div>
-          <div class="mb-1">你的答案：<span style="font-weight:600;color:${userAnswers[i]===topics[i].answer?'#15803d':'#dc2626'}">${topics[i].options[userAnswers[i]||0]||'未作答'}</span></div>
-          <div class="mb-1">正確答案：<span style="font-weight:600;">${topics[i].options[topics[i].answer]}</span></div>
-          <div class="mb-1 text-gray-600">${topics[i].explanation}</div>
+    <!-- 學習成果總覽 -->
+    <div id="summary-area" style="display:none;">
+        <div class="flex flex-col items-center mb-3">
+            <img id="pdfLogo" src="" class="logo mb-2" alt="Logo">
+            <div class="text-2xl font-bold text-blue-800 mb-3 main-bg p-2 rounded"
+                style="color:#fff;letter-spacing:2px;">學習成果總覽</div>
+            <div class="text-gray-700 mb-2 text-base" style="letter-spacing:1px;">台北市政府消防局 國家防災日</div>
         </div>
-        ${photos[i]?`<img src="${photos[i]}" class="pdf-photo">`:"<div class='text-sm text-gray-400 italic'>（未上傳照片）</div>"}
-      </div>
-    `;
-  }
-  document.getElementById('summary-content').innerHTML = html;
-}
+        <div id="summary-content"></div>
+        <button onclick="downloadPDF()"
+            class="nav-btn primary mt-8 w-full text-white py-4 rounded-xl text-lg font-bold">📄 匯出學習成果 PDF</button>
+        <button onclick="location.reload()"
+            class="nav-btn mt-4 w-full bg-gray-200 text-gray-700 py-3 rounded-xl hover:bg-gray-300">🔄 重新填寫</button>
+    </div>
+    <script>
+        const topics = [
+            {
+                title: "防災學習主題區",
+                tclass: "topic-1",
+                question: "當面臨突發地震時，下列哪一項不是正確的避難應變方式？",
+                options: [
+                    "A. 就地尋找堅固桌椅下方蹲下掩護",
+                    "B. 第一時間跑到陽台或樓梯間",
+                    "C. 用手護住頭部，保護自身重要部位",
+                    "D. 等地震停止後再依指示有秩序撤離建築物"
+                ],
+                answer: 1,
+                explanation: "地震時應先在安全處蹲下掩護，絕不應第一時間跑到陽台或樓梯間，這些地方危險且容易倒塌。"
+            },
+            {
+                title: "市府災害防救宣導主題區",
+                tclass: "topic-2",
+                question: "臺北市政府在災害發生後，為協助民眾災後復原，下列哪一項不是市府單位可以提供的協助？",
+                options: [
+                    "A. 災害損失稅捐減免",
+                    "B. 不動產交易安全諮詢",
+                    "C. 災民安置與心理輔導",
+                    "D. 免費贈送新房屋"
+                ],
+                answer: 3,
+                explanation: "市府會提供多元協助如稅捐減免、安置及心理輔導，但不會直接免費贈送新房屋。"
+            },
+            {
+                title: "環境永續主題區",
+                tclass: "topic-3",
+                question: "為了達到環境永續，下列哪一種日常行為最有助於減緩全球暖化及減少碳排放？",
+                options: [
+                    "A. 多搭乘大眾運輸工具取代開車",
+                    "B. 常用一次性塑膠產品，因為方便",
+                    "C. 把可回收的物品直接丟進垃圾桶",
+                    "D. 夏天將冷氣溫度設定為最低並長時間使用"
+                ],
+                answer: 0,
+                explanation: "搭乘大眾運輸可有效減少碳排放，是最有助於環境永續的日常行為。"
+            },
+            {
+                title: "多元國際主題區",
+                tclass: "topic-4",
+                question: "國家防災日活動邀請多國團體共同參與，這麼做的主要目的是什麼？",
+                options: [
+                    "A. 讓大家比賽誰的防災知識最強",
+                    "B. 讓不同國籍的人只關心自己國家的防災方式",
+                    "C. 促進不同文化之間的交流，學習各國防災經驗",
+                    "D. 減少台灣本地居民參與防災活動的機會"
+                ],
+                answer: 2,
+                explanation: "多國參與是為了文化交流與互學，增強整體社會防災能力。"
+            },
+            {
+                title: "國軍守護主題區",
+                tclass: "topic-5",
+                question: "關於國軍在天然災害中的角色，下列哪一項描述最正確？",
+                options: [
+                    "A. 國軍僅負責戰爭時期的軍事行動，平時不參與災害救援",
+                    "B. 國軍平時結合地方政府，主動規劃並投入災害救援",
+                    "C. 國軍只負責維持秩序，不會動用專業救災部隊或器材",
+                    "D. 國軍在災害發生時比消防隊更晚抵達現場"
+                ],
+                answer: 1,
+                explanation: "國軍會結合地方政府，主動投入救災，守護民眾安全。"
+            },
+            {
+                title: "防災體驗主題區",
+                tclass: "topic-6",
+                question: "參加「地震求生72小時」體驗活動，學習的最重要核心觀念為何？",
+                options: [
+                    "A. 只要有手機就不用準備其他物資",
+                    "B. 學會善用日常物品及具備自救能力",
+                    "C. 災害來臨時只依賴他人救援",
+                    "D. 災害發生時第一時間拍照上傳社群網站"
+                ],
+                answer: 1,
+                explanation: "重點在學會自救與善用日常物資，提升面對災害的生存能力。"
+            }
+        ];
 
-function downloadPDF(){
-  window.scrollTo(0,0);
-  setTimeout(function(){
-    const summary = document.getElementById('summary-content');
-    html2pdf(summary, {
-      margin:       0.4,
-      filename:     `國家防災日學習成果.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-    });
-  }, 120);
-}
+        let current = 0;
+        let userAnswers = Array(topics.length).fill(null);
+        let photos = Array(topics.length).fill(null);
 
-window.onload = function(){
-  document.getElementById('mainLogo').src = base64Logo;
-  renderTopic();
-}
-</script>
+        function renderStepper() {
+            let html = "";
+            for (let i = 0; i < topics.length; i++) {
+                const isActive = current === i;
+                const isCompleted = userAnswers[i] !== null;
+                html += `<div class="stepper-item w-10 h-10 rounded-full flex items-center justify-center font-bold mx-2 ${isActive ? 'active text-white' :
+                        isCompleted ? 'bg-green-500 text-white' :
+                            'bg-white text-gray-600 border-2 border-gray-300'
+                    }">${i + 1}</div>`;
+            }
+            document.getElementById('stepper').innerHTML = html;
+        }
+
+        function renderTopic() {
+            renderStepper();
+            const t = topics[current];
+            let photoPreview = photos[current] ?
+                `<img src="${photos[current]}" class="pdf-photo my-2" id="photo-prev-${current}">` :
+                `<img src="" class="pdf-photo my-2 hidden" id="photo-prev-${current}">`;
+
+            let options = "";
+            for (let i = 0; i < 4; i++) {
+                let selected = userAnswers[current] === i ? 'selected' : '';
+                options += `<button onclick="chooseAnswer(${i})" class="option-btn block w-full text-left rounded-xl px-6 py-4 my-3 ${selected}">${t.options[i]}</button>`;
+            }
+
+            document.getElementById('topic-area').innerHTML = `
+                <div class="${t.tclass} photo-ans-group">
+                    <div style="flex:1;">
+                        <h2 class="topic-title mb-1"><span class="qnum">${current + 1}</span>${t.title}</h2>
+                        <div class="text-gray-800 mb-3">${t.question}</div>
+                        <div id="options">${options}</div>
+                        <div id="explanation" class="text-green-600 font-semibold mt-2 mb-2" style="min-height:1.8em"></div>
+                        <div class="mt-6">
+                            <label class="font-semibold text-gray-700 block mb-3">📸 上傳照片（JPG/PNG，建議橫式）</label>
+                            <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="file-input block w-full">
+                            ${photoPreview}
+                        </div>
+                        <div class="mt-8 flex justify-between gap-4">
+                            <button ${current === 0 ? 'disabled' : ''} onclick="prevTopic()" class="nav-btn px-6 py-3 bg-gray-200 text-gray-700 rounded-xl ${current === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'}">← 上一題</button>
+                            <button onclick="nextTopic()" class="nav-btn primary px-6 py-3 text-white rounded-xl">${current < topics.length - 1 ? '下一題 →' : '完成 ✓'}</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            if (userAnswers[current] != null) {
+                showExplanation();
+            }
+            if (photos[current]) {
+                document.getElementById(`photo-prev-${current}`).classList.remove('hidden');
+            }
+        }
+
+        function chooseAnswer(idx) {
+            userAnswers[current] = idx;
+            showExplanation();
+            renderTopic();
+        }
+
+        function showExplanation() {
+            let idx = userAnswers[current];
+            let correct = topics[current].answer;
+            let html = '';
+            if (idx !== null) {
+                const isCorrect = idx === correct;
+                html = `<div class="explanation-text ${isCorrect ? 'bg-green-50 border-green-400 text-green-800' : 'bg-red-50 border-red-400 text-red-800'}">
+                    <div class="font-semibold mb-2">${isCorrect ? "✔️ 答對了！" : "❌ 答錯了。"}</div>
+                    <div>${topics[current].explanation}</div>
+                </div>`;
+            }
+            document.getElementById('explanation').innerHTML = html;
+        }
+
+        function uploadPhoto(e, topicIdx) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith("image/")) return alert("僅支援圖片檔！");
+
+            const reader = new FileReader();
+            reader.onload = function (ev) {
+                photos[topicIdx] = ev.target.result;
+                renderTopic();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function prevTopic() {
+            if (current > 0) {
+                current--;
+                renderTopic();
+            }
+        }
+
+        function nextTopic() {
+            if (current < topics.length - 1) {
+                current++;
+                renderTopic();
+            } else {
+                showSummary();
+            }
+        }
+
+        function showSummary() {
+            document.getElementById('main').style.display = "none";
+            document.getElementById('summary-area').style.display = "block";
+
+            // 設定LOGO
+            document.getElementById('pdfLogo').src = base64Logo;
+
+            let html = '';
+            for (let i = 0; i < topics.length; i++) {
+                if (i > 0 && i % 3 === 0) html += `<div class="pdf-page"></div>`;
+                html += `
+                    <div class="photo-ans-group summary-group ${topics[i].tclass}">
+                        <div style="flex:1;">
+                            <h3 class="topic-title mb-1"><span class="qnum">${i + 1}</span>${topics[i].title}</h3>
+                            <div class="text-gray-800 mb-1">${topics[i].question}</div>
+                            <div class="mb-1">你的答案：<span style="font-weight:600;color:${userAnswers[i] === topics[i].answer ? '#15803d' : '#dc2626'}">${topics[i].options[userAnswers[i] || 0] || '未作答'}</span></div>
+                            <div class="mb-1">正確答案：<span style="font-weight:600;">${topics[i].options[topics[i].answer]}</span></div>
+                            <div class="mb-1 text-gray-600">${topics[i].explanation}</div>
+                        </div>
+                        ${photos[i] ? `<img src="${photos[i]}" class="pdf-photo">` : "<div class='text-sm text-gray-400 italic'>（未上傳照片）</div>"}
+                    </div>
+                `;
+            }
+            document.getElementById('summary-content').innerHTML = html;
+        }
+
+        function downloadPDF() {
+            window.scrollTo(0, 0);
+            setTimeout(function () {
+                const summary = document.getElementById('summary-content');
+                html2pdf(summary, {
+                    margin: 0.4,
+                    filename: `國家防災日學習成果.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+                });
+            }, 120);
+        }
+
+        window.onload = function () {
+            document.getElementById('mainLogo').src = base64Logo;
+            renderTopic();
+        }
+    </script>
 </body>
+
 </html>
