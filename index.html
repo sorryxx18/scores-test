@@ -38,27 +38,86 @@
             animation: float 6s ease-in-out infinite;
         }
         
-        .particle:nth-child(1) { width: 80px; height: 80px; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 60px; height: 60px; left: 20%; animation-delay: 1s; }
-        .particle:nth-child(3) { width: 40px; height: 40px; left: 30%; animation-delay: 2s; }
-        .particle:nth-child(4) { width: 100px; height: 100px; left: 40%; animation-delay: 3s; }
-        .particle:nth-child(5) { width: 50px; height: 50px; left: 50%; animation-delay: 4s; }
-        .particle:nth-child(6) { width: 70px; height: 70px; left: 60%; animation-delay: 5s; }
-        .particle:nth-child(7) { width: 30px; height: 30px; left: 70%; animation-delay: 1.5s; }
-        .particle:nth-child(8) { width: 90px; height: 90px; left: 80%; animation-delay: 2.5s; }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        .particle:nth-child(1) { 
+            width: 80px; 
+            height: 80px; 
+            left: 10%; 
+            animation-delay: 0s; 
         }
         
+        .particle:nth-child(2) { 
+            width: 60px; 
+            height: 60px; 
+            left: 20%; 
+            animation-delay: 1s; 
+        }
+        
+        .particle:nth-child(3) { 
+            width: 40px; 
+            height: 40px; 
+            left: 30%; 
+            animation-delay: 2s; 
+        }
+        
+        .particle:nth-child(4) { 
+            width: 100px; 
+            height: 100px; 
+            left: 40%; 
+            animation-delay: 3s; 
+        }
+        
+        .particle:nth-child(5) { 
+            width: 50px; 
+            height: 50px; 
+            left: 50%; 
+            animation-delay: 4s; 
+        }
+        
+        .particle:nth-child(6) { 
+            width: 70px; 
+            height: 70px; 
+            left: 60%; 
+            animation-delay: 5s; 
+        }
+        
+        .particle:nth-child(7) { 
+            width: 30px; 
+            height: 30px; 
+            left: 70%; 
+            animation-delay: 1.5s; 
+        }
+        
+        .particle:nth-child(8) { 
+            width: 90px; 
+            height: 90px; 
+            left: 80%; 
+            animation-delay: 2.5s; 
+        }
+        
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 1; 
+            }
+            90% { 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(-100px) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+        
+        /* 主背景樣式 */
         .main-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
         }
         
+        /* 毛玻璃卡片效果 */
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -69,11 +128,19 @@
             animation: slideInUp 0.8s ease-out;
         }
         
+        /* 滑入動畫 */
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
+        /* 3D 卡片效果 */
         .card-3d {
             transform-style: preserve-3d;
             transition: transform 0.6s;
@@ -100,7 +167,7 @@
             box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
         }
         
-        /* 主題圖標 */
+        /* 主題圖標系統 */
         .topic-icon {
             width: 60px;
             height: 60px;
@@ -114,18 +181,42 @@
             animation: pulse 2s infinite;
         }
         
+        /* 脈衝動畫 */
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% { 
+                transform: scale(1); 
+            }
+            50% { 
+                transform: scale(1.05); 
+            }
         }
         
-        .topic-1 .topic-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-        .topic-2 .topic-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .topic-3 .topic-icon { background: linear-gradient(135deg, #10b981, #047857); }
-        .topic-4 .topic-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        .topic-5 .topic-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .topic-6 .topic-icon { background: linear-gradient(135deg, #ec4899, #be185d); }
+        /* 主題色彩系統 */
+        .topic-1 .topic-icon { 
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
+        }
         
+        .topic-2 .topic-icon { 
+            background: linear-gradient(135deg, #f59e0b, #d97706); 
+        }
+        
+        .topic-3 .topic-icon { 
+            background: linear-gradient(135deg, #10b981, #047857); 
+        }
+        
+        .topic-4 .topic-icon { 
+            background: linear-gradient(135deg, #ef4444, #dc2626); 
+        }
+        
+        .topic-5 .topic-icon { 
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed); 
+        }
+        
+        .topic-6 .topic-icon { 
+            background: linear-gradient(135deg, #ec4899, #be185d); 
+        }
+        
+        /* PDF 照片樣式 */
         .pdf-photo {
             width: 160px;
             height: 120px;
@@ -138,6 +229,12 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
+        .pdf-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 拍照控制區域 */
         .camera-controls {
             display: flex;
             gap: 12px;
@@ -145,6 +242,7 @@
             flex-wrap: wrap;
         }
         
+        /* 拍照按鈕樣式 */
         .camera-btn {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
@@ -162,6 +260,7 @@
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
         }
         
+        /* 攝影機模態框 */
         #camera-modal {
             position: fixed;
             top: 0;
@@ -192,18 +291,24 @@
             transform-origin: center;
         }
         
+        /* 攝影機方向適配 */
         @media (orientation: portrait) {
-            #camera-video { transform: none; }
+            #camera-video { 
+                transform: none; 
+            }
         }
         
         @media (orientation: landscape) {
-            #camera-video { transform: none; }
+            #camera-video { 
+                transform: none; 
+            }
         }
         
         #camera-canvas {
             display: none;
         }
         
+        /* 題目答案組合區域 */
         .photo-ans-group {
             display: flex;
             align-items: flex-start;
@@ -225,6 +330,7 @@
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
         }
         
+        /* 題目標題樣式 */
         .topic-title {
             font-size: 1.25rem;
             font-weight: 600;
@@ -232,45 +338,70 @@
             margin-bottom: 16px;
         }
         
+        /* 主題1樣式 */
         .topic-1 {
             border-left: 6px solid #3b82f6;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.1));
         }
-        .topic-1 .topic-title { color: #1d4ed8; }
+        .topic-1 .topic-title { 
+            color: #1d4ed8; 
+        }
         
+        /* 主題2樣式 */
         .topic-2 {
             border-left: 6px solid #f59e0b;
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(252, 211, 77, 0.1));
         }
-        .topic-2 .topic-title { color: #d97706; }
+        .topic-2 .topic-title { 
+            color: #d97706; 
+        }
         
+        /* 主題3樣式 */
         .topic-3 {
             border-left: 6px solid #10b981;
             background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(110, 231, 183, 0.1));
         }
-        .topic-3 .topic-title { color: #047857; }
+        .topic-3 .topic-title { 
+            color: #047857; 
+        }
         
+        /* 主題4樣式 */
         .topic-4 {
             border-left: 6px solid #ef4444;
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(252, 165, 165, 0.1));
         }
-        .topic-4 .topic-title { color: #dc2626; }
+        .topic-4 .topic-title { 
+            color: #dc2626; 
+        }
         
+        /* 主題5樣式 */
         .topic-5 {
             border-left: 6px solid #8b5cf6;
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(196, 181, 253, 0.1));
         }
-        .topic-5 .topic-title { color: #7c3aed; }
+        .topic-5 .topic-title { 
+            color: #7c3aed; 
+        }
         
+        /* 主題6樣式 */
         .topic-6 {
             border-left: 6px solid #ec4899;
             background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(251, 207, 232, 0.1));
         }
-        .topic-6 .topic-title { color: #be185d; }
+        .topic-6 .topic-title { 
+            color: #be185d; 
+        }
         
-        .pdf-page { page-break-after: always; }
-        .pdf-page:last-child { page-break-after: auto; }
+        /* PDF 分頁控制 */
+        .pdf-page { 
+            page-break-after: always; 
+        }
         
+        .pdf-page:last-child { 
+            page-break-after: auto; 
+        }
+        
+        /* 總結區域樣式 */
         #summary-area, #summary-content {
             max-width: 900px;
             margin: auto;
@@ -283,12 +414,24 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
+        /* 響應式設計 */
         @media (max-width: 700px) {
-            #summary-area, #summary-content { padding: 20px 16px; }
-            .photo-ans-group { flex-direction: column; padding: 20px; }
-            .pdf-photo { margin-left: 0; margin-top: 16px; width: 100%; max-width: 300px; }
+            #summary-area, #summary-content { 
+                padding: 20px 16px; 
+            }
+            .photo-ans-group { 
+                flex-direction: column; 
+                padding: 20px; 
+            }
+            .pdf-photo { 
+                margin-left: 0; 
+                margin-top: 16px; 
+                width: 100%; 
+                max-width: 300px; 
+            }
         }
         
+        /* 題目編號樣式 */
         .qnum {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
@@ -300,9 +443,15 @@
             font-size: 0.9rem;
         }
         
-        .summary-group { margin-bottom: 40px; }
-        .page-break { page-break-after: always; }
+        .summary-group { 
+            margin-bottom: 40px; 
+        }
         
+        .page-break { 
+            page-break-after: always; 
+        }
+        
+        /* 步驟指示器 */
         .stepper-item {
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -314,6 +463,7 @@
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
         
+        /* 選項按鈕樣式 */
         .option-btn {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -334,6 +484,7 @@
             box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
         }
         
+        /* 導航按鈕樣式 */
         .nav-btn {
             transition: all 0.3s ease;
             font-weight: 500;
@@ -353,6 +504,7 @@
             background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
         }
         
+        /* 檔案輸入樣式 */
         .file-input {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -367,6 +519,7 @@
             background: rgba(102, 126, 234, 0.05);
         }
         
+        /* 解釋文字樣式 */
         .explanation-text {
             background: rgba(16, 185, 129, 0.1);
             border-left: 4px solid #10b981;
@@ -375,6 +528,7 @@
             margin-top: 12px;
         }
         
+        /* 主標題樣式 */
         .main-title {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
@@ -397,9 +551,15 @@
         }
         
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            0%, 100% { 
+                transform: translateX(0); 
+            }
+            25% { 
+                transform: translateX(-5px); 
+            }
+            75% { 
+                transform: translateX(5px); 
+            }
         }
         
         .bounce-in {
@@ -407,14 +567,222 @@
         }
         
         @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); opacity: 1; }
+            0% { 
+                transform: scale(0.3); 
+                opacity: 0; 
+            }
+            50% { 
+                transform: scale(1.05); 
+            }
+            70% { 
+                transform: scale(0.9); 
+            }
+            100% { 
+                transform: scale(1); 
+                opacity: 1; 
+            }
+        }
+        
+        /* 額外的視覺效果 */
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+            }
+        }
+        
+        /* 漸變文字效果 */
+        .gradient-text {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* 旋轉效果 */
+        .rotate-effect {
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* 呼吸效果 */
+        .breathe-effect {
+            animation: breathe 3s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.02);
+                opacity: 0.8;
+            }
+        }
+        
+        /* 波浪效果 */
+        .wave-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .wave-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: wave 2s infinite;
+        }
+        
+        @keyframes wave {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        /* 彈跳載入效果 */
+        .loading-bounce {
+            display: inline-block;
+            animation: bounce 1.4s ease-in-out infinite both;
+        }
+        
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+        
+        /* 淡入淡出效果 */
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .fade-out {
+            animation: fadeOut 1s ease-out;
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+        
+        /* 滑動效果 */
+        .slide-in-left {
+            animation: slideInLeft 0.5s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* 縮放效果 */
+        .zoom-in {
+            animation: zoomIn 0.5s ease-out;
+        }
+        
+        @keyframes zoomIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* 翻轉效果 */
+        .flip-in {
+            animation: flipIn 0.6s ease-out;
+        }
+        
+        @keyframes flipIn {
+            from {
+                transform: perspective(400px) rotateY(90deg);
+                opacity: 0;
+            }
+            to {
+                transform: perspective(400px) rotateY(0deg);
+                opacity: 1;
+            }
         }
     </style>
-</head><body cla
-ss="min-h-screen flex flex-col items-center justify-center">
+</head><body class
+="min-h-screen flex flex-col items-center justify-center">
     <!-- 動態背景粒子 -->
     <div class="particles">
         <div class="particle"></div>
@@ -427,15 +795,16 @@ ss="min-h-screen flex flex-col items-center justify-center">
         <div class="particle"></div>
     </div>
 
+    <!-- 主要測驗區域 -->
     <div id="main" class="w-full max-w-4xl mx-auto glass-card card-3d rounded-3xl mt-8 p-8">
         <div class="flex flex-col items-center mb-6">
-            <div class="text-4xl mb-4">🛡️</div>
-            <h1 class="text-4xl font-bold text-center mb-4 main-title">國家防災日 學習成果</h1>
+            <div class="text-4xl mb-4 rotate-effect">🛡️</div>
+            <h1 class="text-4xl font-bold text-center mb-4 main-title gradient-text">國家防災日 學習成果</h1>
         </div>
-        <p class="text-center text-gray-600 mb-6 text-lg">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
+        <p class="text-center text-gray-600 mb-6 text-lg breathe-effect">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
         
         <!-- 進度條 -->
-        <div class="progress-container">
+        <div class="progress-container wave-effect">
             <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
         </div>
         
@@ -446,17 +815,17 @@ ss="min-h-screen flex flex-col items-center justify-center">
     <!-- 學習成果總覽 -->
     <div id="summary-area" style="display:none;">
         <div class="flex flex-col items-center mb-6">
-            <div class="text-3xl font-bold text-blue-800 mb-4 main-bg p-3 rounded-xl" style="color:#fff;letter-spacing:2px;">學習成果總覽</div>
+            <div class="text-3xl font-bold text-blue-800 mb-4 main-bg p-3 rounded-xl glow-effect" style="color:#fff;letter-spacing:2px;">學習成果總覽</div>
             <div class="text-gray-700 mb-2 text-lg" style="letter-spacing:1px;">台北市政府消防局 國家防災日</div>
         </div>
         <div id="summary-content"></div>
-        <button onclick="downloadPDF()" class="nav-btn primary mt-8 w-full text-white py-4 rounded-xl text-lg font-bold">📄 匯出學習成果 PDF</button>
+        <button onclick="downloadPDF()" class="nav-btn primary mt-8 w-full text-white py-4 rounded-xl text-lg font-bold wave-effect">📄 匯出學習成果 PDF</button>
         <button onclick="location.reload()" class="nav-btn mt-4 w-full bg-gray-200 text-gray-700 py-3 rounded-xl hover:bg-gray-300">🔄 重新填寫</button>
     </div>
 
     <!-- 拍照模態框 -->
     <div id="camera-modal">
-        <div class="camera-container">
+        <div class="camera-container zoom-in">
             <h3 class="text-xl font-bold mb-4">📷 拍攝照片</h3>
             <video id="camera-video" autoplay playsinline></video>
             <canvas id="camera-canvas"></canvas>
@@ -465,9 +834,9 @@ ss="min-h-screen flex flex-col items-center justify-center">
                 <button onclick="closeCameraModal()" class="camera-btn" style="background: #ef4444;">❌ 取消</button>
             </div>
         </div>
-    </div>
-
-    <script>
+    </div> 
+   <script>
+        // 題目資料
         const topics = [
             {
                 title: "防災學習主題區",
@@ -507,104 +876,71 @@ ss="min-h-screen flex flex-col items-center justify-center">
                 ],
                 answer: 0,
                 explanation: "搭乘大眾運輸可有效減少碳排放，是最有助於環境永續的日常行為。"
-            },
-            {
-                title: "多元國際主題區",
-                tclass: "topic-4",
-                question: "國家防災日活動邀請多國團體共同參與，這麼做的主要目的是什麼？",
-                options: [
-                    "A. 讓大家比賽誰的防災知識最強",
-                    "B. 讓不同國籍的人只關心自己國家的防災方式",
-                    "C. 促進不同文化之間的交流，學習各國防災經驗",
-                    "D. 減少台灣本地居民參與防災活動的機會"
-                ],
-                answer: 2,
-                explanation: "多國參與是為了文化交流與互學，增強整體社會防災能力。"
-            },
-            {
-                title: "國軍守護主題區",
-                tclass: "topic-5",
-                question: "關於國軍在天然災害中的角色，下列哪一項描述最正確？",
-                options: [
-                    "A. 國軍僅負責戰爭時期的軍事行動，平時不參與災害救援",
-                    "B. 國軍平時結合地方政府，主動規劃並投入災害救援",
-                    "C. 國軍只負責維持秩序，不會動用專業救災部隊或器材",
-                    "D. 國軍在災害發生時比消防隊更晚抵達現場"
-                ],
-                answer: 1,
-                explanation: "國軍會結合地方政府，主動投入救災，守護民眾安全。"
-            },
-            {
-                title: "防災體驗主題區",
-                tclass: "topic-6",
-                question: "參加「地震求生72小時」體驗活動，學習的最重要核心觀念為何？",
-                options: [
-                    "A. 只要有手機就不用準備其他物資",
-                    "B. 學會善用日常物品及具備自救能力",
-                    "C. 災害來臨時只依賴他人救援",
-                    "D. 災害發生時第一時間拍照上傳社群網站"
-                ],
-                answer: 1,
-                explanation: "重點在學會自救與善用日常物資，提升面對災害的生存能力。"
             }
         ];
 
+        // 全域變數
         let current = 0;
         let userAnswers = Array(topics.length).fill(null);
         let photos = Array(topics.length).fill(null);
+        let animationQueue = [];
+        let isAnimating = false;
 
+        // 渲染步驟指示器
         function renderStepper() {
             let html = "";
             for (let i = 0; i < topics.length; i++) {
                 const isActive = current === i;
                 const isCompleted = userAnswers[i] !== null;
-                html += `<div class="stepper-item w-10 h-10 rounded-full flex items-center justify-center font-bold mx-2 ${
+                const animationClass = isActive ? 'zoom-in' : isCompleted ? 'bounce-in' : 'fade-in';
+                html += `<div class="stepper-item w-10 h-10 rounded-full flex items-center justify-center font-bold mx-2 ${animationClass} ${
                     isActive ? 'active text-white' : 
                     isCompleted ? 'bg-green-500 text-white' : 
                     'bg-white text-gray-600 border-2 border-gray-300'
                 }">${i + 1}</div>`;
             }
             document.getElementById('stepper').innerHTML = html;
-        }
-
+        }     
+   // 渲染題目
         function renderTopic() {
             renderStepper();
             const t = topics[current];
             let photoPreview = photos[current] ? 
-                `<img src="${photos[current]}" class="pdf-photo my-2" id="photo-prev-${current}">` : 
+                `<img src="${photos[current]}" class="pdf-photo my-2 flip-in" id="photo-prev-${current}">` : 
                 `<img src="" class="pdf-photo my-2 hidden" id="photo-prev-${current}">`;
             
             let options = "";
             for(let i = 0; i < 4; i++){
                 let selected = userAnswers[current] === i ? 'selected' : '';
-                options += `<button onclick="chooseAnswer(${i})" class="option-btn block w-full text-left rounded-xl px-6 py-4 my-3 ${selected}">${t.options[i]}</button>`;
+                const animationDelay = i * 0.1;
+                options += `<button onclick="chooseAnswer(${i})" class="option-btn block w-full text-left rounded-xl px-6 py-4 my-3 slide-in-left ${selected}" style="animation-delay: ${animationDelay}s">${t.options[i]}</button>`;
             }
 
             // 獲取主題圖標
             const topicIcons = ['🏠', '🏛️', '🌱', '🌍', '⚔️', '🎯'];
             
             document.getElementById('topic-area').innerHTML = `
-                <div class="${t.tclass} photo-ans-group">
-                    <div class="topic-icon">
+                <div class="${t.tclass} photo-ans-group fade-in">
+                    <div class="topic-icon breathe-effect">
                         ${topicIcons[current]}
                     </div>
                     <div style="flex:1;">
-                        <h2 class="topic-title mb-1"><span class="qnum">${current + 1}</span>${t.title}</h2>
-                        <div class="text-gray-800 mb-3">${t.question}</div>
+                        <h2 class="topic-title mb-1 slide-in-right"><span class="qnum glow-effect">${current + 1}</span>${t.title}</h2>
+                        <div class="text-gray-800 mb-3 fade-in" style="animation-delay: 0.2s">${t.question}</div>
                         <div id="options">${options}</div>
                         <div id="explanation" class="text-green-600 font-semibold mt-2 mb-2" style="min-height:1.8em"></div>
-                        <div class="mt-6">
+                        <div class="mt-6 zoom-in" style="animation-delay: 0.5s">
                             <label class="font-semibold text-gray-700 block mb-3">📸 上傳照片（JPG/PNG，建議橫式）</label>
-                            <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="file-input block w-full mb-3">
+                            <input type="file" accept="image/*" onchange="uploadPhoto(event,${current})" class="file-input block w-full mb-3 wave-effect">
                             <div class="camera-controls">
-                                <button onclick="openCameraModal(${current})" class="camera-btn">📷 即時拍照</button>
-                                ${photos[current] ? `<button onclick="removePhoto(${current})" class="camera-btn" style="background: #ef4444;">🗑️ 移除照片</button>` : ''}
+                                <button onclick="openCameraModal(${current})" class="camera-btn bounce-in">📷 即時拍照</button>
+                                ${photos[current] ? `<button onclick="removePhoto(${current})" class="camera-btn shake" style="background: #ef4444;">🗑️ 移除照片</button>` : ''}
                             </div>
                             ${photoPreview}
                         </div>
-                        <div class="mt-8 flex justify-between gap-4">
-                            <button ${current === 0 ? 'disabled' : ''} onclick="prevTopic()" class="nav-btn px-6 py-3 bg-gray-200 text-gray-700 rounded-xl ${current === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'}">← 上一題</button>
-                            <button onclick="nextTopic()" class="nav-btn primary px-6 py-3 text-white rounded-xl">${current < topics.length - 1 ? '下一題 →' : '完成 ✓'}</button>
+                        <div class="mt-8 flex justify-between gap-4 slide-in-left" style="animation-delay: 0.7s">
+                            <button ${current === 0 ? 'disabled' : ''} onclick="prevTopic()" class="nav-btn px-6 py-3 bg-gray-200 text-gray-700 rounded-xl ${current === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300 wave-effect'}">← 上一題</button>
+                            <button onclick="nextTopic()" class="nav-btn primary px-6 py-3 text-white rounded-xl glow-effect">${current < topics.length - 1 ? '下一題 →' : '完成 ✓'}</button>
                         </div>
                     </div>
                 </div>
@@ -619,21 +955,33 @@ ss="min-h-screen flex flex-col items-center justify-center">
             if(photos[current]){
                 document.getElementById(`photo-prev-${current}`).classList.remove('hidden');
             }
+            
+            // 添加載入完成動畫
+            setTimeout(() => {
+                const elements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .zoom-in, .flip-in, .bounce-in');
+                elements.forEach(el => {
+                    el.classList.add('loaded');
+                });
+            }, 100);
         }
 
+        // 選擇答案
         function chooseAnswer(idx){
             userAnswers[current] = idx;
+            showSuccessAnimation();
             showExplanation();
             renderTopic();
         }
 
+        // 顯示解釋
         function showExplanation(){
             let idx = userAnswers[current];
             let correct = topics[current].answer;
             let html = '';
             if(idx !== null){
                 const isCorrect = idx === correct;
-                html = `<div class="explanation-text ${isCorrect ? 'bg-green-50 border-green-400 text-green-800' : 'bg-red-50 border-red-400 text-red-800'}">
+                const animationClass = isCorrect ? 'bounce-in' : 'shake';
+                html = `<div class="explanation-text ${animationClass} ${isCorrect ? 'bg-green-50 border-green-400 text-green-800' : 'bg-red-50 border-red-400 text-red-800'}">
                     <div class="font-semibold mb-2">${isCorrect ? "✔️ 答對了！" : "❌ 答錯了。"}</div>
                     <div>${topics[current].explanation}</div>
                 </div>`;
@@ -641,6 +989,7 @@ ss="min-h-screen flex flex-col items-center justify-center">
             document.getElementById('explanation').innerHTML = html;
         }
 
+        // 上傳照片
         function uploadPhoto(e, topicIdx){
             const file = e.target.files[0];
             if(!file) return;
@@ -649,39 +998,48 @@ ss="min-h-screen flex flex-col items-center justify-center">
             const reader = new FileReader();
             reader.onload = function(ev){
                 photos[topicIdx] = ev.target.result;
+                showSuccessAnimation();
                 renderTopic();
             };
             reader.readAsDataURL(file);
         }
 
+        // 上一題
         function prevTopic(){
             if(current > 0){
                 current--;
+                addPageTransition();
                 renderTopic();
             }
         }
 
+        // 下一題
         function nextTopic(){
             // 檢查是否已回答問題
             if (userAnswers[current] === null) {
+                showErrorAnimation();
                 alert('請先回答問題再進入下一題！');
                 return;
             }
             
             // 檢查是否已上傳照片
             if (photos[current] === null) {
+                showErrorAnimation();
                 alert('請先上傳照片再進入下一題！');
                 return;
             }
             
             if(current < topics.length - 1){
                 current++;
+                addPageTransition();
                 renderTopic();
             } else {
+                showCompletionAnimation();
                 showSummary();
             }
-        }       
- function showSummary() {
+        }      
+  // 顯示總結
+        function showSummary() {
             document.getElementById('main').style.display = "none";
             document.getElementById('summary-area').style.display = "block";
 
@@ -832,21 +1190,44 @@ ss="min-h-screen flex flex-col items-center justify-center">
             document.getElementById('summary-content').innerHTML = html;
         }
 
+        // PDF 下載功能
         function downloadPDF() {
+            // 顯示載入動畫
+            showLoadingAnimation();
+            
             window.scrollTo(0, 0);
             setTimeout(function () {
                 const summary = document.getElementById('summary-content');
-                html2pdf(summary, {
+                const opt = {
                     margin: 0.4,
-                    filename: `國家防災日學習成果.pdf`,
+                    filename: `國家防災日學習成果_${new Date().toLocaleDateString('zh-TW').replace(/\//g, '')}.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+                    html2canvas: { 
+                        scale: 2, 
+                        useCORS: true, 
+                        scrollY: 0,
+                        allowTaint: true,
+                        backgroundColor: '#ffffff'
+                    },
+                    jsPDF: { 
+                        unit: 'in', 
+                        format: 'a4', 
+                        orientation: 'portrait',
+                        compress: true
+                    }
+                };
+                
+                html2pdf().set(opt).from(summary).save().then(() => {
+                    hideLoadingAnimation();
+                    showSuccessMessage();
+                }).catch((error) => {
+                    hideLoadingAnimation();
+                    console.error('PDF生成失敗:', error);
+                    alert('PDF生成失敗，請重試');
                 });
-            }, 120);
-        }
-
-        // 拍照相關功能
+            }, 500);
+        }     
+   // 拍照相關功能
         let currentCameraTopicIdx = 0;
         let cameraStream = null;
 
@@ -856,6 +1237,7 @@ ss="min-h-screen flex flex-col items-center justify-center">
             const video = document.getElementById('camera-video');
             
             modal.style.display = 'flex';
+            modal.querySelector('.camera-container').classList.add('zoom-in');
             
             // 請求攝影機權限
             navigator.mediaDevices.getUserMedia({ 
@@ -868,6 +1250,7 @@ ss="min-h-screen flex flex-col items-center justify-center">
             .then(stream => {
                 cameraStream = stream;
                 video.srcObject = stream;
+                video.classList.add('fade-in');
             })
             .catch(err => {
                 console.error('無法存取攝影機:', err);
@@ -879,15 +1262,22 @@ ss="min-h-screen flex flex-col items-center justify-center">
         function closeCameraModal() {
             const modal = document.getElementById('camera-modal');
             const video = document.getElementById('camera-video');
+            const container = modal.querySelector('.camera-container');
             
-            modal.style.display = 'none';
+            container.classList.add('fade-out');
             
-            // 停止攝影機串流
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
-                cameraStream = null;
-            }
-            video.srcObject = null;
+            setTimeout(() => {
+                modal.style.display = 'none';
+                container.classList.remove('fade-out', 'zoom-in');
+                video.classList.remove('fade-in');
+                
+                // 停止攝影機串流
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                    cameraStream = null;
+                }
+                video.srcObject = null;
+            }, 300);
         }
 
         function capturePhoto() {
@@ -908,6 +1298,9 @@ ss="min-h-screen flex flex-col items-center justify-center">
             // 儲存照片
             photos[currentCameraTopicIdx] = photoData;
             
+            // 顯示成功動畫
+            showCaptureAnimation();
+            
             // 關閉攝影機
             closeCameraModal();
             
@@ -917,6 +1310,7 @@ ss="min-h-screen flex flex-col items-center justify-center">
 
         function removePhoto(topicIdx) {
             photos[topicIdx] = null;
+            showRemoveAnimation();
             renderTopic();
         }
 
@@ -926,10 +1320,16 @@ ss="min-h-screen flex flex-col items-center justify-center">
             const completedPhotos = photos.filter(photo => photo !== null).length;
             const totalProgress = (completedQuestions + completedPhotos) / (topics.length * 2) * 100;
             
-            document.getElementById('progress-bar').style.width = totalProgress + '%';
+            const progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = totalProgress + '%';
+            
+            // 添加進度動畫效果
+            if (totalProgress > 0) {
+                progressBar.classList.add('glow-effect');
+            }
         }
 
-        // 添加成功動畫效果
+        // 動畫效果函數
         function showSuccessAnimation() {
             const confetti = document.createElement('div');
             confetti.innerHTML = '🎉';
@@ -944,13 +1344,183 @@ ss="min-h-screen flex flex-col items-center justify-center">
             setTimeout(() => confetti.remove(), 3000);
         }
 
+        function showErrorAnimation() {
+            const errorIcon = document.createElement('div');
+            errorIcon.innerHTML = '❌';
+            errorIcon.style.position = 'fixed';
+            errorIcon.style.fontSize = '3rem';
+            errorIcon.style.zIndex = '9999';
+            errorIcon.style.left = '50%';
+            errorIcon.style.top = '50%';
+            errorIcon.style.transform = 'translate(-50%, -50%)';
+            errorIcon.style.animation = 'shake 0.5s ease-in-out';
+            document.body.appendChild(errorIcon);
+            
+            setTimeout(() => errorIcon.remove(), 500);
+        }
+
+        function showCompletionAnimation() {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const celebration = document.createElement('div');
+                    celebration.innerHTML = ['🎊', '🎉', '✨', '🌟', '💫'][Math.floor(Math.random() * 5)];
+                    celebration.style.position = 'fixed';
+                    celebration.style.fontSize = '2rem';
+                    celebration.style.zIndex = '9999';
+                    celebration.style.left = Math.random() * window.innerWidth + 'px';
+                    celebration.style.top = '-50px';
+                    celebration.style.animation = 'confetti 4s ease-out forwards';
+                    document.body.appendChild(celebration);
+                    
+                    setTimeout(() => celebration.remove(), 4000);
+                }, i * 200);
+            }
+        }
+
+        function showCaptureAnimation() {
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = '0';
+            flash.style.left = '0';
+            flash.style.width = '100%';
+            flash.style.height = '100%';
+            flash.style.backgroundColor = 'white';
+            flash.style.zIndex = '9998';
+            flash.style.opacity = '0.8';
+            flash.style.animation = 'flash 0.3s ease-out';
+            document.body.appendChild(flash);
+            
+            setTimeout(() => flash.remove(), 300);
+        }
+
+        function showRemoveAnimation() {
+            const removeIcon = document.createElement('div');
+            removeIcon.innerHTML = '🗑️';
+            removeIcon.style.position = 'fixed';
+            removeIcon.style.fontSize = '2rem';
+            removeIcon.style.zIndex = '9999';
+            removeIcon.style.left = '50%';
+            removeIcon.style.top = '50%';
+            removeIcon.style.transform = 'translate(-50%, -50%)';
+            removeIcon.style.animation = 'bounce 0.6s ease-out';
+            document.body.appendChild(removeIcon);
+            
+            setTimeout(() => removeIcon.remove(), 600);
+        }
+
+        function addPageTransition() {
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1))';
+            overlay.style.zIndex = '9997';
+            overlay.style.animation = 'pageTransition 0.5s ease-in-out';
+            document.body.appendChild(overlay);
+            
+            setTimeout(() => overlay.remove(), 500);
+        }
+
+        function showLoadingAnimation() {
+            const loader = document.createElement('div');
+            loader.id = 'pdf-loader';
+            loader.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.7);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 10000;
+                ">
+                    <div style="
+                        background: white;
+                        padding: 30px;
+                        border-radius: 15px;
+                        text-align: center;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    ">
+                        <div class="loading-bounce" style="font-size: 3rem;">📄</div>
+                        <div style="margin-top: 15px; font-size: 18px; font-weight: 600;">正在生成 PDF...</div>
+                        <div style="margin-top: 5px; color: #666;">請稍候片刻</div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(loader);
+        }
+
+        function hideLoadingAnimation() {
+            const loader = document.getElementById('pdf-loader');
+            if (loader) {
+                loader.remove();
+            }
+        }
+
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #10b981, #059669);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+                    z-index: 10001;
+                    animation: slideInRight 0.5s ease-out;
+                ">
+                    ✅ PDF 已成功下載！
+                </div>
+            `;
+            document.body.appendChild(message);
+            
+            setTimeout(() => message.remove(), 3000);
+        }
+
+        // 添加額外的動畫樣式
+        const additionalStyles = document.createElement('style');
+        additionalStyles.textContent = `
+            @keyframes flash {
+                0% { opacity: 0; }
+                50% { opacity: 0.8; }
+                100% { opacity: 0; }
+            }
+            
+            @keyframes pageTransition {
+                0% { opacity: 0; transform: scale(0.8); }
+                50% { opacity: 0.3; transform: scale(1.1); }
+                100% { opacity: 0; transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(additionalStyles);
+
+        // 初始化
         window.onload = function () {
             renderTopic();
             
             // 添加歡迎動畫
             setTimeout(() => {
-                document.querySelector('.glass-card').classList.add('bounce-in');
+                const glassCard = document.querySelector('.glass-card');
+                if (glassCard) {
+                    glassCard.classList.add('bounce-in');
+                }
             }, 200);
+            
+            // 添加粒子動畫啟動
+            setTimeout(() => {
+                const particles = document.querySelectorAll('.particle');
+                particles.forEach((particle, index) => {
+                    particle.style.animationDelay = (index * 0.5) + 's';
+                });
+            }, 500);
         }
     </script>
 </body>
