@@ -387,6 +387,133 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* PDF卡片式排列樣式 */
+        .pdf-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .pdf-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid;
+            position: relative;
+        }
+
+        .pdf-card.topic-1 {
+            border-color: #3b82f6;
+        }
+
+        .pdf-card.topic-2 {
+            border-color: #f59e0b;
+        }
+
+        .pdf-card.topic-3 {
+            border-color: #10b981;
+        }
+
+        .pdf-card.topic-4 {
+            border-color: #ef4444;
+        }
+
+        .pdf-card.topic-5 {
+            border-color: #8b5cf6;
+        }
+
+        .pdf-card.topic-6 {
+            border-color: #ec4899;
+        }
+
+        .pdf-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .pdf-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 12px;
+            color: white;
+        }
+
+        .pdf-card.topic-1 .pdf-card-icon {
+            background: #3b82f6;
+        }
+
+        .pdf-card.topic-2 .pdf-card-icon {
+            background: #f59e0b;
+        }
+
+        .pdf-card.topic-3 .pdf-card-icon {
+            background: #10b981;
+        }
+
+        .pdf-card.topic-4 .pdf-card-icon {
+            background: #ef4444;
+        }
+
+        .pdf-card.topic-5 .pdf-card-icon {
+            background: #8b5cf6;
+        }
+
+        .pdf-card.topic-6 .pdf-card-icon {
+            background: #ec4899;
+        }
+
+        .pdf-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .pdf-card-content {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .pdf-card-answer {
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+
+        .pdf-card-photo {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .pdf-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
         @media (max-width: 700px) {
 
             #summary-area,
@@ -782,7 +909,6 @@
     <!-- 主要測驗區域 -->
     <div id="main" class="w-full max-w-4xl mx-auto glass-card card-3d rounded-3xl mt-8 p-8">
         <div class="flex flex-col items-center mb-6">
-            <div class="text-4xl mb-4 rotate-effect">🛡️</div>
             <h1 class="text-4xl font-bold text-center mb-4 main-title gradient-text">國家防災日 學習成果</h1>
         </div>
         <p class="text-center text-gray-600 mb-6 text-lg breathe-effect">請完成六大主題問題與照片，最後匯出專屬成果 PDF。</p>
@@ -926,8 +1052,8 @@
                 const isCompleted = userAnswers[i] !== null;
                 const animationClass = isActive ? 'zoom-in' : isCompleted ? 'bounce-in' : 'fade-in';
                 html += `<div class="stepper-item w-10 h-10 rounded-full flex items-center justify-center font-bold mx-2 ${animationClass} ${isActive ? 'active text-white' :
-                        isCompleted ? 'bg-green-500 text-white' :
-                            'bg-white text-gray-600 border-2 border-gray-300'
+                    isCompleted ? 'bg-green-500 text-white' :
+                        'bg-white text-gray-600 border-2 border-gray-300'
                     }">${i + 1}</div>`;
             }
             document.getElementById('stepper').innerHTML = html;
@@ -1029,6 +1155,15 @@
                 return;
             }
 
+            if (photos[current] === null) {
+                alert('請先拍攝或上傳照片！');
+                document.querySelector('.camera-controls').classList.add('shake');
+                setTimeout(() => {
+                    document.querySelector('.camera-controls').classList.remove('shake');
+                }, 500);
+                return;
+            }
+
             if (current < topics.length - 1) {
                 current++;
                 addPageTransition();
@@ -1055,65 +1190,74 @@
                 document.getElementById('summary-area').classList.add('bounce-in');
             }, 100);
 
+            // 卡片式排列的PDF版面
             let summaryHTML = `
-                <div class="text-center mb-8 fade-in">
-                    <div class="text-2xl font-bold text-green-600 mb-2">🎉 測驗完成！</div>
-                    <div class="text-lg text-gray-700">答對 ${correctCount} / ${totalQuestions} 題 (${scorePercentage}%)</div>
-                    <div class="text-sm text-gray-500 mt-2">完成時間：${new Date().toLocaleString('zh-TW')}</div>
+                <div class="pdf-header">
+                    <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">國家防災日學習成果</h2>
+                    <div style="font-size: 16px; margin-bottom: 5px;">台北市政府消防局</div>
+                    <div style="font-size: 14px;">${new Date().toLocaleDateString('zh-TW')} | 答對率 ${scorePercentage}% (${correctCount}/${totalQuestions})</div>
                 </div>
+                
+                <div class="pdf-grid">
             `;
 
-            // 生成所有 6 題，使用直式排列，字體更大更易讀
+            const topicIcons = ['🏠', '🏛️', '🌱', '🌍', '⚔️', '🎯'];
+
+            // 生成6個卡片
             for (let i = 0; i < topics.length; i++) {
                 const t = topics[i];
                 const isCorrect = userAnswers[i] === topics[i].answer;
                 const userAnswerText = topics[i].options[userAnswers[i]] || '未作答';
                 const correctAnswerText = topics[i].options[topics[i].answer];
-                const topicIcons = ['🏠', '🏛️', '🌱', '🌍', '⚔️', '🎯'];
 
                 summaryHTML += `
-                    <div class="${t.tclass} photo-ans-group summary-group fade-in" style="animation-delay: ${i * 0.1}s">
-                        <div class="topic-icon">
-                            ${topicIcons[i]}
+                    <div class="pdf-card ${t.tclass}">
+                        <div class="pdf-card-header">
+                            <div class="pdf-card-icon">${topicIcons[i]}</div>
+                            <div class="pdf-card-title">${t.title}</div>
                         </div>
-                        <div style="flex:1;">
-                            <h3 class="topic-title mb-3">
-                                <span class="qnum">${i + 1}</span>${t.title}
-                            </h3>
-                            <div class="text-gray-800 mb-4 text-lg leading-relaxed">${t.question}</div>
-                            
-                            <div class="mb-3">
-                                <div class="text-sm font-semibold text-gray-600 mb-1">你的答案：</div>
-                                <div class="text-base ${isCorrect ? 'text-green-600' : 'text-red-600'} font-medium">
-                                    ${userAnswerText} ${isCorrect ? '✓' : '✗'}
-                                </div>
+                        
+                        <div class="pdf-card-content">
+                            ${t.question}
+                        </div>
+                        
+                        <div class="pdf-card-answer">
+                            <div style="color: #666; margin-bottom: 5px;"><strong>你的答案：</strong></div>
+                            <div style="color: ${isCorrect ? '#10b981' : '#ef4444'}; font-weight: 500;">
+                                ${userAnswerText} ${isCorrect ? '✓' : '✗'}
                             </div>
-                            
                             ${!isCorrect ? `
-                                <div class="mb-3">
-                                    <div class="text-sm font-semibold text-gray-600 mb-1">正確答案：</div>
-                                    <div class="text-base text-green-600 font-medium">${correctAnswerText}</div>
+                                <div style="color: #10b981; font-size: 10px; margin-top: 3px;">
+                                    <strong>正確答案：</strong>${correctAnswerText}
                                 </div>
                             ` : ''}
-                            
-                            <div class="explanation-text">
-                                <strong>解析：</strong>${t.explanation}
-                            </div>
+                        </div>
+                        
+                        <div style="font-size: 10px; color: #666; margin-bottom: 15px; line-height: 1.3;">
+                            <strong>解析：</strong>${t.explanation}
                         </div>
                         
                         ${photos[i] ? `
-                            <img src="${photos[i]}" class="pdf-photo">
+                            <img src="${photos[i]}" class="pdf-card-photo">
                         ` : `
-                            <div class="pdf-photo flex items-center justify-center bg-gray-100 text-gray-400">
-                                <div class="text-center">
-                                    <div class="text-2xl mb-2">📷</div>
-                                    <div class="text-sm">未上傳照片</div>
+                            <div class="pdf-card-photo" style="background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 24px; margin-bottom: 5px;">📷</div>
+                                    <div style="font-size: 10px;">未上傳照片</div>
                                 </div>
                             </div>
                         `}
                     </div>
                 `;
             }
+
+            summaryHTML += `
+                </div>
+                
+                <div class="pdf-footer">
+                    國家防災日學習成果證明 | 台北市政府消防局 🚒
+                </div>
+            `;
 
             document.getElementById('summary-content').innerHTML = summaryHTML;
         }
